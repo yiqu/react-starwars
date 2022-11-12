@@ -15,7 +15,7 @@ import {
 } from 'react-router-dom';
 
 const leftNavItems = [
-  new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteIcon color='warning' />),
+  new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteIcon color='primary' />),
   new NavigationItem('All Movies', 'movies', ['/', 'movies'], <MovieIcon color='primary' />),
   new NavigationItem('Characters', 'characters', ['/', 'characters'], <Person4Icon color='primary' />)
 ];

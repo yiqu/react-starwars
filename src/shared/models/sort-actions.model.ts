@@ -1,4 +1,4 @@
-import { SortActionButton } from "./quotes.model";
+import { SortActionButton } from "./core-props.model";
 
 export interface SortActionProp {
   actions: SortActionButton[];

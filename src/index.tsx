@@ -16,13 +16,18 @@ import '@fontsource/poppins/600.css';
 import '@fontsource/poppins/700.css';
 
 const mainTheme: Theme = createTheme({
+  palette: {
+    primary: {
+      main: '#092250'
+    }
+  },
   typography: {
     fontFamily: ['Roboto', 'Poppins'].join(','),
   },
   components: {
     MuiButton: {
       defaultProps: {
-        disableRipple: false
+        disableRipple: true
       }
     },
     MuiListItemButton: {

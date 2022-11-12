@@ -1,25 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState, useContext, useMemo } from 'react';
+import { HttpParams } from './http.model';
 
-export interface CommentProp {
-  comments: Comment[];
+export interface FetchMovieHookProp {
+  url: string;
+  params?: HttpParams;
 }
 
-
-export interface Comment {
-  comment: string;
-  id: string;
-  date?: number;
-}
 
 export interface SortActionButton {
   display: 'descending' | 'ascending';
   value: string;
-}
-
-export interface Quote {
-  key?: string;
-  author: string;
-  quote: string;
-  date: number;
 }

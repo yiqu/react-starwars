@@ -28,7 +28,7 @@ const TopNav: FC<TopNavProps> = (props) => {
 
   return (
     <React.Fragment>
-      <AppBar position="fixed" open={ props.open }>
+      <AppBar position="fixed" open={ props.open } elevation={ 1 }>
         <Toolbar>
           <IconButton
             color="inherit"
