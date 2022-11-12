@@ -30,6 +30,13 @@ const mainTheme: Theme = createTheme({
         disableRipple: true
       }
     },
+    // MuiSvgIcon: {
+    //   defaultProps: {
+    //     sx: {
+    //       marginRight: '5px'
+    //     }
+    //   }
+    // },
     MuiListItemButton: {
       defaultProps: {
         disableRipple: true

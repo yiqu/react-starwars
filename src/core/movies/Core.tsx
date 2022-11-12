@@ -5,6 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from "@mui/material/Button";
 import { Divider } from "@mui/material";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Core = () => {
 
@@ -16,6 +17,7 @@ const Core = () => {
           <AppBar position="sticky" elevation={ 0 }>
             <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
               <Button color="inherit" variant="text">
+                <RefreshIcon sx={{mr: '10px'}} />
                 Refresh
               </Button>
             </Toolbar>

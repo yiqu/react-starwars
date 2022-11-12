@@ -8,8 +8,8 @@ import { axiosStarwarsGet } from "src/shared/rest/starwars-api";
 import useSWR from "swr";
 import { axiosFetcher } from "../fetchers/movies";
 
-const useFetchMovies = (props: FetchMovieHookProp) => {
-  const { data, isValidating, error, mutate } = useSWR([props.url, props.params], axiosFetcher, {
+const useFetchMovies = <T>(props: FetchMovieHookProp) => {
+  const { data, isValidating, error, mutate } = useSWR([props.url, props.params], axiosFetcher<T>, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
