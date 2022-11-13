@@ -17,7 +17,7 @@ const Core = () => {
           <AppBar position="sticky" elevation={ 0 }>
             <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
               <Button color="inherit" variant="text">
-                <RefreshIcon sx={{mr: '10px'}} />
+                <RefreshIcon sx={ {mr: '10px'} } />
                 Refresh
               </Button>
             </Toolbar>

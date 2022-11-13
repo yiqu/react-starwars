@@ -21,3 +21,7 @@ export interface StarwarsFilm {
   url: string;
   vehicles: string[];
 }
+
+export interface StarwarsFilmCardProps {
+  film: StarwarsFilm;
+}

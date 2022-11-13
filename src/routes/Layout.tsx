@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,8 @@ import falconLogo from '../static/img/mfalcon.png';
 import { Drawer, DrawerHeader } from './Layouts/layout-components';
 import LeftNav from 'src/left-nav/LeftNav';
 import TopNav from 'src/top-nav/TopNav';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 
 const Layout = () => {
@@ -22,6 +25,8 @@ const Layout = () => {
 
   const [open, setOpen] = React.useState(true);
 
+  const isMobileScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleDrawerOpen = (openState: boolean) => {
     setOpen(openState);
   };
@@ -29,6 +34,12 @@ const Layout = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (isMobileScreenSize) {
+      setOpen(false);
+    }
+  }, [isMobileScreenSize]);
 
   return (
     <Box sx={ { display: 'flex' } }>

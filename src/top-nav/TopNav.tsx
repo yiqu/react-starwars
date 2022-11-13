@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC } from "react";
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,7 +9,8 @@ import { TopNavProps } from "src/shared/models/nav-item.model";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import Button from "@mui/material/Button";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const TopNav: FC<TopNavProps> = (props) => {
 
@@ -46,6 +48,17 @@ const TopNav: FC<TopNavProps> = (props) => {
             { title }
           </Typography>
         </Toolbar>
+
+        {/* Nested Action bar that is sticky under main top nav */}
+        {/* <AppBar position="sticky" elevation={ 0 }>
+          <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
+            <Button color="inherit" variant="text">
+              <RefreshIcon sx={ {mr: '10px'} } />
+              Refresh
+            </Button>
+          </Toolbar>
+        </AppBar> */}
+          
       </AppBar>
     </React.Fragment>
   );
