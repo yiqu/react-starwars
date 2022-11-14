@@ -12,3 +12,7 @@ export interface SortActionButton {
   display: 'descending' | 'ascending';
   value: string;
 }
+
+export interface FetchMovieDetailHookProp {
+  movieId: string;
+}

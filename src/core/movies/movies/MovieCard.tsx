@@ -54,7 +54,7 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
       </div>
       
       <CardActions>
-        <Button size="small" component={ Link } to={ `./${props.film.episode_id}` }>Learn More</Button>
+        <Button size="small" component={ Link } to={ `./${(props.film.url.split("/"))[props.film.url.split("/").length - 2] }` }>Learn More</Button>
       </CardActions>
     </Card>
   );
