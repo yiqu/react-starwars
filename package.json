@@ -2,7 +2,7 @@
   "name": "starwars",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://.web.app",
+  "homepage": "https://yiqu.github.io/react-starwars",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
