@@ -10,9 +10,16 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
 import useScreenSize from "src/shared/hooks/useIsMobile";
+import FavIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
+import { useEffect } from 'react';
 
 
 const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => {
+
+  const favoriteHandler = () => {
+    props.onFavorite(props.film);
+  };
 
   const { isXl } = useScreenSize();
 
@@ -22,11 +29,11 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
       elevation={ 4 }>
       <div>
         <CardMedia
-        component="img"
-        alt="poster"
-        height="440"
-        image={ `/poster-img/${props.film.episode_id}.png` }
-        sx={ {backgroundColor: '#000', objectFit: 'contain'} }
+          component="img"
+          alt="poster"
+          height="440"
+          image={ `${process.env.PUBLIC_URL}/assets/poster-img/${props.film.episode_id}.png` }
+          sx={ {backgroundColor: '#000', objectFit: 'contain'} }
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" sx={ {fontFamily:'Poppins',
@@ -53,8 +60,18 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
         </CardContent>
       </div>
       
-      <CardActions>
-        <Button size="small" component={ Link } to={ `./${(props.film.url.split("/"))[props.film.url.split("/").length - 2] }` }>Learn More</Button>
+      <CardActions sx={ {display: 'flex', justifyContent: 'space-between'} }>
+        <div>
+          <Button size="small" component={ Link } to={ `./${(props.film.url.split("/"))[props.film.url.split("/").length - 2] }` }>
+            Learn More
+          </Button>
+        </div>
+        <div>
+          <IconButton aria-label="favorite" onClick={ favoriteHandler } 
+            title={ props.favorited?.isCurrentFavorite ? 'Remove from favorites' : 'Add to favorites' }>
+            <FavIcon color={ props.favorited?.isCurrentFavorite ? 'error' : 'disabled' } />
+          </IconButton>
+        </div>
       </CardActions>
     </Card>
   );

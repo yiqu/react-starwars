@@ -30,7 +30,7 @@ const Movie = () => {
             component="img"
             alt="poster"
             height="100"
-            image={ `/poster-img/${data?.episode_id}.png` }
+            image={ `${process.env.PUBLIC_URL}/assets/poster-img/${data?.episode_id}.png` }
             sx={ {backgroundColor: '#000', objectFit: 'cover', borderRadius: '25px'} } />
 
           <Typography variant="h6" component={ 'div' } sx={ {display: 'flex', justifyContent: 'center', mt: '2rem'} }>

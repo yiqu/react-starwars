@@ -24,6 +24,8 @@ export interface StarwarsFilm {
 
 export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
+  favorited?: FavoriteToSave;
+  onFavorite: (detail: StarwarsFilm) => void;
 }
 
 export interface StarwarFilmDetail {
@@ -41,4 +43,13 @@ export interface StarwarFilmDetail {
   created: string;
   edited: string;
   url: string;
+}
+
+export interface FavoriteToSave {
+  fireId?: string;
+  filmUrl: string;
+  filmId: string;
+  isCurrentFavorite: boolean;
+  lastUpdated: number;
+  episodeId: number;
 }

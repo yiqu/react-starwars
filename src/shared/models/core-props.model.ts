@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState, useContext, useMemo } from 'react';
 import { HttpParams } from './http.model';
+import { FavoriteToSave, StarwarsFilm } from './starwars.model';
 
 export interface FetchMovieHookProp {
   url: string;
@@ -15,4 +16,14 @@ export interface SortActionButton {
 
 export interface FetchMovieDetailHookProp {
   movieId: string;
+}
+
+export interface FetchFavoritesHookProp {
+  userId: string;
+  params: HttpParams;
+}
+
+export interface SaveFavoriteHookProp {
+  userId: string;
+  film?: FavoriteToSave;
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { HttpParams } from '../models/http.model';
 
 const BASE_URL = 'https://kq-1-1a499.firebaseio.com/';
 
@@ -16,14 +17,14 @@ export const getAxiosInstance = () => {
   return axiosInstance;
 };
 
-export const axiosGet = (url, params = null) => {
-  return axiosInstance.get(url + '.json', {
+export const axiosGet = <T>(url: string, params: HttpParams | null = null) => {
+  return axiosInstance.get<T>(url + '.json', {
     params: params
   });
 };
 
-export const axiosPost = (url, data = null) => {
-  return axiosInstance.post(url + '.json', data);
+export const axiosPost = <T>(url: string, data?: T) => {
+  return axiosInstance.post<T>(url + '.json', data);
 };
 
 export default axiosInstance;

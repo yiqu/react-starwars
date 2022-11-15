@@ -1,7 +1,7 @@
 {
   "name": "starwars",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://yiqu.github.io/react-starwars",
   "dependencies": {
     "@emotion/react": "^11.10.5",
