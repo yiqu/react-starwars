@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/react-starwars/static/css/main.d3124a4c.css",
-    "main.js": "/react-starwars/static/js/main.debb5139.js",
+    "main.js": "/react-starwars/static/js/main.d83bcece.js",
     "static/js/253.e4daad1c.chunk.js": "/react-starwars/static/js/253.e4daad1c.chunk.js",
-    "static/js/256.4134e1a6.chunk.js": "/react-starwars/static/js/256.4134e1a6.chunk.js",
-    "static/js/953.ac438c9c.chunk.js": "/react-starwars/static/js/953.ac438c9c.chunk.js",
+    "static/js/891.7f5e7252.chunk.js": "/react-starwars/static/js/891.7f5e7252.chunk.js",
+    "static/js/953.e5e3983d.chunk.js": "/react-starwars/static/js/953.e5e3983d.chunk.js",
     "static/js/986.df25f40b.chunk.js": "/react-starwars/static/js/986.df25f40b.chunk.js",
     "static/js/977.072557ee.chunk.js": "/react-starwars/static/js/977.072557ee.chunk.js",
     "static/js/315.66f40a2f.chunk.js": "/react-starwars/static/js/315.66f40a2f.chunk.js",
@@ -66,10 +66,10 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/react-starwars/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/react-starwars/index.html",
     "main.d3124a4c.css.map": "/react-starwars/static/css/main.d3124a4c.css.map",
-    "main.debb5139.js.map": "/react-starwars/static/js/main.debb5139.js.map",
+    "main.d83bcece.js.map": "/react-starwars/static/js/main.d83bcece.js.map",
     "253.e4daad1c.chunk.js.map": "/react-starwars/static/js/253.e4daad1c.chunk.js.map",
-    "256.4134e1a6.chunk.js.map": "/react-starwars/static/js/256.4134e1a6.chunk.js.map",
-    "953.ac438c9c.chunk.js.map": "/react-starwars/static/js/953.ac438c9c.chunk.js.map",
+    "891.7f5e7252.chunk.js.map": "/react-starwars/static/js/891.7f5e7252.chunk.js.map",
+    "953.e5e3983d.chunk.js.map": "/react-starwars/static/js/953.e5e3983d.chunk.js.map",
     "986.df25f40b.chunk.js.map": "/react-starwars/static/js/986.df25f40b.chunk.js.map",
     "977.072557ee.chunk.js.map": "/react-starwars/static/js/977.072557ee.chunk.js.map",
     "315.66f40a2f.chunk.js.map": "/react-starwars/static/js/315.66f40a2f.chunk.js.map",
@@ -80,6 +80,6 @@
   },
   "entrypoints": [
     "static/css/main.d3124a4c.css",
-    "static/js/main.debb5139.js"
+    "static/js/main.d83bcece.js"
   ]
 }
