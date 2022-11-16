@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { HttpParams } from '../models/http.model';
 
-export const SW_BASE_API = 'https://swapi.dev/api/';
+export const SW_BASE_API = 'https://swapi.tech/api/';
 
 const axiosStarwarsInstance = axios.create({
   baseURL: SW_BASE_API,

@@ -5,6 +5,23 @@ export interface HttpResponse<T> {
   results: T[];
 }
 
+export interface HttpResponse2<T> {
+  message: string;
+  result: ResultProperty<T>;
+}
+
+export interface HttpResponse2List<T> {
+  message: string;
+  result: ResultProperty<T>[];
+}
+
+export interface ResultProperty<T> {
+  properties: T;
+  description: string;
+  _id: string;
+  uid: string;
+}
+
 export interface StarwarsFilm {
   characters: string[];
   created: string;
@@ -26,6 +43,7 @@ export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
   favorited?: FavoriteToSave;
   onFavorite: (detail: StarwarsFilm) => void;
+  uid: string;
 }
 
 export interface StarwarFilmDetail {

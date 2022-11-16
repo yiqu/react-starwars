@@ -13,6 +13,7 @@ import useScreenSize from "src/shared/hooks/useIsMobile";
 import FavIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import { useEffect } from 'react';
+import { Stack } from "@mui/material";
 
 
 const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => {
@@ -24,7 +25,7 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
   const { isXl } = useScreenSize();
 
   return (
-    <Card sx={ {border:"2px solid #726f53", height:(isXl ? '100%': '51rem'), display:'flex',
+    <Card sx={ {border:"2px solid #726f53", height:(isXl ? '100%': '100%'), display:'flex',
       flexDirection:'column', justifyContent:'space-between'} } 
       elevation={ 4 }>
       <div>
@@ -36,15 +37,17 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
           sx={ {backgroundColor: '#000', objectFit: 'contain'} }
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div" sx={ {fontFamily:'Poppins',
-            fontWeight:'600', display: 'flex', justifyContent: 'space-between'} }>
-            <div>
+          <Stack direction={ {lg: 'column', xl: 'row'} } justifyContent={ {xl:'space-between', lg:'flex-start'} }
+            marginBottom={ {lg:'10px', xl: '0px'} }>
+            <Typography gutterBottom variant="h5" component={ Link } to={ `./${props.uid}` } sx={ {fontFamily:'Poppins',
+              fontWeight:'500'} }>
               { props.film.title }
-            </div>
+            </Typography>
             <Typography variant="h5" color='text.secondary' sx={ {fontWeight: '300'} }>
               EP { props.film.episode_id }
             </Typography>
-          </Typography>
+          </Stack>
+          
           <Typography variant="body2" color="text.secondary">
             Released: { props.film.release_date }
           </Typography>
@@ -62,7 +65,7 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
       
       <CardActions sx={ {display: 'flex', justifyContent: 'space-between'} }>
         <div>
-          <Button size="small" component={ Link } to={ `./${(props.film.url.split("/"))[props.film.url.split("/").length - 2] }` }>
+          <Button size="small" component={ Link } to={ `./${props.uid}` }>
             Learn More
           </Button>
         </div>

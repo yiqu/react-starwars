@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { capitalizeFirstLetter } from "src/shared/utils/text-transform";
 
 const TopNav: FC<TopNavProps> = (props) => {
 
@@ -45,7 +46,7 @@ const TopNav: FC<TopNavProps> = (props) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={ {fontWeight: 400} }>
-            { title }
+            { capitalizeFirstLetter(title) }
           </Typography>
         </Toolbar>
 

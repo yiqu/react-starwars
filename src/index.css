@@ -24,3 +24,8 @@ code {
   color: #0072E5;
   background-color: #F0F7FF;
 } */
+
+a {
+  text-decoration: none;
+  color: #0969da;
+}
