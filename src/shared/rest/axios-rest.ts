@@ -27,4 +27,12 @@ export const axiosPost = <T>(url: string, data?: T) => {
   return axiosInstance.post<T>(url + '.json', data);
 };
 
+export const axiosPut = <T>(url: string, data?: T) => {
+  return axiosInstance.put<T>(url + '.json', data);
+};
+
+export const axiosDelete = <T>(url: string, data?: T) => {
+  return axiosInstance.delete<T>(url + '.json');
+};
+
 export default axiosInstance;

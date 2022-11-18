@@ -1,18 +1,18 @@
 import { axiosFetcher } from '../fetchers/favorites';
 import useSWR from "swr";
 import { FetchFavoritesHookProp } from 'src/shared/models/core-props.model';
-import { FavoriteToSave } from 'src/shared/models/starwars.model';
+import { FavoriteMoviesObjList } from 'src/shared/models/starwars.model';
 
 
 const useFetchFavorites = (props: FetchFavoritesHookProp) => {
 
-  const { data, isValidating, error, mutate } = useSWR([props.userId, props.params], axiosFetcher<{[key: string]: FavoriteToSave}>, {
+  const { data, isValidating, error, mutate } = useSWR([props.userId, props.params], axiosFetcher<FavoriteMoviesObjList>, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   });
 
-  const transformedData: {[key: string]: FavoriteToSave} = {};
+  const transformedData: FavoriteMoviesObjList = {};
 
   if (data) {
     const keys = Object.keys(data ?? {});

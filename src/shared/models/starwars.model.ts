@@ -37,12 +37,15 @@ export interface StarwarsFilm {
   title: string;
   url: string;
   vehicles: string[];
+
+  // added on manually
+  userFavorited?: boolean;
 }
 
 export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
   favorited?: FavoriteToSave;
-  onFavorite: (detail: StarwarsFilm) => void;
+  onFavoriteToggle: (detail: StarwarsFilm, isCurrentlyFavorited?: FavoriteToSave) => void;
   uid: string;
 }
 
@@ -70,4 +73,8 @@ export interface FavoriteToSave {
   isCurrentFavorite: boolean;
   lastUpdated: number;
   episodeId: number;
+}
+
+export interface FavoriteMoviesObjList {
+  [key: string]: FavoriteToSave;
 }

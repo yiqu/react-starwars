@@ -14,12 +14,13 @@ import FavIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import { useEffect } from 'react';
 import { Stack } from "@mui/material";
+import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
 
 
 const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => {
 
-  const favoriteHandler = () => {
-    props.onFavorite(props.film);
+  const favoriteToggleHandler = () => {
+    props.onFavoriteToggle(props.film, props.favorited);
   };
 
   const { isXl } = useScreenSize();
@@ -70,9 +71,9 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
           </Button>
         </div>
         <div>
-          <IconButton aria-label="favorite" onClick={ favoriteHandler } 
-            title={ props.favorited?.isCurrentFavorite ? 'Remove from favorites' : 'Add to favorites' }>
-            <FavIcon color={ props.favorited?.isCurrentFavorite ? 'error' : 'disabled' } />
+          <IconButton aria-label="favorite" onClick={ favoriteToggleHandler } 
+            title={ getFilmFavoriteToggleTooltip(props.favorited) }>
+            <FavIcon color={ props.film.userFavorited ? 'error' : 'disabled' } />
           </IconButton>
         </div>
       </CardActions>
