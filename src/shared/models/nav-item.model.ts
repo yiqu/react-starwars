@@ -18,3 +18,7 @@ export interface TopNavProps {
   open: boolean;
   onNavOpen: (openState: boolean) => void;
 }
+
+export interface LeftNavHeaderProps {
+  closeDrawerHandler: (openState: boolean) => void;
+}

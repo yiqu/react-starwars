@@ -13,6 +13,9 @@ const FavoritesLayout = loadable(() => import('../core/favorites/FavoritesLayout
 const FavoritesAll = loadable(() => import('../core/favorites/all/FavoritesAll'));
 const Favorite = loadable(() => import('../core/favorites/favorite/Favorite'));
 
+const CharactersLayout = loadable(() => import('../core/characters/CharactersLayout'));
+const CharactersAll = loadable(() => import('../core/characters/all/CharactersAll'));
+
 const AboutLazy = loadable(() => import('../about/About'));
 const NotFoundLazy = loadable(() => import('../404/NotFound'));
 
@@ -51,6 +54,16 @@ const routeList: Router = createBrowserRouter([
             element: <Favorite />,
             //loader: QuoteDetailLoader
           }
+        ]
+      },
+      {
+        path: 'characters',
+        element: <CharactersLayout />,
+        children: [
+          {
+            index: true,
+            element: <CharactersAll />
+          },
         ]
       },
       {

@@ -3,24 +3,17 @@ import { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Outlet } from 'react-router-dom';
-import falconLogo from '../static/img/mfalcon.png';
 import { Drawer, DrawerHeader } from './Layouts/layout-components';
 import LeftNav from 'src/left-nav/LeftNav';
 import TopNav from 'src/top-nav/TopNav';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import LeftNavHeader from 'src/left-nav/LeftNavHeader';
 
 
 const Layout = () => {
   
-  const leftNavTitle = 'SWDB';
-
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(true);
@@ -31,8 +24,8 @@ const Layout = () => {
     setOpen(openState);
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleDrawerClose = (openState: boolean) => {
+    setOpen(openState);
   };
 
   useEffect(() => {
@@ -48,16 +41,8 @@ const Layout = () => {
       <TopNav open={ open } onNavOpen={ handleDrawerOpen } />
 
       <Drawer variant="permanent" open={ open }>
-        <DrawerHeader >
-          <Typography component='div' sx={ {display: 'flex', flexDirection:"row", alignItems:"center"} }>
-            <Typography component="img" src={ falconLogo } sx={ {height: '2rem', mr: '10px'} } alt="logo"></Typography>
-            <Typography variant='h6'>{ leftNavTitle }</Typography>
-            
-          </Typography>
-          <IconButton onClick={ handleDrawerClose }>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
+
+        <LeftNavHeader closeDrawerHandler={ handleDrawerClose } />
 
         <Divider />
         
