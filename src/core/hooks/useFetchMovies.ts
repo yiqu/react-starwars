@@ -1,10 +1,16 @@
 import { FetchMovieHookProp } from "src/shared/models/core-props.model";
-import { FavoriteMoviesObjList } from "src/shared/models/starwars.model";
 import useSWR from "swr";
 import { axiosFetcher } from "../fetchers/movies";
 
-const useFetchMovies = <T>(props: FetchMovieHookProp, favMovies: FavoriteMoviesObjList) => {
-  const { data, isValidating, error, mutate } = useSWR([props.url, props.params], axiosFetcher<T>, {
+const useFetchMovies = <T>(props: FetchMovieHookProp) => {
+  const { data, isValidating, error, mutate } = useSWR(
+    () => {
+      // if (props.params?.fetchTime) {
+      //   return [props.url, props.params];
+      // }
+      // return null;
+      return [props.url, props.params];
+    },  axiosFetcher<T>, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false

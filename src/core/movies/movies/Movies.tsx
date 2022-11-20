@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@mui/material";
 import Grid from "@mui/system/Unstable_Grid";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { saveFavorite, updateFavorite } from "src/core/fetchers/favorites";
 import useFetchFavorites from "src/core/hooks/useFetchFavorites";
 import useFetchMovies from "src/core/hooks/useFetchMovies";
 import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
 import { FavoriteToSave, HttpResponse, HttpResponse2, HttpResponse2List, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import { axiosPost } from "src/shared/rest/axios-rest";
+import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
 
 const userId = 'yqu';
@@ -17,11 +18,13 @@ const Movies = () => {
 
   const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
   const [fetchFavoriteTime, setFetchFavoriteTime] = useState<number>(0);
+  const [fetchMoviesTime, setFetchMoviesTime] = useState<number>(0);
 
   const {data: favMovies, error: favError, loading: favLoading, mutate: favMutate} = 
     useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
 
-  const {data, error, loading, mutate} = useFetchMovies<HttpResponse2List<StarwarsFilm>>({ url: 'films', params: {fetchTime: 0} }, favMovies);
+  const {data, error, loading, mutate} = 
+    useFetchMovies<HttpResponse2List<StarwarsFilm>>({ url: 'films', params: {fetchTime: fetchMoviesTime} });
 
   const sorted: ResultProperty<StarwarsFilm>[] | undefined = useMemo(() => {
     const sortedArr = data?.result ?? [];
@@ -36,6 +39,11 @@ const Movies = () => {
 
     return sortedArr;
   }, [data, favMovies]);
+
+  useEffect(() => {
+    //setFetchMoviesTime(new Date().getTime());
+    setFetchFavoriteTime(new Date().getTime());
+  }, []);
 
   const onFavoriteToggleHandler = (film: StarwarsFilm, currentFavoriteStatus?: FavoriteToSave) => {
     const { url: filmUrl } = film;
@@ -76,21 +84,30 @@ const Movies = () => {
   };
 
   return (
-    <Grid xs={ 12 } container spacing={ 2 } mx={ 2 } my={ 2 }>
+    <Grid container spacing={ 2 } mx={ 2 } my={ 2 } xs={ 12 } flexDirection="column">
       {/* All Movies
       <Button onClick={ refresh }>Refresh</Button> */}
       { error && (<div>Error occured:</div>)}
-      { loading ? (<>{ arrOfItems.map((item) => <Grid key={ item } xs={ 4 }> <LoadingSkeleton /> </Grid>) }</>) : 
+      { loading ? (<Grid container xs={ 12 }>{ arrOfItems.map((item) => <Grid key={ item } xs={ 4 }> <LoadingSkeleton /> </Grid>) }</Grid>) : 
         (
-          sorted?.map((res) => {
-            return (
-              <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 4 }>
-                <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
-                  favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
-                </MovieCard>
-              </Grid>
-            );
-          })
+          <>
+            <Grid xs={ 4 }>
+              <FilterInput />
+            </Grid>
+            <Grid xs={ 12 } container>
+              {sorted?.map((res) => {
+                return (
+                  <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 4 }>
+                    <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
+                      favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
+                    </MovieCard>
+                  </Grid>
+                );
+              })}
+            </Grid>
+            
+          </>
+          
         )
       }
 

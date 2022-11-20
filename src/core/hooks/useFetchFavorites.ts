@@ -6,7 +6,14 @@ import { FavoriteMoviesObjList } from 'src/shared/models/starwars.model';
 
 const useFetchFavorites = (props: FetchFavoritesHookProp) => {
 
-  const { data, isValidating, error, mutate } = useSWR([props.userId, props.params], axiosFetcher<FavoriteMoviesObjList>, {
+  const { data, isValidating, error, mutate } = useSWR(
+    () => {
+      if (props.params.fetchTime) {
+        return [props.userId, props.params];
+      }
+      return null;
+    }, 
+    axiosFetcher<FavoriteMoviesObjList>, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
