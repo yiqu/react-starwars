@@ -6,6 +6,7 @@ import { saveFavorite, updateFavorite } from "src/core/fetchers/favorites";
 import useFetchFavorites from "src/core/hooks/useFetchFavorites";
 import useFetchMovies from "src/core/hooks/useFetchMovies";
 import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
+import { HttpParams } from "src/shared/models/http.model";
 import { FavoriteToSave, HttpResponse, HttpResponse2, HttpResponse2List, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import { axiosPost } from "src/shared/rest/axios-rest";
 import FilterInput from "./filter/FilterInput";
@@ -18,13 +19,13 @@ const Movies = () => {
 
   const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
   const [fetchFavoriteTime, setFetchFavoriteTime] = useState<number>(0);
-  const [fetchMoviesTime, setFetchMoviesTime] = useState<number>(0);
+  const [fetchMoviesParams, setFetchMoviesParams] = useState<HttpParams>({});
 
   const {data: favMovies, error: favError, loading: favLoading, mutate: favMutate} = 
     useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
 
   const {data, error, loading, mutate} = 
-    useFetchMovies<HttpResponse2List<StarwarsFilm>>({ url: 'films', params: {fetchTime: fetchMoviesTime} });
+    useFetchMovies<HttpResponse2List<StarwarsFilm>>({ url: 'films', params: fetchMoviesParams });
 
   const sorted: ResultProperty<StarwarsFilm>[] | undefined = useMemo(() => {
     const sortedArr = data?.result ?? [];
@@ -83,34 +84,44 @@ const Movies = () => {
     }
   };
 
+  const onFilterChangeHandler = useCallback((filterValue: any) => {
+    if (filterValue.movieName) {
+      setFetchMoviesParams({
+        title: filterValue.movieName
+      });
+    } else {
+      setFetchMoviesParams({});
+    }
+  }, []);
+
   return (
     <Grid container spacing={ 2 } mx={ 2 } my={ 2 } xs={ 12 } flexDirection="column">
       {/* All Movies
       <Button onClick={ refresh }>Refresh</Button> */}
       { error && (<div>Error occured:</div>)}
-      { loading ? (<Grid container xs={ 12 }>{ arrOfItems.map((item) => <Grid key={ item } xs={ 4 }> <LoadingSkeleton /> </Grid>) }</Grid>) : 
+      <Grid xs={ 12 } sm={ 6 }>
+        <FilterInput filterChange={ onFilterChangeHandler } />
+      </Grid>
+      { loading ? 
         (
-          <>
-            <Grid xs={ 4 }>
-              <FilterInput />
-            </Grid>
-            <Grid xs={ 12 } container>
-              {sorted?.map((res) => {
-                return (
-                  <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 4 }>
-                    <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
-                      favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
-                    </MovieCard>
-                  </Grid>
-                );
-              })}
-            </Grid>
-            
-          </>
-          
+          <Grid container xs={ 12 }>
+            { arrOfItems.map((item) => <Grid key={ item } xs={ 12 } sm={ 4 }> <LoadingSkeleton /> </Grid>) }
+          </Grid>
+        ) : 
+        (
+          <Grid xs={ 12 } container>
+            {sorted?.map((res) => {
+              return (
+                <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 4 }>
+                  <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
+                    favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
+                  </MovieCard>
+                </Grid>
+              );
+            })}
+          </Grid>
         )
       }
-
     </Grid>
   );
 };

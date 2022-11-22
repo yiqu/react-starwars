@@ -6,12 +6,6 @@ import { FormikInputProps, FormInputProps } from 'src/shared/models/form.model';
 
 const FormInput = ({ label, name, valueChange, ...props}: FormikInputProps) => {
 
-  const { values, submitForm } = useFormikContext<any>();
-
-  useEffect(() => {
-    valueChange(values.movieName);
-  }, [values.movieName, valueChange]);
-
   return (
     <>
       { props.showLabel && <label htmlFor={ name }>{ label} </label> }

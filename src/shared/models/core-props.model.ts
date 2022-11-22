@@ -27,3 +27,7 @@ export interface SaveFavoriteHookProp {
   userId: string;
   film?: FavoriteToSave;
 }
+
+export interface FilmFilterProp {
+  filterChange: (payload: any) => void;
+}

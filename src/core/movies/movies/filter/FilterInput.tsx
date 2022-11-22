@@ -1,18 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import FormInput from 'src/shared/form/m-input/FormInput';
 import { TextFieldProps } from '@mui/material';
+import { useDebounce } from 'src/shared/hooks/useDebounce';
+import { useDeepCompareEffect } from 'react-use';
+import FilterInputForm from './FilterInputForm';
+import { FCC } from 'src/shared/models/fc-children.model';
+import { FilmFilterProp } from 'src/shared/models/core-props.model';
 
-const FilterInput = () => {
+
+const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
 
   const initValue = {
     movieName: ''
   };
+ 
   const filterChangeHandler = useCallback((payload: any) => {
-    console.log('filter:', payload);
-  }, []);
+    filterChange(payload);
+  }, [filterChange]);
 
   const movieNameFilter: TextFieldProps = {
     name: 'movieName',
@@ -31,9 +38,7 @@ const FilterInput = () => {
       initialValues={ initValue }
       onSubmit={ submitHandler }
     >
-      <Form autoComplete="off">
-        <FormInput { ...movieNameFilter } valueChange={ filterChangeHandler } />
-      </Form>
+      <FilterInputForm movieNameFilter={ movieNameFilter } filterChange={ filterChangeHandler } />
       
     </Formik>
   );
