@@ -5,13 +5,14 @@ import * as Yup from 'yup';
 import FormInput from 'src/shared/form/m-input/FormInput';
 import { useDebounce } from 'src/shared/hooks/useDebounce';
 import { useDeepCompareEffect } from 'react-use';
+import { MoviesFilterInput } from 'src/shared/models/starwars.model';
 
 
 const FilterInputForm = ({...props}) => {
 
   const { values, submitForm } = useFormikContext<any>();
 
-  const debouncedTerm = useDebounce(values, 1000);
+  const debouncedTerm = useDebounce<MoviesFilterInput>(values, 600);
 
   useDeepCompareEffect(() => {
     props.filterChange(debouncedTerm);

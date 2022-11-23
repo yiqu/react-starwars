@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useReducer, useState, useContext, useMemo } from 'react';
 import { HttpParams } from './http.model';
-import { FavoriteToSave, StarwarsFilm } from './starwars.model';
+import { FavoriteToSave, MoviesFilterInput, StarwarsFilm } from './starwars.model';
 
 export interface FetchMovieHookProp {
   url: string;
@@ -29,5 +29,5 @@ export interface SaveFavoriteHookProp {
 }
 
 export interface FilmFilterProp {
-  filterChange: (payload: any) => void;
+  filterChange: (payload: MoviesFilterInput) => void;
 }

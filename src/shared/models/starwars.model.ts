@@ -78,3 +78,7 @@ export interface FavoriteToSave {
 export interface FavoriteMoviesObjList {
   [key: string]: FavoriteToSave;
 }
+
+export interface MoviesFilterInput {
+  movieName: string;
+}
