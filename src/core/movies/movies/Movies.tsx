@@ -95,7 +95,7 @@ const Movies = () => {
   }, []);
 
   return (
-    <Grid container spacing={ 2 } mx={ 2 } my={ 2 } xs={ 12 } flexDirection="column">
+    <Grid container spacing={ 2 } mx={ 2 } my={ 2 } xs={ 12 }>
       {/* All Movies
       <Button onClick={ refresh }>Refresh</Button> */}
       { error && (<div>Error occured:</div>)}

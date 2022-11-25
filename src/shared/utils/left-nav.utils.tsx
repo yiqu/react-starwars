@@ -14,11 +14,16 @@ import InfoIconOutlined from '@mui/icons-material/InfoOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 import { NavigationItem } from "../models/nav-item.model";
 
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
+
+
 export const GET_LEFT_NAV_ITEMS = () => {
   const LEFT_NAV_ITEMS = [
     new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteBorderOutlinedIcon color='primary' />),
     new NavigationItem('All Movies', 'movies', ['/', 'movies'], <MovieIconOutlined color='primary' />),
     new NavigationItem('Characters', 'characters', ['/', 'characters'], <Person4IconOutlined color='primary' />),
+    new NavigationItem('Add Movie', 'create-new', ['/', 'create-new'], <AddAPhotoOutlinedIcon color='primary' />),
     new NavigationItem('About', 'about', ['/', 'about'], <InfoIconOutlined color='primary' />),
   ];
   return LEFT_NAV_ITEMS;
@@ -37,6 +42,9 @@ export const getFilledIcon = (pathName: string): JSX.Element => {
     }
     case 'about': {
       return <InfoIcon color='primary' />;
+    }
+    case 'create-new': {
+      return <AddAPhotoIcon color='primary' />;
     }
   }
   return <>None</>;

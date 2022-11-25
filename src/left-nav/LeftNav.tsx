@@ -34,7 +34,7 @@ const LeftNav: FC<LeftNavProps> = (props: LeftNavProps) => {
         { leftNavItems.map((navItem, index) => (
           <React.Fragment key={ navItem.id }>
             {
-              (navItem.id === 'about') && <Divider />
+              (navItem.id === 'about' || navItem.id === 'create-new') && <Divider sx={ {my: 1} } />
             }
 
             <ListItem key={ navItem.id } disablePadding sx={ { display: 'block' } }>
