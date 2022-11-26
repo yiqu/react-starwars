@@ -1,7 +1,10 @@
 export interface HttpResponse<T> {
-  count: number;
+  count?: number;
   next: string;
   previous: string;
+  message: string;
+  total_records: number;
+  total_pages: number;
   results: T[];
 }
 
@@ -81,4 +84,10 @@ export interface FavoriteMoviesObjList {
 
 export interface MoviesFilterInput {
   movieName: string;
+}
+
+export interface StarwarsPeople {
+  uid: string;
+  name: string;
+  url: string;
 }

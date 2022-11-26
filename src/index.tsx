@@ -30,13 +30,6 @@ const mainTheme: Theme = createTheme({
         disableRipple: true
       }
     },
-    // MuiSvgIcon: {
-    //   defaultProps: {
-    //     sx: {
-    //       marginRight: '5px'
-    //     }
-    //   }
-    // },
     MuiListItemButton: {
       defaultProps: {
         disableRipple: true
@@ -58,6 +51,26 @@ const mainTheme: Theme = createTheme({
             whiteSpace: 'nowrap', overflow:'hidden', textOverflow:'ellipsis'
           }
         }
+      }
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: '#092250'
+        }
+      }
+    },
+    MuiAutocomplete: {
+      defaultProps: {
+        ChipProps: {
+          color: 'info'
+        },
+        size: 'small'
+      }
+    },
+    MuiTextField: {
+      defaultProps: {
+        size: 'small'
       }
     }
   }

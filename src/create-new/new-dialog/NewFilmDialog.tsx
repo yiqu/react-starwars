@@ -11,15 +11,23 @@ import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import React, { useEffect, useState } from 'react';
  import { Form, Formik, useFormikContext } from 'formik';
-import { getFormFields } from '../FormFields';
+import { getFormFields, NewFilmData } from '../FormFields';
 import NewFilmForm from './NewFilmForm';
+import { NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
 
 
 
 const NewFilmDialog = (props: DialogProps) => {
 
-  const initValues = {
-    starships: 'NONE_SELECTED'
+  const initValues: NewFilmData = {
+    title: '',
+    director: '',
+    characters: [],
+    starships: NONE_SELECTED_VALUE,
+    opening_crawl: '',
+    planets: [],
+    species: [],
+    vehicles: []
   };
 
   const handleClose = (event: any, reason?: string) => {
@@ -51,22 +59,16 @@ const NewFilmDialog = (props: DialogProps) => {
       <Divider />
 
       <DialogContent >
-        <Grid container>
+        <Grid container spacing={ 2 }>
           <Formik initialValues={ initValues }
               onSubmit={ formSubmitHandler }
             >
             {(formik) => {
               return <div style={ {width: '100%'} }>
-                <NewFilmForm />
+                <NewFilmForm formik={ formik } />
               </div>;
             }}
           </Formik>
-          {/* <Grid xs={ 3 }>
-            Name
-          </Grid>
-          <Grid xs={ 6 }>
-            inputinputinputinputinputinput1inputinputinputinputinputinput1
-          </Grid> */}
         </Grid>
       </DialogContent>
 
