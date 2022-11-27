@@ -1,10 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import { DialogProps } from 'src/shared/models/dialog.model';
-import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, Checkbox, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
 import SaveIcon from '@mui/icons-material/Save';
@@ -15,6 +9,8 @@ import { getFormFields } from '../FormFields';
 import { StarwarsPeople } from 'src/shared/models/starwars.model';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import useSwGet from 'src/shared/rest/useSwGet';
+import { DEFAULT_MAX_PAGE_PARAMS } from 'src/shared/rest/starwars-api';
 
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -23,16 +19,18 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const NewFilmForm = (props: any) => {
 
   const formikContext = useFormikContext();
-
+  const [ formFields, setFormFields ] = useState<any[]>([]);
+  const { data: peopleListData, isError, loading } = useSwGet<StarwarsPeople>('people', DEFAULT_MAX_PAGE_PARAMS);
+  
+console.log(peopleListData, loading)
   useEffect(() => {
     console.log(formikContext.values);
   }, [formikContext.values]);
 
-  const [formFields, setFormFields] = useState<any[]>([]);
-
   useEffect(() => {
     setFormFields(defaultFormFields);
   }, []);
+
 
   return (
     <Form>

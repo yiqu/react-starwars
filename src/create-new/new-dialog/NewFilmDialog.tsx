@@ -60,8 +60,9 @@ const NewFilmDialog = (props: DialogProps) => {
 
       <DialogContent >
         <Grid container spacing={ 2 }>
-          <Formik initialValues={ initValues }
-              onSubmit={ formSubmitHandler }
+          <Formik 
+            initialValues={ initValues }
+            onSubmit={ formSubmitHandler }
             >
             {(formik) => {
               return <div style={ {width: '100%'} }>
