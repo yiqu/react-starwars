@@ -11,6 +11,7 @@ import { FCC } from 'src/shared/models/fc-children.model';
 import { FilmFilterProp } from 'src/shared/models/core-props.model';
 import { MoviesFilterInput } from 'src/shared/models/starwars.model';
 import { Close, Filter, Search } from '@mui/icons-material';
+import { FormInput2Props } from 'src/shared/models/form.model';
 
 
 const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
@@ -23,7 +24,7 @@ const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
     filterChange(payload);
   }, [filterChange]);
 
-  const movieNameFilter = (formik: FormikProps<MoviesFilterInput>): TextFieldProps => {
+  const movieNameFilter = (formik: FormikProps<MoviesFilterInput>): FormInput2Props => {
     const clearInputHandler = () => {
       formik.resetForm();
     };
@@ -31,20 +32,21 @@ const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
 
     return {
       name: 'movieName',
-      placeholder: 'Filter by name',
-      id: 'movieName',
-      variant: 'standard',
-      InputProps: {
-        endAdornment: (<InputAdornment position='end'>
-          { filterInputHasValue && <IconButton onClick={ clearInputHandler }>
-            <Close />
-          </IconButton> }
-        </InputAdornment>),
-        startAdornment: (
-          <InputAdornment position='start'>
-            <Search />
-          </InputAdornment>
-        )
+      props: {
+        placeholder: 'Filter by name',
+        variant: 'standard',
+        InputProps: {
+          endAdornment: (<InputAdornment position='end'>
+            { filterInputHasValue && <IconButton onClick={ clearInputHandler }>
+              <Close />
+            </IconButton> }
+          </InputAdornment>),
+          startAdornment: (
+            <InputAdornment position='start'>
+              <Search />
+            </InputAdornment>
+          )
+        }
       }
     };
   };

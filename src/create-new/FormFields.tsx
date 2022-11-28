@@ -1,16 +1,16 @@
-import { FormikProps } from "formik";
 import FormAutocomplete from "src/shared/form/m-autocomplete/FormAutocomplete";
 import FormInput from "src/shared/form/m-input/FormInput";
 import FormikSelect from "src/shared/form/m-select/FormSelect";
+import { AsyncFormFieldOptions } from "src/shared/models/form.model";
 
-export const getFormFields = (controlObject: any, formik: FormikProps<NewFilmData>) => {
+export const getFormFields = (controlObject: any, selectOptions: AsyncFormFieldOptions<any>) => {
 
   switch (controlObject.name) {
     case 'starships': {
       return (
         <>
           <FormikSelect name={ controlObject.name } label={ controlObject.label }
-            options={ controlObject.options } { ...controlObject }
+            options={ selectOptions[controlObject.name]?.options ?? [] } { ...controlObject }
             >
           </FormikSelect>
         </>
@@ -40,8 +40,9 @@ export const getFormFields = (controlObject: any, formik: FormikProps<NewFilmDat
       return (
         <>
           <FormAutocomplete name={ controlObject.name } label={ controlObject.label }
-            { ...controlObject } formik={ formik }
-            >
+            options={ selectOptions[controlObject.name]?.options ?? [] } 
+            loading={ selectOptions[controlObject.name]?.loading } 
+            { ...controlObject } >
           </FormAutocomplete>
         </>
       );

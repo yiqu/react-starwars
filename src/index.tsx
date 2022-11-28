@@ -56,7 +56,7 @@ const mainTheme: Theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          color: '#092250'
+          color: '#888'
         }
       }
     },

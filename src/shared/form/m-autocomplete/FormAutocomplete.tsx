@@ -9,8 +9,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-const FormAutocomplete = ({ label, name, valueChange, ...props}: FormAutocompleteProps) => {
-
+const FormAutocomplete = ({ label, name, options, loading, ...props}: FormAutocompleteProps) => {
   const formik = useFormikContext();
 
   const onValueChangeHandler = (event: any, value: any) => {
@@ -23,7 +22,7 @@ const FormAutocomplete = ({ label, name, valueChange, ...props}: FormAutocomplet
         {props.showLabel && <InputLabel htmlFor={ name }>{ label }</InputLabel>}
 
         <Field as={ Autocomplete } label={ label } name={ name } id={ name }
-        { ...props.props } onChange={ onValueChangeHandler }/>
+        { ...props.props } onChange={ onValueChangeHandler } options={ options } loading={ loading }/>
 
         <FormHelperText id={ `${name}-helper-text` }>{ props.helperText }</FormHelperText>
 

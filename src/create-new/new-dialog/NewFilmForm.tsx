@@ -11,7 +11,8 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import useSwGet from 'src/shared/rest/useSwGet';
 import { DEFAULT_MAX_PAGE_PARAMS } from 'src/shared/rest/starwars-api';
-
+import * as _ from "lodash";
+import { AsyncFormFieldOptions, GenericFormFieldObject } from 'src/shared/models/form.model';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -19,10 +20,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const NewFilmForm = (props: any) => {
 
   const formikContext = useFormikContext();
-  const [ formFields, setFormFields ] = useState<any[]>([]);
+  const [ selectOptions, setSelectOptions ] = useState<AsyncFormFieldOptions<any>>({});
+  const [ formFields, setFormFields ] = useState<GenericFormFieldObject[]>([]);
   const { data: peopleListData, isError, loading } = useSwGet<StarwarsPeople>('people', DEFAULT_MAX_PAGE_PARAMS);
   
-console.log(peopleListData, loading)
   useEffect(() => {
     console.log(formikContext.values);
   }, [formikContext.values]);
@@ -31,13 +32,26 @@ console.log(peopleListData, loading)
     setFormFields(defaultFormFields);
   }, []);
 
+  useEffect(() => {
+    console.log(peopleListData, loading);
+    setSelectOptions((res) => {
+      return {
+        ...res,
+        characters: {
+          options: peopleListData,
+          loading
+        }
+      };
+    });
+  }, [peopleListData, loading]);
+
 
   return (
     <Form>
       { formFields.map((field) => {
         return (
-          <Grid key={ field.name } xs={ 6 }>
-            { getFormFields(field, props.formik) }
+          <Grid key={ field.name } xs={ 12 } md={ 12 } xl={ 6 }>
+            { getFormFields(field, selectOptions) }
           </Grid>
         );
       }) }
@@ -47,7 +61,7 @@ console.log(peopleListData, loading)
 
 export default NewFilmForm;
 
-export const defaultFormFields = [
+export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'title',
     label: 'Title',
@@ -64,33 +78,11 @@ export const defaultFormFields = [
     helperText: 'Core people in your film',
     props: {
       autoHighlight: true,
-      options: [
-        {
-          "uid": "1",
-          "name": "Luke Skywalker",
-          "url": "https://www.swapi.tech/api/people/1"
-        },
-        {
-          "uid": "2",
-          "name": "C-3PO",
-          "url": "https://www.swapi.tech/api/people/2"
-        },
-        {
-          "uid": "3",
-          "name": "R2-D2",
-          "url": "https://www.swapi.tech/api/people/3"
-        },
-        {
-          "uid": "4",
-          "name": "Darth Vader",
-          "url": "https://www.swapi.tech/api/people/4"
-        }
-      ],
       multiple: true,
       disableCloseOnSelect: true,
       getOptionLabel: (option: StarwarsPeople) => option.name,
       renderOption: (props: any, option: StarwarsPeople, { selected }: {selected: boolean}) => { return (
-        <li { ...props }>
+        <li { ...props } style={ {height: '2rem'} }>
           <Checkbox
             icon={ icon }
             checkedIcon={ checkedIcon }
@@ -101,8 +93,10 @@ export const defaultFormFields = [
         </li>
       );},
       renderInput: (params: any) => (
-        <TextField { ...params } label="Characters" placeholder="Characters" />
+        <TextField { ...params } label="Select your characters" placeholder="Characters" />
       ),
+      noOptionsText: 'No characters available',
+      loadingText: 'Loading characters...'
     }
   },
   {
@@ -124,12 +118,6 @@ export const defaultFormFields = [
   {
     name: 'starships',
     label: 'starships',
-    options: [
-      {
-        display: 'ONE',
-        value: '1'
-      }
-    ],
     useDefaultNoneSelected: 'your starships',
     props: {
       variant: "outlined",

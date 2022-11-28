@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
 import { FormikInputProps, FormikSelectProps, FormInputProps, FormSelectProps, NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
-import { FormHelperText, MenuItem, Select } from '@mui/material';
+import { FormHelperText, MenuItem, Select, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
@@ -20,7 +20,7 @@ const FormikSelect = ({ label, name, ...props}: FormSelectProps) => {
           {
             props.useDefaultNoneSelected && (
             <MenuItem value={ NONE_SELECTED_VALUE } key={ '' } disabled>
-              <em>Select { props.useDefaultNoneSelected }</em>
+              <Typography sx={ {color: '#666'} }>Select { props.useDefaultNoneSelected }</Typography>
             </MenuItem>
             ) 
           }

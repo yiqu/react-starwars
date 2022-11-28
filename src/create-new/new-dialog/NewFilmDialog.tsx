@@ -40,7 +40,7 @@ const NewFilmDialog = (props: DialogProps) => {
   };
 
   return (
-    <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown maxWidth={ false }
+    <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown maxWidth={ 'md' }
       PaperProps={ {sx:{minWidth:'calc(100% - 50rem)'}} }>
     
       <DialogTitle bgcolor="primary.main" color="white">
