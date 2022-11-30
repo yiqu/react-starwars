@@ -91,3 +91,9 @@ export interface StarwarsPeople {
   name: string;
   url: string;
 }
+
+export interface StarwarsContent {
+  uid: string;
+  name: string;
+  url: string;
+}

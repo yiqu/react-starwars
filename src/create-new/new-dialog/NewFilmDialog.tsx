@@ -11,9 +11,10 @@ import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import React, { useEffect, useState } from 'react';
  import { Form, Formik, useFormikContext } from 'formik';
-import { getFormFields, NewFilmData } from '../FormFields';
+import { NewFilmData } from '../FormFields';
 import NewFilmForm from './NewFilmForm';
 import { NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
+import { validationSchema } from 'src/shared/form/schemas/all-schemas';
 
 
 
@@ -63,10 +64,13 @@ const NewFilmDialog = (props: DialogProps) => {
           <Formik 
             initialValues={ initValues }
             onSubmit={ formSubmitHandler }
+            // validateOnChange={ false }
+            // validateOnBlur={ false }
+            validationSchema={ validationSchema }
             >
             {(formik) => {
               return <div style={ {width: '100%'} }>
-                <NewFilmForm formik={ formik } />
+                <NewFilmForm />
               </div>;
             }}
           </Formik>
@@ -79,7 +83,7 @@ const NewFilmDialog = (props: DialogProps) => {
         <Button variant="text" startIcon={ <RestartAltIcon /> }>
           Reset
         </Button>
-        <Button variant="text" startIcon={ <SaveIcon /> }>
+        <Button variant="text" startIcon={ <SaveIcon /> } >
           Save
         </Button>
       </DialogActions>
