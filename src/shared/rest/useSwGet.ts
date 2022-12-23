@@ -20,7 +20,7 @@ const useSwGet = <T>(url: string, params: HttpParams) => {
     });
   }, [params]);
 
-  const { data, error } = useSWRImmutable([url, httpParams, 3000], axiosStarwarsFetcher<HttpResponse<T>>);
+  const { data, error } = useSWRImmutable([url, httpParams], axiosStarwarsFetcher<HttpResponse<T>>);
 
   return {
     data: data?.results,

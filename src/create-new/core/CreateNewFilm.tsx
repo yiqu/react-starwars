@@ -23,7 +23,7 @@ const CreateNewFilm = () => {
         <Grid container mx={ 2 } my={ 2 } xs={ 12 } spacing={ 2 }>
           <Grid xs={ 12 } sx={ {display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'} }>
             <Typography variant="h6" >
-              Create your own Starwars movie!
+              Create your own Starwars movie.
             </Typography>
           </Grid>
           <Grid xs={ 12 } sx={ {display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'} }>
@@ -40,7 +40,7 @@ const CreateNewFilm = () => {
         </Grid>
       </Grid>
 
-      <NewFilmDialog onClose={ handleClose } open={ showDialog }></NewFilmDialog>      
+      { showDialog && <NewFilmDialog onClose={ handleClose } open={ showDialog }></NewFilmDialog> }     
     </>
     
   );

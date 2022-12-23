@@ -10,28 +10,42 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { NewFilmData } from 'src/create-new/FormFields';
 
-const FormAutocomplete = ({ label, name, options, loading, ...props}: FormAutocompleteProps) => {
+const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: FormAutocompleteProps) => {
   const formik = useFormikContext<any>();
 
   const onValueChangeHandler = (event: any, value: any) => {
     formik.setFieldValue(name, value);
   };
-
   return (
     <>
       <FormControl fullWidth>
-        {props.showLabel && <InputLabel htmlFor={ name }>{ label }</InputLabel>}
 
-        <Field as={ Autocomplete } label={ label } name={ name } id={ name } disabled={ loading }
-        { ...props.props } onChange={ onValueChangeHandler } options={ options } loading={ loading }
-        renderInput={ (params: any) => (
-          <TextField { ...params } label={ loading ? `Loading ${name}...` : `Select ${name}` } placeholder={ label }
-            error={ formik.touched[name] && !!formik.errors[name] }/>
-        ) }/>
+        { props.showLabel && <InputLabel htmlFor={ name }>{ label }</InputLabel> }
+
+        <Field as={ Autocomplete } 
+          label={ label } 
+          name={ name } 
+          id={ name } 
+          onChange={ onValueChangeHandler } 
+          renderInput={ (params: any) => (
+            <TextField { ...params }
+              name={ name }
+              variant="standard"
+              label={ loading ? `Loading ${name}...` : `Select ${name}` } 
+              placeholder={ label }
+              error={ formik.touched[name] && !!formik.errors[name] }
+            />
+          ) }
+          getOptionLabel={ (option: any) => option.id }
+          validate={ validate }
+          options={ options }
+          loading={ loading }
+          { ...props.props } 
+        />
 
         <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
           {
-            (formik.touched[name] && formik.errors[name]) ? (<><ErrorMessage name={ name } /></>) : (<>{props.helperText}</>)
+            (formik.touched[name] && formik.errors[name]) ? (<ErrorMessage name={ name } />) : (<>{ props.helperText }</>)
           }
         </FormHelperText>
        

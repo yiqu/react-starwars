@@ -7,7 +7,7 @@ import { FormHelperText, MenuItem, Select, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
-const FormikSelect = ({ label, name, ...props}: FormSelectProps) => {
+const FormikSelect = ({ label, name, validate, ...props}: FormSelectProps) => {
   const formik = useFormikContext<any>();
 
   return (
@@ -16,9 +16,15 @@ const FormikSelect = ({ label, name, ...props}: FormSelectProps) => {
 
         <InputLabel id={ name }>{ label }</InputLabel>
 
-        <Field as={ Select } label={ label } name={ name } id={ name } 
+        <Field as={ Select } 
+          label={ label } 
+          name={ name } 
+          id={ name } 
           error={ formik.touched[name] && !!formik.errors[name] }
+          validate={ validate }
+          variant="standard"
           { ...props.props } >
+            
           {
             props.useDefaultNoneSelected && (
             <MenuItem value={ NONE_SELECTED_VALUE } key={ '' } disabled>
@@ -35,6 +41,7 @@ const FormikSelect = ({ label, name, ...props}: FormSelectProps) => {
               );
             })
           }
+
         </Field>
         <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
           {

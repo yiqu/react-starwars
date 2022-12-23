@@ -4,8 +4,10 @@ import TextField from '@mui/material/TextField';
 import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
 import { FormikInputProps, FormInput2Props, FormInputProps } from 'src/shared/models/form.model';
 import { FormControl, FormHelperText, InputLabel } from '@mui/material';
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
-const FormInput = ({ label, name, valueChange, validate, ...props}: FormInput2Props) => {
+
+const FormTextArea = ({ label, name, valueChange, validate, ...props}: FormInput2Props) => {
   const formik = useFormikContext<any>();
   return (
     <>
@@ -13,13 +15,14 @@ const FormInput = ({ label, name, valueChange, validate, ...props}: FormInput2Pr
 
         { props.showLabel && <InputLabel htmlFor={ name }>{ label }</InputLabel> }
 
-        <Field as={ TextField } 
+        <Field as={ TextareaAutosize } 
+          multiline
           label={ label } 
           name={ name } 
           id={ name }
           error={ formik.touched[name] && !!formik.errors[name] }
           validate={ validate }
-          variant="standard"
+          minRows={ 3 }
           { ...props.props } />
 
         <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
@@ -33,4 +36,4 @@ const FormInput = ({ label, name, valueChange, validate, ...props}: FormInput2Pr
   );
 };
 
-export default FormInput;
+export default FormTextArea;

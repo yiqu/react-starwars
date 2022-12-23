@@ -7,6 +7,7 @@ export interface FormInputProps {
   showLabel?: boolean;
   helperText?: string;
   type: string;
+  validate?: (value: any) => string | null;
   valueChange?: (payload: any) => void;
 }
 
@@ -15,7 +16,7 @@ export interface FormInput2Props extends FormInputProps {
 }
 
 export interface FormAutocompleteProps extends FormInputProps {
-  options : any[];
+  options: any[];
   props?: any;
   loading?: boolean;
 }

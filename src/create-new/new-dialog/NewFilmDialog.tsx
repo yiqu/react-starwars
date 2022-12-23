@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { DialogProps } from 'src/shared/models/dialog.model';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, Divider, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
 import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -51,8 +51,7 @@ const NewFilmDialog = (props: DialogProps) => {
       validationSchema={ validationSchema } >
       {(formik) => {
         return <>
-          <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown maxWidth={ 'md' }
-            PaperProps={ {sx:{minWidth:'calc(100% - 50rem)'}} }>
+          <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown >
   
             <DialogTitle bgcolor="primary.main" color="white">
               <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
@@ -70,9 +69,7 @@ const NewFilmDialog = (props: DialogProps) => {
             <Divider />
 
             <DialogContent >
-
               <NewFilmForm />
-            
             </DialogContent>
 
             <DialogActions>

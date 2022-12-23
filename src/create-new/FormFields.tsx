@@ -26,11 +26,12 @@ export const CreateFormFields = (controlObject: any) => {
       );
     }
     case 'autocomplete': {
+     // console.log(controlObject.props.options)
       return (
         <>
           <FormAutocomplete name={ controlObject.name } label={ controlObject.label }
-            options={ controlObject.options ?? [] }
-            loading={ controlObject.loading } 
+            options={ controlObject.props.options ?? [] }
+            loading={ controlObject.props.loading } 
             { ...controlObject } >
           </FormAutocomplete>
         </>
