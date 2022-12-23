@@ -7,7 +7,6 @@ import { FormControl, FormHelperText, InputLabel } from '@mui/material';
 
 const FormInput = ({ label, name, valueChange, ...props}: FormInput2Props) => {
   const formik = useFormikContext<any>();
-console.log("input");
   return (
     <>
       <FormControl fullWidth>

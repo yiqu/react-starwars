@@ -24,7 +24,7 @@ const NewFilmDialog = (props: DialogProps) => {
     title: '',
     director: '',
     characters: [],
-    starships: NONE_SELECTED_VALUE,
+    starships: [],
     opening_crawl: '',
     planets: [],
     species: [],
@@ -38,57 +38,55 @@ const NewFilmDialog = (props: DialogProps) => {
   };
 
   const formSubmitHandler = (payload: any) => {
+    console.log(payload);
   };
 
   return (
-    <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown maxWidth={ 'md' }
-      PaperProps={ {sx:{minWidth:'calc(100% - 50rem)'}} }>
-    
-      <DialogTitle bgcolor="primary.main" color="white">
-        <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
-          <div>
-            { props.isEditMode ? 'Editing' : 'Create New Movie' }
-          </div>
-          <div>
-            <IconButton sx={ {color:'white'} } onClick={ handleClose }>
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </Stack>
-      </DialogTitle>
+     
+    <Formik 
+      initialValues={ initValues }
+      onSubmit={ formSubmitHandler }
+      // validateOnChange={ false }
+      // validateOnBlur={ false }
+      validationSchema={ validationSchema } >
+      {(formik) => {
+        return <>
+          <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown maxWidth={ 'md' }
+            PaperProps={ {sx:{minWidth:'calc(100% - 50rem)'}} }>
+  
+            <DialogTitle bgcolor="primary.main" color="white">
+              <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
+                <div>
+                  { props.isEditMode ? 'Editing' : 'Create New Movie' }
+                </div>
+                <div>
+                  <IconButton sx={ {color:'white'} } onClick={ handleClose }>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+              </Stack>
+            </DialogTitle>
 
-      <Divider />
+            <Divider />
 
-      <DialogContent >
-        <Grid container spacing={ 2 }>
-          <Formik 
-            initialValues={ initValues }
-            onSubmit={ formSubmitHandler }
-            // validateOnChange={ false }
-            // validateOnBlur={ false }
-            validationSchema={ validationSchema }
-            >
-            {(formik) => {
-              return <div style={ {width: '100%'} }>
-                <NewFilmForm />
-              </div>;
-            }}
-          </Formik>
-        </Grid>
-      </DialogContent>
+            <DialogContent >
 
-      <Divider />
+              <NewFilmForm />
+            
+            </DialogContent>
 
-      <DialogActions>
-        <Button variant="text" startIcon={ <RestartAltIcon /> }>
-          Reset
-        </Button>
-        <Button variant="text" startIcon={ <SaveIcon /> } >
-          Save
-        </Button>
-      </DialogActions>
-
-    </Dialog>
+            <DialogActions>
+              <Button variant="text" startIcon={ <RestartAltIcon /> } onClick={ formik.handleReset }>
+                Reset
+              </Button>
+              <Button variant="text" startIcon={ <SaveIcon /> } onClick={ formik.submitForm }>
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>;
+      }}
+    </Formik>
   );
 };
 

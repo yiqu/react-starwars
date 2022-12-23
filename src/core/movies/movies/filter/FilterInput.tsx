@@ -32,6 +32,7 @@ const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
 
     return {
       name: 'movieName',
+      type: 'text',
       props: {
         placeholder: 'Filter by name',
         variant: 'standard',

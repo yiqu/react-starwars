@@ -23,7 +23,7 @@ const NewFilmForm = (props: any) => {
   const formikContext = useFormikContext<any>();
   const [ selectOptions, setSelectOptions ] = useState<AsyncFormFieldOptions<any>>({});
   const [ formFields, setFormFields ] = useState<GenericFormFieldObject[]>([]);
-  const { data: peopleListData, isError, loading } = useSwGet<StarwarsContent>('people', DEFAULT_MAX_PAGE_PARAMS);
+  const { data: peopleListData, isError, loading: peopleListLoading } = useSwGet<StarwarsContent>('people', DEFAULT_MAX_PAGE_PARAMS);
   const { data: starshipsList, isError: starshipsError, loading: starshipsLoading } = 
     useSwGet<StarwarsContent>('starships', DEFAULT_MAX_PAGE_PARAMS);
   const { data: vehiclesList, isError: vehiclesError, loading: vehiclesLoading } = 
@@ -37,29 +37,19 @@ const NewFilmForm = (props: any) => {
     setFormFields(defaultFormFields);
   }, []);
 
-  useEffect(() => {
-    setSelectOptions((res) => {
-      return {
-        ...res,
-        characters: {
-          options: peopleListData,
-          loading
-        }
-      };
-    });
-  }, [peopleListData, loading]);
-
 
   return (
     <Form>
-      { formFields.map((field) => {
+      <Grid container spacing={ 2 }>
+        { formFields.map((field) => {
           return (
             <Grid key={ field.name } xs={ 12 } md={ 12 } xl={ 6 }>
-              { CreateFormFields(field, selectOptions) }
+              { CreateFormFields(field) }
             </Grid>
           );
         }) 
       }
+      </Grid>
     </Form>
   );
 };
@@ -71,16 +61,19 @@ export const defaultFormFields: GenericFormFieldObject[] = [
     name: 'title',
     label: 'Title',
     helperText: 'Your film title',
+    type: 'text'
   },
   {
     name: 'director',
     label: 'Director',
     helperText: 'Yourself! Or someone else..',
+    type: 'text'
   },
   {
     name: 'characters',
     label: 'Characters',
     helperText: 'Core people in your film',
+    type: 'autocomplete',
     props: {
       autoHighlight: true,
       multiple: true,
@@ -107,26 +100,50 @@ export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'openingCrawl',
     label: 'Opening Crawl Text',
+    type: 'textarea',
   },
   {
     name: 'planets',
     label: 'Planets',
+    type: 'autocomplete',
+    props: {
+      autoHighlight: true,
+      multiple: true,
+      disableCloseOnSelect: true,
+      getOptionLabel: (option: StarwarsPeople) => option.name,
+    }
   },
   {
     name: 'species',
     label: 'Species',
+    type: 'autocomplete',
+    props: {
+      autoHighlight: true,
+      multiple: true,
+      disableCloseOnSelect: true,
+      getOptionLabel: (option: StarwarsPeople) => option.name,
+    }
   },
   {
     name: 'vehicles',
     label: 'Vehicles',
+    type: 'autocomplete',
+    props: {
+      autoHighlight: true,
+      multiple: true,
+      disableCloseOnSelect: true,
+      getOptionLabel: (option: StarwarsPeople) => option.name,
+    }
   },
   {
     name: 'starships',
     label: 'starships',
-    useDefaultNoneSelected: 'your starships',
+    type: 'autocomplete',
     props: {
-      variant: "outlined",
-      size: 'small'
+      autoHighlight: true,
+      multiple: true,
+      disableCloseOnSelect: true,
+      getOptionLabel: (option: StarwarsPeople) => option.name,
     }
   }
 ];

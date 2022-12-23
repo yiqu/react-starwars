@@ -6,6 +6,7 @@ export interface FormInputProps {
   label?: string;
   showLabel?: boolean;
   helperText?: string;
+  type: string;
   valueChange?: (payload: any) => void;
 }
 
