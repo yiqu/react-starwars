@@ -8,47 +8,35 @@ export const CreateFormFields = (controlObject: any) => {
   switch (controlObject.type) {
     case 'select': {
       return (
-        <>
-          <FormikSelect name={ controlObject.name } 
-            label={ controlObject.label }
-            options={ controlObject.options ?? [] } 
-            { ...controlObject }
-            >
-          </FormikSelect>
-        </>
+        <FormikSelect name={ controlObject.name } 
+          label={ controlObject.label }
+          options={ controlObject.options ?? [] } 
+          { ...controlObject }
+        />
       );
     }
     case 'text': {
       return (
-        <>
-          <FormInput name={ controlObject.name } 
-            label={ controlObject.label }
-            { ...controlObject }
-            >
-          </FormInput>
-        </>
+        <FormInput name={ controlObject.name } 
+          label={ controlObject.label }
+          { ...controlObject }
+        />
       );
     }
     case 'autocomplete': {
       return (
-        <>
-          <FormAutocomplete name={ controlObject.name } 
-            label={ controlObject.label }
-            options={ controlObject.props.options ?? [] }
-            loading={ controlObject.props.loading } 
-            { ...controlObject } >
-          </FormAutocomplete>
-        </>
+        <FormAutocomplete name={ controlObject.name } 
+          label={ controlObject.label }
+          options={ controlObject.props.options ?? [] }
+          dataLoading={ controlObject.props.loading } 
+          { ...controlObject } />
       );
     }
     case 'textarea': {
       return (
-        <>
-          <FormTextArea name={ controlObject.name } 
-            label={ controlObject.label }
-            { ...controlObject } >
-          </FormTextArea>
-        </>
+        <FormTextArea name={ controlObject.name } 
+          label={ controlObject.label }
+          { ...controlObject } />
       );
     }
     default: {

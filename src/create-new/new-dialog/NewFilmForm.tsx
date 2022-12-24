@@ -50,22 +50,19 @@ const NewFilmForm = (props: any) => {
           return field.name === 'characters';
         });
         fields[index].props.options = peopleListData;
-        fields[index].props.loading = false;
         return fields;
       });
     }
   }, [peopleListData]);
 
   useEffect(() => {
-    if (!peopleListLoading) {
-      setFormFields((fields: any[]) => {
-        const index = fields.findIndex((field) => {
-          return field.name === 'characters';
-        });
-        fields[index].props.loading = false;
-        return fields;
+    setFormFields((fields: any[]) => {
+      const index = fields.findIndex((field) => {
+        return field.name === 'characters';
       });
-    }
+      fields[index].props.loading = peopleListLoading;
+      return [...fields];
+    });
   }, [peopleListLoading]);
 
   useEffect(() => {
@@ -75,22 +72,19 @@ const NewFilmForm = (props: any) => {
           return field.name === 'starships';
         });
         fields[index].props.options = starshipsList;
-        fields[index].props.loading = false;
         return fields;
       });
     }
   }, [starshipsList]);
 
   useEffect(() => {
-    if (!starshipsLoading) {
-      setFormFields((fields: any[]) => {
-        const index = fields.findIndex((field) => {
-          return field.name === 'starships';
-        });
-        fields[index].props.loading = false;
-        return fields;
+    setFormFields((fields: any[]) => {
+      const index = fields.findIndex((field) => {
+        return field.name === 'starships';
       });
-    }
+      fields[index].props.loading = starshipsLoading;
+      return [...fields];
+    });
   }, [starshipsLoading]);
 
   useEffect(() => {
@@ -100,22 +94,19 @@ const NewFilmForm = (props: any) => {
           return field.name === 'vehicles';
         });
         fields[index].props.options = vehiclesList;
-        fields[index].props.loading = false;
         return fields;
       });
     }
   }, [vehiclesList]);
 
   useEffect(() => {
-    if (!vehiclesLoading) {
-      setFormFields((fields: any[]) => {
-        const index = fields.findIndex((field) => {
-          return field.name === 'vehicles';
-        });
-        fields[index].props.loading = false;
-        return fields;
+    setFormFields((fields: any[]) => {
+      const index = fields.findIndex((field) => {
+        return field.name === 'vehicles';
       });
-    }
+      fields[index].props.loading = vehiclesLoading;
+      return [...fields];
+    });
   }, [vehiclesLoading]);
 
   useEffect(() => {
@@ -125,7 +116,7 @@ const NewFilmForm = (props: any) => {
           return field.name === 'planets';
         });
         fields[index].options = planetList;
-        return fields;
+        return [...fields];
       });
     }
   }, [planetList]);
@@ -143,15 +134,13 @@ const NewFilmForm = (props: any) => {
   }, [speciesList]);
 
   useEffect(() => {
-    if (!speciesLoading) {
-      setFormFields((fields: any[]) => {
-        const index = fields.findIndex((field) => {
-          return field.name === 'species';
-        });
-        fields[index].props.loading = false;
-        return fields;
+    setFormFields((fields: any[]) => {
+      const index = fields.findIndex((field) => {
+        return field.name === 'species';
       });
-    }
+      fields[index].props.loading = speciesLoading;
+      return [...fields];
+    });
   }, [speciesLoading]);
 
 
@@ -219,7 +208,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
       },
       noOptionsText: 'No characters available',
       loadingText: 'Loading characters...',
-      loading: true
     }
   },
   {
@@ -266,7 +254,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
       },
       noOptionsText: 'No species available',
       loadingText: 'Loading species...',
-      loading: true
     }
   },
   {
@@ -297,7 +284,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
       },
       noOptionsText: 'No vehicles available',
       loadingText: 'Loading vehicles...',
-      loading: true
     }
   },
   {
@@ -328,7 +314,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
       },
       noOptionsText: 'No starships available',
       loadingText: 'Loading starships...',
-      loading: true
     }
   }
 ];

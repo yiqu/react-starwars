@@ -18,7 +18,7 @@ export interface FormInput2Props extends FormInputProps {
 export interface FormAutocompleteProps extends FormInputProps {
   options: any[];
   props?: any;
-  loading?: boolean;
+  dataLoading?: boolean;
   renderInputProps?: any;
 }
 

@@ -8,12 +8,13 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { upperFirst } from 'lodash';
 
 
-const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: FormAutocompleteProps) => {
+const FormAutocomplete = ({ label, name, options, dataLoading, validate, ...props}: FormAutocompleteProps) => {
   const formik = useFormikContext<any>();
 
   const onValueChangeHandler = (event: any, value: any) => {
     formik.setFieldValue(name, value);
   };
+  
   return (
     <>
       <FormControl fullWidth>
@@ -29,7 +30,7 @@ const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: 
             <TextField { ...params }
               name={ name }
               variant="standard"
-              label={ loading ? `Loading ${name}...` : `Select ${name}` } 
+              label={ dataLoading ? `Loading ${name}...` : `Select ${name}` } 
               placeholder={ label }
               error={ formik.touched[name] && !!formik.errors[name] }
               { ...props.renderInputProps }
@@ -38,7 +39,7 @@ const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: 
           getOptionLabel={ (option: any) => option.id }
           validate={ validate }
           options={ options }
-          loading={ loading }
+          loading={ dataLoading }
           { ...props.props } 
         />
 

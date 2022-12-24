@@ -28,7 +28,7 @@ const CreateNewFilm = () => {
           </Grid>
           <Grid xs={ 12 } sx={ {display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems:'center'} }>
             <Typography variant="body2">
-              Try adding your own movie with starships, vehicles, species, and planets.
+              Try adding your own movie with starships, vehicles, species, and planet.
             </Typography>
           </Grid>
 
