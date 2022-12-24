@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { NewFilmData } from '../FormFields';
 import NewFilmForm from './NewFilmForm';
 import { NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
-import { validationSchema } from 'src/shared/form/schemas/all-schemas';
+import { newFilmValidationSchema } from 'src/shared/form/schemas/all-schemas';
 
 
 
@@ -25,8 +25,8 @@ const NewFilmDialog = (props: DialogProps) => {
     director: '',
     characters: [],
     starships: [],
-    opening_crawl: '',
-    planets: [],
+    openingCrawl: 'In a galaxy far far away...',
+    planets: '',
     species: [],
     vehicles: []
   };
@@ -48,7 +48,7 @@ const NewFilmDialog = (props: DialogProps) => {
       onSubmit={ formSubmitHandler }
       // validateOnChange={ false }
       // validateOnBlur={ false }
-      validationSchema={ validationSchema } >
+      validationSchema={ newFilmValidationSchema } >
       {(formik) => {
         return <>
           <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown >

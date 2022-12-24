@@ -2,14 +2,17 @@ import React from 'react';
 import FormAutocomplete from "src/shared/form/m-autocomplete/FormAutocomplete";
 import FormInput from "src/shared/form/m-input/FormInput";
 import FormikSelect from "src/shared/form/m-select/FormSelect";
+import FormTextArea from 'src/shared/form/m-textarea/FormTextArea';
 
 export const CreateFormFields = (controlObject: any) => {
   switch (controlObject.type) {
     case 'select': {
       return (
         <>
-          <FormikSelect name={ controlObject.name } label={ controlObject.label }
-            options={ controlObject.options ?? [] } { ...controlObject }
+          <FormikSelect name={ controlObject.name } 
+            label={ controlObject.label }
+            options={ controlObject.options ?? [] } 
+            { ...controlObject }
             >
           </FormikSelect>
         </>
@@ -18,7 +21,8 @@ export const CreateFormFields = (controlObject: any) => {
     case 'text': {
       return (
         <>
-          <FormInput name={ controlObject.name } label={ controlObject.label }
+          <FormInput name={ controlObject.name } 
+            label={ controlObject.label }
             { ...controlObject }
             >
           </FormInput>
@@ -26,14 +30,24 @@ export const CreateFormFields = (controlObject: any) => {
       );
     }
     case 'autocomplete': {
-     // console.log(controlObject.props.options)
       return (
         <>
-          <FormAutocomplete name={ controlObject.name } label={ controlObject.label }
+          <FormAutocomplete name={ controlObject.name } 
+            label={ controlObject.label }
             options={ controlObject.props.options ?? [] }
             loading={ controlObject.props.loading } 
             { ...controlObject } >
           </FormAutocomplete>
+        </>
+      );
+    }
+    case 'textarea': {
+      return (
+        <>
+          <FormTextArea name={ controlObject.name } 
+            label={ controlObject.label }
+            { ...controlObject } >
+          </FormTextArea>
         </>
       );
     }
@@ -51,8 +65,8 @@ export interface NewFilmData {
   director: string;
   characters: string[];
   starships: string[];
-  opening_crawl: string;
-  planets: string[];
+  openingCrawl: string;
+  planets: string;
   species: string[];
   vehicles: string[];
 }

@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, Button, Checkbox, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
-import SaveIcon from '@mui/icons-material/Save';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import React, { useEffect, useState } from 'react';
- import { Form, Formik, useFormikContext } from 'formik';
+ import { Form, useFormikContext } from 'formik';
 import { CreateFormFields } from '../FormFields';
 import { StarwarsContent, StarwarsPeople } from 'src/shared/models/starwars.model';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import useSwGet from 'src/shared/rest/useSwGet';
 import { DEFAULT_MAX_PAGE_PARAMS } from 'src/shared/rest/starwars-api';
-import * as _ from "lodash";
-import { AsyncFormFieldOptions, GenericFormFieldObject } from 'src/shared/models/form.model';
-import FormInput from 'src/shared/form/m-input/FormInput';
+import { GenericFormFieldObject } from 'src/shared/models/form.model';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -61,6 +57,18 @@ const NewFilmForm = (props: any) => {
   }, [peopleListData]);
 
   useEffect(() => {
+    if (!peopleListLoading) {
+      setFormFields((fields: any[]) => {
+        const index = fields.findIndex((field) => {
+          return field.name === 'characters';
+        });
+        fields[index].props.loading = false;
+        return fields;
+      });
+    }
+  }, [peopleListLoading]);
+
+  useEffect(() => {
     if (starshipsList && starshipsList.length > -1) {
       setFormFields((fields: any[]) => {
         const index = fields.findIndex((field) => {
@@ -72,6 +80,18 @@ const NewFilmForm = (props: any) => {
       });
     }
   }, [starshipsList]);
+
+  useEffect(() => {
+    if (!starshipsLoading) {
+      setFormFields((fields: any[]) => {
+        const index = fields.findIndex((field) => {
+          return field.name === 'starships';
+        });
+        fields[index].props.loading = false;
+        return fields;
+      });
+    }
+  }, [starshipsLoading]);
 
   useEffect(() => {
     if (vehiclesList && vehiclesList.length > -1) {
@@ -87,13 +107,24 @@ const NewFilmForm = (props: any) => {
   }, [vehiclesList]);
 
   useEffect(() => {
+    if (!vehiclesLoading) {
+      setFormFields((fields: any[]) => {
+        const index = fields.findIndex((field) => {
+          return field.name === 'vehicles';
+        });
+        fields[index].props.loading = false;
+        return fields;
+      });
+    }
+  }, [vehiclesLoading]);
+
+  useEffect(() => {
     if (planetList && planetList.length > -1) {
       setFormFields((fields: any[]) => {
         const index = fields.findIndex((field) => {
           return field.name === 'planets';
         });
-        fields[index].props.options = planetList;
-        fields[index].props.loading = false;
+        fields[index].options = planetList;
         return fields;
       });
     }
@@ -106,11 +137,22 @@ const NewFilmForm = (props: any) => {
           return field.name === 'species';
         });
         fields[index].props.options = speciesList;
-        fields[index].props.loading = false;
         return fields;
       });
     }
   }, [speciesList]);
+
+  useEffect(() => {
+    if (!speciesLoading) {
+      setFormFields((fields: any[]) => {
+        const index = fields.findIndex((field) => {
+          return field.name === 'species';
+        });
+        fields[index].props.loading = false;
+        return fields;
+      });
+    }
+  }, [speciesLoading]);
 
 
   return (
@@ -135,7 +177,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'title',
     label: 'Title',
-    helperText: 'Your film title',
     type: 'text',
     props: {
       variant: "outlined"
@@ -144,7 +185,6 @@ export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'director',
     label: 'Director',
-    helperText: 'Yourself! Or someone else..',
     type: 'text',
     props: {
       variant: "outlined"
@@ -153,15 +193,17 @@ export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'characters',
     label: 'Characters',
-    helperText: 'Core people in your film',
     type: 'autocomplete',
+    renderInputProps: {
+      variant: 'outlined' 
+    },
     props: {
       options: [],
       autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsPeople) => option.name,
-      renderOption: (props: any, option: StarwarsPeople, { selected }: {selected: boolean}) => { return (
+      getOptionLabel: (option: StarwarsContent) => option.name,
+      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
         <li { ...props } style={ {height: '2rem'} }>
           <Checkbox
             icon={ icon }
@@ -172,9 +214,9 @@ export const defaultFormFields: GenericFormFieldObject[] = [
           {option.name}
         </li>
       );},
-      renderInput: (params: any) => (
-        <TextField { ...params } label="Select your characters" placeholder="Characters" variant='outlined' />
-      ),
+      ChipProps: {
+        color: 'primary'
+      },
       noOptionsText: 'No characters available',
       loadingText: 'Loading characters...',
       loading: true
@@ -184,49 +226,109 @@ export const defaultFormFields: GenericFormFieldObject[] = [
     name: 'openingCrawl',
     label: 'Opening Crawl Text',
     type: 'textarea',
+    helperText: 'Opening Crawl',
+    showLabel: true,
   },
   {
     name: 'planets',
-    label: 'Planets',
-    type: 'autocomplete',
+    label: 'Planet',
+    type: 'select',
+    options: [],
     props: {
-      autoHighlight: true,
-      multiple: true,
-      disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsPeople) => option.name,
+      variant: 'outlined',
     }
   },
   {
     name: 'species',
     label: 'Species',
     type: 'autocomplete',
+    renderInputProps: {
+      variant: 'outlined' 
+    },
     props: {
       autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
       getOptionLabel: (option: StarwarsPeople) => option.name,
+      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
+        <li { ...props } style={ {height: '2rem'} }>
+          <Checkbox
+            icon={ icon }
+            checkedIcon={ checkedIcon }
+            style={ { marginRight: 8 } }
+            checked={ selected }
+          />
+          {option.name}
+        </li>
+      );},
+      ChipProps: {
+        color: 'primary'
+      },
+      noOptionsText: 'No species available',
+      loadingText: 'Loading species...',
+      loading: true
     }
   },
   {
     name: 'vehicles',
     label: 'Vehicles',
     type: 'autocomplete',
+    renderInputProps: {
+      variant: 'outlined' 
+    },
     props: {
       autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
       getOptionLabel: (option: StarwarsPeople) => option.name,
+      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
+        <li { ...props } style={ {height: '2rem'} }>
+          <Checkbox
+            icon={ icon }
+            checkedIcon={ checkedIcon }
+            style={ { marginRight: 8 } }
+            checked={ selected }
+          />
+          {option.name}
+        </li>
+      );},
+      ChipProps: {
+        color: 'primary'
+      },
+      noOptionsText: 'No vehicles available',
+      loadingText: 'Loading vehicles...',
+      loading: true
     }
   },
   {
     name: 'starships',
     label: 'starships',
     type: 'autocomplete',
+    renderInputProps: {
+      variant: 'outlined' 
+    },
     props: {
       autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
       getOptionLabel: (option: StarwarsPeople) => option.name,
+      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
+        <li { ...props } style={ {height: '2rem'} }>
+          <Checkbox
+            icon={ icon }
+            checkedIcon={ checkedIcon }
+            style={ { marginRight: 8 } }
+            checked={ selected }
+          />
+          {option.name}
+        </li>
+      );},
+      ChipProps: {
+        color: 'primary'
+      },
+      noOptionsText: 'No starships available',
+      loadingText: 'Loading starships...',
+      loading: true
     }
   }
 ];

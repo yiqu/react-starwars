@@ -4,11 +4,9 @@ import TextField from '@mui/material/TextField';
 import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
 import { FormAutocompleteProps, FormikInputProps, FormInput2Props, FormInputProps } from 'src/shared/models/form.model';
 import { FormControl, FormHelperText, InputLabel } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { NewFilmData } from 'src/create-new/FormFields';
+import { upperFirst } from 'lodash';
+
 
 const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: FormAutocompleteProps) => {
   const formik = useFormikContext<any>();
@@ -34,6 +32,7 @@ const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: 
               label={ loading ? `Loading ${name}...` : `Select ${name}` } 
               placeholder={ label }
               error={ formik.touched[name] && !!formik.errors[name] }
+              { ...props.renderInputProps }
             />
           ) }
           getOptionLabel={ (option: any) => option.id }
@@ -45,7 +44,8 @@ const FormAutocomplete = ({ label, name, options, loading, validate, ...props}: 
 
         <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
           {
-            (formik.touched[name] && formik.errors[name]) ? (<ErrorMessage name={ name } />) : (<>{ props.helperText }</>)
+            (formik.touched[name] && formik.errors[name]) ? 
+              (<ErrorMessage name={ name } render={ (err) => upperFirst(err) } />) : (<>{ props.helperText }</>)
           }
         </FormHelperText>
        

@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
-import TextField from '@mui/material/TextField';
 import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
-import { FormikInputProps, FormikSelectProps, FormInputProps, FormSelectProps, NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
+import { FormSelectProps, NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
 import { FormHelperText, MenuItem, Select, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
+import { upperFirst } from 'lodash';
 
-const FormikSelect = ({ label, name, validate, ...props}: FormSelectProps) => {
+
+const FormikSelect = ({ label, name, options, validate, ...props}: FormSelectProps) => {
   const formik = useFormikContext<any>();
 
   return (
     <>
-      <FormControl fullWidth>
+      <FormControl fullWidth size={ 'small' }>
 
         <InputLabel id={ name }>{ label }</InputLabel>
 
@@ -20,11 +21,10 @@ const FormikSelect = ({ label, name, validate, ...props}: FormSelectProps) => {
           label={ label } 
           name={ name } 
           id={ name } 
-          error={ formik.touched[name] && !!formik.errors[name] }
           validate={ validate }
           variant="standard"
+          error={ formik.touched[name] && !!formik.errors[name] }
           { ...props.props } >
-            
           {
             props.useDefaultNoneSelected && (
             <MenuItem value={ NONE_SELECTED_VALUE } key={ '' } disabled>
@@ -33,11 +33,11 @@ const FormikSelect = ({ label, name, validate, ...props}: FormSelectProps) => {
             ) 
           }
           {
-            props.options?.map((opt) => {
-              const display = opt.display ?? opt;
+            options?.map((opt) => {
+              const display = opt.name ?? opt;
               const value = opt.value ?? opt;
               return (
-                <MenuItem value={ value } key={ opt.value }>{ display }</MenuItem>
+                <MenuItem value={ value } key={ opt.id ?? opt.uid }>{ display }</MenuItem>
               );
             })
           }
@@ -45,7 +45,8 @@ const FormikSelect = ({ label, name, validate, ...props}: FormSelectProps) => {
         </Field>
         <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
           {
-            (formik.touched[name] && formik.errors[name]) ? (<><ErrorMessage name={ name } /></>) : (<>{props.helperText}</>)
+            (formik.touched[name] && formik.errors[name]) ? 
+              (<ErrorMessage name={ name } render={ (err) => upperFirst(err) } />) : (<>{props.helperText}</>)
           }
         </FormHelperText>
       </FormControl>
