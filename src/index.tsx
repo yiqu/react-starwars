@@ -18,7 +18,8 @@ import '@fontsource/poppins/700.css';
 const mainTheme: Theme = createTheme({
   palette: {
     primary: {
-      main: '#092250'
+      main: '#092250',
+      light: '#75a0f0',
     }
   },
   typography: {
@@ -62,9 +63,6 @@ const mainTheme: Theme = createTheme({
     },
     MuiAutocomplete: {
       defaultProps: {
-        ChipProps: {
-          color: 'info'
-        },
         size: 'small'
       }
     },

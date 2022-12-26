@@ -3,13 +3,13 @@ import { Checkbox } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
 import React, { useEffect, useState } from 'react';
  import { Form, useFormikContext } from 'formik';
-import { CreateFormFields } from '../FormFields';
 import { StarwarsContent, StarwarsPeople } from 'src/shared/models/starwars.model';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import useSwGet from 'src/shared/rest/useSwGet';
 import { DEFAULT_MAX_PAGE_PARAMS } from 'src/shared/rest/starwars-api';
 import { GenericFormFieldObject } from 'src/shared/models/form.model';
+import { CreateFormFields } from 'src/shared/form/FormFields';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -165,63 +165,55 @@ export default NewFilmForm;
 export const defaultFormFields: GenericFormFieldObject[] = [
   {
     name: 'title',
-    label: 'Title',
+    label: 'title',
+    placeholder: 'A new hope',
     type: 'text',
+    disabled: false,
     props: {
       variant: "outlined"
     }
   },
   {
     name: 'director',
-    label: 'Director',
+    label: 'director',
+    placeholder: 'George Lucas',
     type: 'text',
+    disabled: false,
     props: {
       variant: "outlined"
     }
   },
   {
     name: 'characters',
-    label: 'Characters',
+    label: 'characters',
     type: 'autocomplete',
     renderInputProps: {
       variant: 'outlined' 
     },
+    disabled: false,
+    placeholder: 'Luke Skywalker, Han Solo...',
     props: {
       options: [],
-      autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsContent) => option.name,
-      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
-        <li { ...props } style={ {height: '2rem'} }>
-          <Checkbox
-            icon={ icon }
-            checkedIcon={ checkedIcon }
-            style={ { marginRight: 8 } }
-            checked={ selected }
-          />
-          {option.name}
-        </li>
-      );},
       ChipProps: {
         color: 'primary'
       },
-      noOptionsText: 'No characters available',
-      loadingText: 'Loading characters...',
     }
   },
   {
     name: 'openingCrawl',
-    label: 'Opening Crawl Text',
+    label: 'Opening crawl',
+    placeholder: 'In a galaxy far far away...',
     type: 'textarea',
-    helperText: 'Opening Crawl',
-    showLabel: true,
+    disabled: false,
   },
   {
     name: 'planets',
-    label: 'Planet',
+    label: 'Select planet',
     type: 'select',
     options: [],
+    disabled: false,
     props: {
       variant: 'outlined',
     }
@@ -233,27 +225,13 @@ export const defaultFormFields: GenericFormFieldObject[] = [
     renderInputProps: {
       variant: 'outlined' 
     },
+    disabled: false,
     props: {
-      autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsPeople) => option.name,
-      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
-        <li { ...props } style={ {height: '2rem'} }>
-          <Checkbox
-            icon={ icon }
-            checkedIcon={ checkedIcon }
-            style={ { marginRight: 8 } }
-            checked={ selected }
-          />
-          {option.name}
-        </li>
-      );},
       ChipProps: {
         color: 'primary'
       },
-      noOptionsText: 'No species available',
-      loadingText: 'Loading species...',
     }
   },
   {
@@ -263,27 +241,13 @@ export const defaultFormFields: GenericFormFieldObject[] = [
     renderInputProps: {
       variant: 'outlined' 
     },
+    disabled: false,
     props: {
-      autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsPeople) => option.name,
-      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
-        <li { ...props } style={ {height: '2rem'} }>
-          <Checkbox
-            icon={ icon }
-            checkedIcon={ checkedIcon }
-            style={ { marginRight: 8 } }
-            checked={ selected }
-          />
-          {option.name}
-        </li>
-      );},
       ChipProps: {
         color: 'primary'
       },
-      noOptionsText: 'No vehicles available',
-      loadingText: 'Loading vehicles...',
     }
   },
   {
@@ -293,27 +257,19 @@ export const defaultFormFields: GenericFormFieldObject[] = [
     renderInputProps: {
       variant: 'outlined' 
     },
+    disabled: false,
     props: {
-      autoHighlight: true,
       multiple: true,
       disableCloseOnSelect: true,
-      getOptionLabel: (option: StarwarsPeople) => option.name,
-      renderOption: (props: any, option: StarwarsContent, { selected }: {selected: boolean}) => { return (
-        <li { ...props } style={ {height: '2rem'} }>
-          <Checkbox
-            icon={ icon }
-            checkedIcon={ checkedIcon }
-            style={ { marginRight: 8 } }
-            checked={ selected }
-          />
-          {option.name}
-        </li>
-      );},
       ChipProps: {
         color: 'primary'
       },
-      noOptionsText: 'No starships available',
-      loadingText: 'Loading starships...',
     }
+  },
+  {
+    name: 'canon',
+    label: 'Canon movie',
+    type: 'checkbox',
+    disabled: false
   }
 ];

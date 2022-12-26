@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,16 +10,23 @@ import { Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui
 import Grid from '@mui/system/Unstable_Grid';
 import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import React, { useEffect, useState } from 'react';
  import { Form, Formik, useFormikContext } from 'formik';
-import { NewFilmData } from '../FormFields';
 import NewFilmForm from './NewFilmForm';
-import { NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
-import { newFilmValidationSchema } from 'src/shared/form/schemas/all-schemas';
+import { newFilmValidationSchema } from '../schemas/all-schemas';
 
+export interface NewFilmData {
+  title: string;
+  director: string;
+  characters: string[];
+  starships: string[];
+  openingCrawl: string;
+  planets: string;
+  species: string[];
+  vehicles: string[];
+  canon: boolean;
+}
 
-
-const NewFilmDialog = (props: DialogProps) => {
+const NewFilmDialog = ({ onClose, open, isEditMode }: DialogProps) => {
 
   const initValues: NewFilmData = {
     title: '',
@@ -28,12 +36,13 @@ const NewFilmDialog = (props: DialogProps) => {
     openingCrawl: 'In a galaxy far far away...',
     planets: '',
     species: [],
-    vehicles: []
+    vehicles: [],
+    canon: false
   };
 
   const handleClose = (event: any, reason?: string) => {
     if (reason !== 'backdropClick') {
-      props.onClose(null);
+      onClose(null);
     }
   };
 
@@ -46,17 +55,15 @@ const NewFilmDialog = (props: DialogProps) => {
     <Formik 
       initialValues={ initValues }
       onSubmit={ formSubmitHandler }
-      // validateOnChange={ false }
-      // validateOnBlur={ false }
       validationSchema={ newFilmValidationSchema } >
       {(formik) => {
         return <>
-          <Dialog onClose={ handleClose } open={ props.open } disableEscapeKeyDown >
+          <Dialog onClose={ handleClose } open={ open } disableEscapeKeyDown >
   
             <DialogTitle bgcolor="primary.main" color="white">
               <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
                 <div>
-                  { props.isEditMode ? 'Editing' : 'Create New Movie' }
+                  { isEditMode ? 'Editing' : 'Create New Movie' }
                 </div>
                 <div>
                   <IconButton sx={ {color:'white'} } onClick={ handleClose }>

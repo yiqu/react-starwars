@@ -4,8 +4,10 @@ export const NONE_SELECTED_VALUE = 'NONE_SELECTED';
 export interface FormInputProps {
   name: string;
   label?: string;
+  disabled?: boolean;
   showLabel?: boolean;
   helperText?: string;
+  placeholder?: string;
   type: string;
   validate?: (value: any) => string | null;
   valueChange?: (payload: any) => void;
