@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createTheme, Theme, ThemeProvider } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -19,11 +20,16 @@ const mainTheme: Theme = createTheme({
   palette: {
     primary: {
       main: '#092250',
-      light: '#75a0f0',
     }
   },
   typography: {
     fontFamily: ['Roboto', 'Poppins'].join(','),
+    subtitle1: {
+      fontWeight: 300
+    },
+    subtitle2: {
+      fontWeight: 400,
+    },
   },
   components: {
     MuiButton: {
@@ -87,3 +93,20 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+
+const GREY = {
+  0: '#FFFFFF',
+  100: '#F9FAFB',
+  200: '#F4F6F8',
+  300: '#DFE3E8',
+  400: '#C4CDD5',
+  500: '#919EAB',
+  600: '#637381',
+  700: '#454F5B',
+  800: '#212B36',
+  900: '#161C24',
+};
+
+
