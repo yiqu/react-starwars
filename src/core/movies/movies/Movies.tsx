@@ -104,7 +104,7 @@ const Movies = () => {
       { loading ? 
         (
           <Grid container xs={ 12 }>
-            { arrOfItems.map((item) => <Grid key={ item } xs={ 12 } sm={ 4 }> <LoadingSkeleton /> </Grid>) }
+            { arrOfItems.map((item) => <Grid key={ item } xs={ 12 } sm={ 4 }> <LoadingSkeleton count={ 1 } /> </Grid>) }
           </Grid>
         ) : 
         (

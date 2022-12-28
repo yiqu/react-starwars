@@ -17,7 +17,7 @@ export const httpGet = async <T>(url: string, slow = 0): Promise<T> => {
     }
     return Promise.reject(res);
   } catch (error) {
-    console.error("Error", error);
+    console.error("App error:", error);
     throw error;
   }
 };

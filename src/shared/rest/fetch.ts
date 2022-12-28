@@ -5,9 +5,9 @@ export interface HttpAction<T> {
   body?: any;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   abortController?: AbortController;
-  onSuccess: (data: T) => {};
-  onFailure: (errorData: any) => {};
-  onFinally: () => {};
+  onSuccess: (data: T) => void;
+  onFailure: (errorData: any) => void;
+  onFinally?: () => void;
 }
 
 export const fetchGet = <T>({ url, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {

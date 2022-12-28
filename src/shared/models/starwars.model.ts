@@ -97,3 +97,16 @@ export interface StarwarsContent {
   name: string;
   url: string;
 }
+
+export interface StarwarFilmPersonal {
+  title: string;
+  canon: boolean;
+  characters: StarwarsContent[];
+  director: string;
+  fireId?: string;
+  openingCrawl: string;
+  planets: StarwarsContent;
+  species: StarwarsContent[];
+  starships: StarwarsContent[];
+  vehicles: StarwarsContent[];
+}

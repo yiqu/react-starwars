@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { DialogProps } from 'src/shared/models/dialog.model';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
 import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -14,6 +14,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import NewFilmForm from './NewFilmForm';
 import { newFilmValidationSchema } from '../schemas/all-schemas';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { createNewFilm } from '../http/crud';
 
 export interface NewFilmData {
   title: string;
@@ -46,9 +47,22 @@ const NewFilmDialog = ({ onClose, open, isEditMode }: DialogProps) => {
       onClose(null);
     }
   }, [onClose]);
+
+  const [errorMsg, setErrorMsg] = useState<string | undefined>();
   
   const formSubmitHandler = (payload: any) => {
-    console.log(payload);
+    setErrorMsg(undefined);
+    if (payload) {
+      createNewFilm({
+        film: payload,
+        onSuccess: ((res) => {
+          onClose(res);
+        }),
+        onFailure: ((err) => {
+          setErrorMsg(`${err.response?.data}`);
+        })
+      });
+    }
   };
 
   return (
@@ -62,6 +76,16 @@ const NewFilmDialog = ({ onClose, open, isEditMode }: DialogProps) => {
           <Dialog onClose={ handleClose } open={ open } disableEscapeKeyDown >
 
             <NewFilmForm handleClose={ handleClose } isEditMode={ isEditMode } />
+
+            {
+              errorMsg && 
+              <Alert severity="error">
+                <AlertTitle>API Error</AlertTitle>
+                <Box>
+                  An API error occurred: {errorMsg}
+                </Box>
+              </Alert>
+            }
 
             <DialogActions>
               <Button variant="text" startIcon={ <RestartAltIcon /> } onClick={ formik.handleReset }>

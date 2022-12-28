@@ -24,7 +24,7 @@ const Movie = () => {
 
   return (
     <Grid xs={ 12 } container sx={ {my: 2} }>
-      { loading ? <Grid xs={ 12 } sm={ 8 } smOffset={ 2 }> <LoadingSkeleton /> </Grid> : (
+      { loading ? <Grid xs={ 12 } sm={ 8 } smOffset={ 2 }> <LoadingSkeleton count={ 1 } /> </Grid> : (
         <Grid xs={ 10 } sm={ 8 } smOffset={ 2 } xsOffset={ 1 }>
 
           <CardMedia

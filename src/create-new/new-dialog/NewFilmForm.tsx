@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Checkbox, DialogContent, DialogTitle, Divider, IconButton, Stack } from '@mui/material';
+import { Alert, AlertTitle, Box, Checkbox, DialogContent, DialogTitle, Divider, IconButton, Stack } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
 import React, { useEffect, useRef, useState } from 'react';
  import { Form, useFormikContext } from 'formik';
@@ -18,38 +18,35 @@ const NewFilmForm = ({ handleClose, isEditMode }: {handleClose: () => void; isEd
   const formikContextRef = useRef(formikContext);
   const [refetch, triggerRefetch] = useState<number>(0);
 
-  const handleRefresh = () => {
-    triggerRefetch(new Date().getTime());
-  };
-
   const [ formFields, setFormFields ] = useState<GenericFormFieldObject[]>([]);
-
-  useEffect(() => {
-    formikContextRef.current.resetForm();
-  }, [refetch]);
 
   const { data: peopleListData, error: charactersError, loading: peopleListLoading } = 
     useFetchSwEntity<StarwarsContent>({entityType: 'people', sleep: 1000, params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
 
   const { data: starshipsList, error: starshipsError, loading: starshipsLoading } = 
-    useFetchSwEntity<StarwarsContent>({entityType:'starships', params: DEFAULT_MAX_PAGE_PARAMS});
+    useFetchSwEntity<StarwarsContent>({entityType: 'starships', params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
 
   const { data: vehiclesList, error: vehiclesError, loading: vehiclesLoading } = 
-    useFetchSwEntity<StarwarsContent>({entityType:'vehicles', params: DEFAULT_MAX_PAGE_PARAMS});
+    useFetchSwEntity<StarwarsContent>({entityType: 'vehicles', params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
 
   const { data: planetList, error: planetsError, loading: planetsLoading } = 
-    useFetchSwEntity<StarwarsContent>({entityType:'planets', params: DEFAULT_MAX_PAGE_PARAMS});
+    useFetchSwEntity<StarwarsContent>({entityType: 'planets', params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
 
   const { data: speciesList, error: speciesError, loading: speciesLoading } = 
-    useFetchSwEntity<StarwarsContent>({entityType:'species', params: DEFAULT_MAX_PAGE_PARAMS});
+    useFetchSwEntity<StarwarsContent>({entityType: 'species', params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
   
-  useEffect(() => {
-    console.log(formikContext.values);
-  }, [formikContext.values]);
 
   useEffect(() => {
     setFormFields(defaultFormFields);
   }, []);
+
+    useEffect(() => {
+    formikContextRef.current.resetForm();
+  }, [refetch]);
+
+  const handleRefresh = () => {
+    triggerRefetch(new Date().getTime());
+  };
 
   useEffect(() => {
     if (peopleListData && peopleListData.length > -1) {
@@ -172,10 +169,26 @@ const NewFilmForm = ({ handleClose, isEditMode }: {handleClose: () => void; isEd
 
       <Divider />
       <DialogContent >
-
-        <Form>
-          <Grid container spacing={ 2 }>
-            { formFields.map((field) => {
+        <Stack direction="column" spacing={ 2 }>
+          {
+            (charactersError || speciesError || vehiclesError || starshipsError || planetsError) && 
+            <Alert severity="error">
+              <AlertTitle>API Error</AlertTitle>
+              <Box>
+                <>
+                  An API error occurred:
+                  <Box>{ charactersError?.message }</Box>
+                  <Box>{ speciesError?.message }</Box>
+                  <Box>{ vehiclesError?.message }</Box>
+                  <Box>{ starshipsError?.message }</Box>
+                  <Box>{ planetsError?.message }</Box>
+                </>
+              </Box>
+            </Alert>
+          }
+          <Form>
+            <Grid container spacing={ 2 }>
+              { formFields.map((field) => {
                 return (
                   <Grid key={ field.name } xs={ 12 } >
                     { CreateFormFields(field) }
@@ -183,8 +196,9 @@ const NewFilmForm = ({ handleClose, isEditMode }: {handleClose: () => void; isEd
                 );
               })
             }
-          </Grid>
-        </Form>
+            </Grid>
+          </Form>
+        </Stack>
       </DialogContent>
     </>
   );

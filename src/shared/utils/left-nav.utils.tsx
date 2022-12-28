@@ -16,14 +16,16 @@ import { NavigationItem } from "../models/nav-item.model";
 
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
+import { CameraRoll, CameraRollOutlined } from "@mui/icons-material";
 
 
 export const GET_LEFT_NAV_ITEMS = () => {
   const LEFT_NAV_ITEMS = [
     new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteBorderOutlinedIcon color='primary' />),
-    new NavigationItem('All Movies', 'movies', ['/', 'movies'], <MovieIconOutlined color='primary' />),
+    new NavigationItem('All', 'movies', ['/', 'movies'], <MovieIconOutlined color='primary' />),
     new NavigationItem('Characters', 'characters', ['/', 'characters'], <Person4IconOutlined color='primary' />),
-    new NavigationItem('Add Movie', 'create-new', ['/', 'create-new'], <AddAPhotoOutlinedIcon color='primary' />),
+    new NavigationItem('Mine', 'personal-films', ['/', 'personal-films'], <CameraRollOutlined color='primary' />),
+    new NavigationItem('Add', 'create-new', ['/', 'create-new'], <AddAPhotoOutlinedIcon color='primary' />),
     new NavigationItem('About', 'about', ['/', 'about'], <InfoIconOutlined color='primary' />),
   ];
   return LEFT_NAV_ITEMS;
@@ -45,6 +47,9 @@ export const getFilledIcon = (pathName: string): JSX.Element => {
     }
     case 'create-new': {
       return <AddAPhotoIcon color='primary' />;
+    }
+    case 'personal-films': {
+      return <CameraRoll color='primary' />;
     }
   }
   return <>None</>;

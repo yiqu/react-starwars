@@ -19,6 +19,9 @@ const CharactersAll = loadable(() => import('../core/characters/all/CharactersAl
 const CreateNewFilmLayout = loadable(() => import('../create-new/CreateNewFilmLayout'));
 const CreateNewFilm = loadable(() => import('../create-new/core/CreateNewFilm'));
 
+const PersonalFilmLayout = loadable(() => import('../personal-movies/PersonalFilmLayout'));
+const PersonalFilm = loadable(() => import('../personal-movies/core/PersonalFilms'));
+
 const AboutLazy = loadable(() => import('../about/About'));
 const NotFoundLazy = loadable(() => import('../404/NotFound'));
 
@@ -76,6 +79,16 @@ const routeList: Router = createBrowserRouter([
           {
             index: true,
             element: <CreateNewFilm />
+          },
+        ]
+      },
+      {
+        path: 'personal-films',
+        element: <PersonalFilmLayout />,
+        children: [
+          {
+            index: true,
+            element: <PersonalFilm />
           },
         ]
       },

@@ -16,13 +16,20 @@ export const axiosGet = async <T>(url: string, params: HttpParams | null = null)
     }
     return Promise.reject(res);
   } catch (error) {
-    console.error("Error", error);
+    console.error("App error", error);
     throw error;
   }
 };
 
 export const axiosPost = <T>(url: string, data?: T) => {
-  return kqAxiosInstance.post<T>(url + '.json', data);
+  return kqAxiosInstance.post<T>(url + '.json', data)
+  .then((res: AxiosResponse) => {
+    return res.data;
+  })
+  .catch((err) => {
+    console.log("App error POST: ", err);
+    throw err;
+  });
 };
 
 export const axiosPut = <T>(url: string, data?: T) => {
