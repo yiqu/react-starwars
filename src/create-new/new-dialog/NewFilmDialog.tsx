@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,6 +13,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
  import { Form, Formik, useFormikContext } from 'formik';
 import NewFilmForm from './NewFilmForm';
 import { newFilmValidationSchema } from '../schemas/all-schemas';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 export interface NewFilmData {
   title: string;
@@ -26,26 +27,26 @@ export interface NewFilmData {
   canon: boolean;
 }
 
+const initValues: NewFilmData = {
+  title: '',
+  director: '',
+  characters: [],
+  starships: [],
+  openingCrawl: 'In a galaxy far far away...',
+  planets: '',
+  species: [],
+  vehicles: [],
+  canon: false
+};
+
 const NewFilmDialog = ({ onClose, open, isEditMode }: DialogProps) => {
-
-  const initValues: NewFilmData = {
-    title: '',
-    director: '',
-    characters: [],
-    starships: [],
-    openingCrawl: 'In a galaxy far far away...',
-    planets: '',
-    species: [],
-    vehicles: [],
-    canon: false
-  };
-
-  const handleClose = (event: any, reason?: string) => {
+  
+  const handleClose = useCallback((event?: any, reason?: string) => {
     if (reason !== 'backdropClick') {
       onClose(null);
     }
-  };
-
+  }, [onClose]);
+  
   const formSubmitHandler = (payload: any) => {
     console.log(payload);
   };
@@ -59,25 +60,8 @@ const NewFilmDialog = ({ onClose, open, isEditMode }: DialogProps) => {
       {(formik) => {
         return <>
           <Dialog onClose={ handleClose } open={ open } disableEscapeKeyDown >
-  
-            <DialogTitle bgcolor="primary.main" color="white">
-              <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
-                <div>
-                  { isEditMode ? 'Editing' : 'Create New Movie' }
-                </div>
-                <div>
-                  <IconButton sx={ {color:'white'} } onClick={ handleClose }>
-                    <CloseIcon />
-                  </IconButton>
-                </div>
-              </Stack>
-            </DialogTitle>
 
-            <Divider />
-
-            <DialogContent >
-              <NewFilmForm />
-            </DialogContent>
+            <NewFilmForm handleClose={ handleClose } isEditMode={ isEditMode } />
 
             <DialogActions>
               <Button variant="text" startIcon={ <RestartAltIcon /> } onClick={ formik.handleReset }>

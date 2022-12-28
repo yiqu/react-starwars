@@ -8,7 +8,6 @@ import useFetchMovies from "src/core/hooks/useFetchMovies";
 import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
 import { HttpParams } from "src/shared/models/http.model";
 import { FavoriteToSave, HttpResponse, HttpResponse2, HttpResponse2List, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
-import { axiosPost } from "src/shared/rest/axios-rest";
 import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
 
@@ -30,7 +29,7 @@ const Movies = () => {
   const sorted: ResultProperty<StarwarsFilm>[] | undefined = useMemo(() => {
     const sortedArr = data?.result ?? [];
     if (sortedArr) {
-      sortedArr.sort((prev, next) => {
+      sortedArr.sort((prev: ResultProperty<StarwarsFilm>, next: ResultProperty<StarwarsFilm>) => {
         return prev.properties.episode_id > next.properties.episode_id ? 1 : -1;
       });
     }

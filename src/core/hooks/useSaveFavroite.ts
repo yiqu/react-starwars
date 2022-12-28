@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
+import { axiosPost } from "src/shared/firebase/fire-axios";
 import { SaveFavoriteHookProp } from "src/shared/models/core-props.model";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
-import { axiosPost } from "src/shared/rest/axios-rest";
 
 const baseUrl: string = 'swdb/';
 

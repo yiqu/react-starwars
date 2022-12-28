@@ -1,39 +1,47 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Checkbox } from '@mui/material';
+import { Checkbox, DialogContent, DialogTitle, Divider, IconButton, Stack } from '@mui/material';
 import Grid from '@mui/system/Unstable_Grid';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
  import { Form, useFormikContext } from 'formik';
 import { StarwarsContent, StarwarsPeople } from 'src/shared/models/starwars.model';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import useSwGet from 'src/shared/rest/useSwGet';
-import { DEFAULT_MAX_PAGE_PARAMS } from 'src/shared/rest/starwars-api';
 import { GenericFormFieldObject } from 'src/shared/models/form.model';
 import { CreateFormFields } from 'src/shared/form/FormFields';
+import useFetchSwEntity, { DEFAULT_MAX_PAGE_PARAMS } from '../hooks/useFetchEntity';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import CloseIcon from '@mui/icons-material/Close';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const NewFilmForm = (props: any) => {
-
+const NewFilmForm = ({ handleClose, isEditMode }: {handleClose: () => void; isEditMode?: boolean}) => {
   const formikContext = useFormikContext<any>();
+  const formikContextRef = useRef(formikContext);
+  const [refetch, triggerRefetch] = useState<number>(0);
+
+  const handleRefresh = () => {
+    triggerRefetch(new Date().getTime());
+  };
 
   const [ formFields, setFormFields ] = useState<GenericFormFieldObject[]>([]);
 
-  const { data: peopleListData, isError, loading: peopleListLoading } = 
-    useSwGet<StarwarsContent>('people', DEFAULT_MAX_PAGE_PARAMS);
+  useEffect(() => {
+    formikContextRef.current.resetForm();
+  }, [refetch]);
 
-  const { data: starshipsList, isError: starshipsError, loading: starshipsLoading } = 
-    useSwGet<StarwarsContent>('starships', DEFAULT_MAX_PAGE_PARAMS);
+  const { data: peopleListData, error: charactersError, loading: peopleListLoading } = 
+    useFetchSwEntity<StarwarsContent>({entityType: 'people', sleep: 1000, params: {...DEFAULT_MAX_PAGE_PARAMS, time: refetch}});
 
-  const { data: vehiclesList, isError: vehiclesError, loading: vehiclesLoading } = 
-    useSwGet<StarwarsContent>('vehicles', DEFAULT_MAX_PAGE_PARAMS);
+  const { data: starshipsList, error: starshipsError, loading: starshipsLoading } = 
+    useFetchSwEntity<StarwarsContent>({entityType:'starships', params: DEFAULT_MAX_PAGE_PARAMS});
 
-  const { data: planetList, isError: planetsError, loading: planetsLoading } = 
-    useSwGet<StarwarsContent>('planets', DEFAULT_MAX_PAGE_PARAMS);
+  const { data: vehiclesList, error: vehiclesError, loading: vehiclesLoading } = 
+    useFetchSwEntity<StarwarsContent>({entityType:'vehicles', params: DEFAULT_MAX_PAGE_PARAMS});
 
-  const { data: speciesList, isError: speciesError, loading: speciesLoading } = 
-    useSwGet<StarwarsContent>('species', DEFAULT_MAX_PAGE_PARAMS);
+  const { data: planetList, error: planetsError, loading: planetsLoading } = 
+    useFetchSwEntity<StarwarsContent>({entityType:'planets', params: DEFAULT_MAX_PAGE_PARAMS});
+
+  const { data: speciesList, error: speciesError, loading: speciesLoading } = 
+    useFetchSwEntity<StarwarsContent>({entityType:'species', params: DEFAULT_MAX_PAGE_PARAMS});
   
   useEffect(() => {
     console.log(formikContext.values);
@@ -145,18 +153,40 @@ const NewFilmForm = (props: any) => {
 
 
   return (
-    <Form>
-      <Grid container spacing={ 2 }>
-        { formFields.map((field) => {
-          return (
-            <Grid key={ field.name } xs={ 12 } >
-              { CreateFormFields(field) }
-            </Grid>
-          );
-        }) 
-      }
-      </Grid>
-    </Form>
+    <>
+      <DialogTitle bgcolor="primary.main" color="white">
+        <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
+          <Stack>
+            { isEditMode ? 'Editing' : 'Create New Movie' }
+          </Stack>
+          <Stack direction="row">
+            <IconButton sx={ {color:'white'} } onClick={ handleRefresh }>
+              <CloudDownloadIcon />
+            </IconButton>
+            <IconButton sx={ {color:'white'} } onClick={ handleClose }>
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+        </Stack>
+      </DialogTitle>
+
+      <Divider />
+      <DialogContent >
+
+        <Form>
+          <Grid container spacing={ 2 }>
+            { formFields.map((field) => {
+                return (
+                  <Grid key={ field.name } xs={ 12 } >
+                    { CreateFormFields(field) }
+                  </Grid>
+                );
+              })
+            }
+          </Grid>
+        </Form>
+      </DialogContent>
+    </>
   );
 };
 
@@ -268,7 +298,7 @@ export const defaultFormFields: GenericFormFieldObject[] = [
   },
   {
     name: 'canon',
-    label: 'Canon movie',
+    label: 'Canon',
     type: 'checkbox',
     disabled: false
   }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createSearchParams, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import Grid from '@mui/material/Unstable_Grid2';
 import { Button, Typography } from "@mui/material";
@@ -13,9 +13,9 @@ const CreateNewFilm = () => {
   const handleClickOpen = () => {
     setShowDialog(true);
   };
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setShowDialog(false);
-  };
+  }, []);
 
   return (
     <>

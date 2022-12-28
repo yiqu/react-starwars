@@ -1,7 +1,7 @@
-import { axiosFetcher } from '../fetchers/favorites';
 import useSWR from "swr";
 import { FetchFavoritesHookProp } from 'src/shared/models/core-props.model';
 import { FavoriteMoviesObjList } from 'src/shared/models/starwars.model';
+import { axiosGet } from "src/shared/firebase/fire-axios";
 
 
 const useFetchFavorites = (props: FetchFavoritesHookProp) => {
@@ -13,7 +13,7 @@ const useFetchFavorites = (props: FetchFavoritesHookProp) => {
       }
       return null;
     }, 
-    axiosFetcher<FavoriteMoviesObjList>, {
+    axiosGet<FavoriteMoviesObjList>, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
