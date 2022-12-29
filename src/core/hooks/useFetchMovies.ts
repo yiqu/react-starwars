@@ -1,5 +1,5 @@
 import { FetchMovieHookProp } from "src/shared/models/core-props.model";
-import useSWR from "swr/immutable";
+import useSWR from "swr";
 import { useState } from "react";
 import { useDeepCompareEffect } from "react-use";
 import urlcat from "urlcat";
@@ -19,7 +19,11 @@ const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
 
   const { data, isValidating, error, isLoading } = useSWR(
     () => url ? url : null, 
-    (url) => httpGet<HttpResponse2List<StarwarsFilm>>(url, 1000)
+    (url) => httpGet<HttpResponse2List<StarwarsFilm>>(url, 1000),
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: true,
+    }
   );
 
   return {

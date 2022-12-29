@@ -10,6 +10,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import useScreenSize from "src/shared/hooks/useIsMobile";
 
 
 const AllMovieLayout = () => {
@@ -17,6 +18,7 @@ const AllMovieLayout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
+  const { isMobile } = useScreenSize();
 
   const filmPageDisplayToggleHandler = () => {
     const nextDisplayMode = {
@@ -36,39 +38,32 @@ const AllMovieLayout = () => {
 
 
   return (
-    <React.Fragment>
-      <Grid container>
-        <Grid xs={ 12 }>
-          <AppBar position="sticky" elevation={ 0 }>
-            <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
-              <Stack direction="row" justifyContent="space-between" width="100%">
-                <Typography component="div" sx={ {display: 'flex'} }>
-                  <Button color="inherit" variant="text">
-                    <RefreshIcon sx={ {mr: '10px'} } />
-                    Refresh
-                  </Button>
-                </Typography>
-                <Typography component="div" sx={ {display: 'flex'} }>
-                  <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
-                    <IconButton onClick={ filmPageDisplayToggleHandler }>
-                      {
-                        filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />)
-                      }
-                    </IconButton>
-                  </Tooltip>
-                </Typography>
-              </Stack>
-            </Toolbar>
-          </AppBar>
-        </Grid>
+    <Grid container>
+      <AppBar position="sticky" elevation={ 0 } sx={ {top: isMobile ? '56px':'64px', borderBottom: '1px solid #ccc'} }>
+        <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
+          <Stack direction="row" justifyContent="space-between" width="100%">
+            <Typography component="div" sx={ {display: 'flex'} }>
+              <Button color="inherit" variant="text">
+                <RefreshIcon sx={ {mr: '10px'} } />
+                Refresh
+              </Button>
+            </Typography>
+            <Typography component="div" sx={ {display: 'flex'} }>
+              <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
+                <IconButton onClick={ filmPageDisplayToggleHandler }>
+                  {
+                      filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />)
+                    }
+                </IconButton>
+              </Tooltip>
+            </Typography>
+          </Stack>
+        </Toolbar>
+      </AppBar>
 
-        <Divider sx={ {width: '100%'} } />
+      <Outlet />
 
-        <Outlet />
-
-      </Grid>
-      
-    </React.Fragment>
+    </Grid>
   );
 };
 

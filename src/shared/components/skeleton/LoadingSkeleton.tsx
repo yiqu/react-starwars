@@ -2,7 +2,7 @@ import * as React from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { times } from 'lodash';
-import Grid from '@mui/system/Unstable_Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 
 const LoadingSkeleton = ({ count }: { count: number }) => {
 

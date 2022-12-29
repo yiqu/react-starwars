@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FCC } from "src/shared/models/fc-children.model";
 import { StarwarsFilmCardProps } from "src/shared/models/starwars.model";
-import Grid from "@mui/system/Unstable_Grid";
+import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,8 +13,9 @@ import useScreenSize from "src/shared/hooks/useIsMobile";
 import FavIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import { useEffect } from 'react';
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
+import DateDisplay from "src/shared/components/date/DateDisplay";
 
 
 const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => {
@@ -49,18 +50,21 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
             </Typography>
           </Stack>
           
-          <Typography variant="body2" color="text.secondary">
-            Released: { props.film.release_date }
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Directed by: { props.film.director }
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Produced by: { props.film.producer }
-          </Typography>
-          <Typography variant="body2" color="text.primary" sx={ {mt:'10px'} }>
-            { props.film.opening_crawl }
-          </Typography>
+          <Stack spacing={ 1 }>
+            <Typography variant="body2" color="text.secondary">
+              Released: <DateDisplay date={ props.film.release_date } format="MMM Do YYYY" />
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Directed by: { props.film.director }
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Produced by: { props.film.producer }
+            </Typography>
+            <Typography variant="body2" color="text.primary">
+              { props.film.opening_crawl }
+            </Typography>
+          </Stack>
+          
         </CardContent>
       </div>
       

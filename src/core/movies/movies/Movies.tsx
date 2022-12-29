@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { saveFavorite, updateFavorite } from "src/core/fetchers/favorites";
 import useFetchFavorites from "src/core/hooks/useFetchFavorites";
 import useFetchMovies from "src/core/hooks/useFetchMovies";
+import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
 import { HttpParams } from "src/shared/models/http.model";
 import { FavoriteToSave, HttpResponse, HttpResponse2,
@@ -93,14 +94,18 @@ const Movies = () => {
   if (allFilmsError) return <div>Error Page</div>;
 
   return (
-    <Grid xs={ 12 } direction="column">
-      <Grid xs={ 12 } sm={ 6 }>
-        <FilterInput filterChange={ onFilterChangeHandler } />
+    <Stack direction="column" p={ 2 }>
+      <Grid xs={ 12 } sm={ 3 } mb={ 2 }>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <FilterInput filterChange={ onFilterChangeHandler } />
+          { allFilmsValidating && <ProgressCircle size={ 25 } /> }
+        </Stack>
+        
       </Grid>
-      <Grid container spacing={ 2 } disableEqualOverflow>
+      <Grid container disableEqualOverflow spacing={ 4 }>
         {sorted?.map((res) => {
           return (
-            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 4 }>
+            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } xl={ 3 }>
               <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
                 favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
               </MovieCard>
@@ -109,7 +114,7 @@ const Movies = () => {
         })}
 
       </Grid>
-    </Grid>
+    </Stack>
   );
 };
 

@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { DialogProps } from 'src/shared/models/dialog.model';
 import CloseIcon from '@mui/icons-material/Close';
 import { Alert, AlertTitle, Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
-import Grid from '@mui/system/Unstable_Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
  import { Form, Formik, useFormikContext } from 'formik';
