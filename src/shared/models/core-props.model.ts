@@ -4,7 +4,6 @@ import { HttpParams } from './http.model';
 import { FavoriteToSave, MoviesFilterInput, StarwarsFilm } from './starwars.model';
 
 export interface FetchMovieHookProp {
-  url: string;
   params?: HttpParams;
 }
 

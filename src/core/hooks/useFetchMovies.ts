@@ -1,26 +1,32 @@
 import { FetchMovieHookProp } from "src/shared/models/core-props.model";
-import useSWR from "swr";
-import { axiosFetcher } from "../fetchers/movies";
+import useSWR from "swr/immutable";
+import { useState } from "react";
+import { useDeepCompareEffect } from "react-use";
+import urlcat from "urlcat";
+import { httpGet } from "src/shared/fetcber/axios";
+import { HttpResponse2List, StarwarsFilm } from "src/shared/models/starwars.model";
 
-const useFetchMovies = <T>(props: FetchMovieHookProp) => {
-  const { data, isValidating, error, mutate } = useSWR(
-    () => {
-      // if (props.params?.fetchTime) {
-      //   return [props.url, props.params];
-      // }
-      // return null;
-      return [props.url, props.params];
-    },  axiosFetcher<T>, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  });
+export const SW_BASE_API = 'https://swapi.tech/api/';
+
+const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
+  
+  const [url, setUrl] = useState<string>();
+
+  useDeepCompareEffect(() => {
+    const restUrl = urlcat(SW_BASE_API, '/films', { ...params });
+    setUrl(restUrl);
+  }, [params]);
+
+  const { data, isValidating, error, isLoading } = useSWR(
+    () => url ? url : null, 
+    (url) => httpGet<HttpResponse2List<StarwarsFilm>>(url, 1000)
+  );
 
   return {
-    data,
-    loading: isValidating || (!error && !data),
-    error,
-    mutate
+    allFilms: data?.result,
+    allFilmsLoading: isLoading,
+    allFilmsValidating: isValidating,
+    allFilmsError: error,
   };
 };
 

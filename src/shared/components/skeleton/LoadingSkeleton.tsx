@@ -7,17 +7,17 @@ import Grid from '@mui/system/Unstable_Grid';
 const LoadingSkeleton = ({ count }: { count: number }) => {
 
   return (
-    <Grid container spacing={ 2 } direction="column" padding={ 2 } xs={ 12 }>
+    <Grid direction="column" padding={ 2 } xs={ 12 }>
 
-      <Grid xs={ 12 } sm={ 6 } md={ 3 }>
+      <Grid xs={ 12 } md={ 6 }>
         <Skeleton variant='text' sx={ {fontSize: '2rem'} }></Skeleton>
       </Grid>
 
-      <Grid container direction="row" wrap="wrap">
+      <Grid container spacing={ 2 }>
         {
           times(count, (index) => {
             return (
-              <Grid key={ index } xs={ 12 } sm={ 4 } lg={ 3 }>
+              <Grid key={ index } xs={ 12 } sm={ 12 } md >
                 <Stack direction="row" sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'} }>
                   <Skeleton variant='text' sx={ { fontSize: '2rem', width: '10rem'} } />
                   <Skeleton variant='circular' width={ 40 } height={ 40 } />
@@ -27,9 +27,7 @@ const LoadingSkeleton = ({ count }: { count: number }) => {
               </Grid>
             );
           })
-
         }
-
       </Grid>
     </Grid>
   );

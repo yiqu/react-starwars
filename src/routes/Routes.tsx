@@ -5,7 +5,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 
 // Lazy load components
-const MovieLayoutLazy = loadable(() => import('../core/movies/Core'));
+const MovieLayoutLazy = loadable(() => import('../core/movies/AllMoviesLayout'));
 const CoreMoviesLazy = loadable(() => import('../core/movies/movies/Movies'));
 const CoreMovieLazy = loadable(() => import('../core/movies/movies/movie/Movie'));
 

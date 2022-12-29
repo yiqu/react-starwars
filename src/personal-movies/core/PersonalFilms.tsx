@@ -11,7 +11,7 @@ const PersonalFilms = () => {
   const { personalFilms, personalFilmsLoading, personalFilmsError, personalFilmsValidating } = 
     useFetchPersonalFilms({user: 'yqu', params: {fetchTime: refetch}});
 
-  if (personalFilmsLoading || !personalFilms) return <LoadingSkeleton count={ 3 } />;
+  if (personalFilmsLoading) return <LoadingSkeleton count={ 4 } />;
   if (personalFilmsError) return <div>Error Page</div>;
 
   return (

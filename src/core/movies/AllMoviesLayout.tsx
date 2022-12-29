@@ -12,7 +12,7 @@ import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
 
-const Core = () => {
+const AllMovieLayout = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
@@ -38,7 +38,6 @@ const Core = () => {
   return (
     <React.Fragment>
       <Grid container>
-
         <Grid xs={ 12 }>
           <AppBar position="sticky" elevation={ 0 }>
             <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
@@ -73,7 +72,7 @@ const Core = () => {
   );
 };
 
-export default Core;
+export default AllMovieLayout;
 
 const getNextDisplayState = (current: any) => {
   if (!current) {
