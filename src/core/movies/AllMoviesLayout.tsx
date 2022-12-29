@@ -43,8 +43,7 @@ const AllMovieLayout = () => {
         <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
           <Stack direction="row" justifyContent="space-between" width="100%">
             <Typography component="div" sx={ {display: 'flex'} }>
-              <Button color="inherit" variant="text">
-                <RefreshIcon sx={ {mr: '10px'} } />
+              <Button variant="text" startIcon={ <RefreshIcon /> }>
                 Refresh
               </Button>
             </Typography>

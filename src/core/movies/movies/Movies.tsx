@@ -102,10 +102,10 @@ const Movies = () => {
         </Stack>
         
       </Grid>
-      <Grid container disableEqualOverflow spacing={ 4 }>
+      <Grid container disableEqualOverflow rowSpacing={ 4 }>
         {sorted?.map((res) => {
           return (
-            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } xl={ 3 }>
+            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } xl={ 3 } xlOffset={ 4.5 }>
               <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
                 favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
               </MovieCard>

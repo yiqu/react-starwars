@@ -27,9 +27,11 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
   const { isXl } = useScreenSize();
 
   return (
-    <Card sx={ {border:"2px solid #726f53", height:(isXl ? '100%': '100%'), display:'flex',
-      flexDirection:'column', justifyContent:'space-between'} } 
-      elevation={ 4 }>
+    <Card sx={ {display:'flex',
+      flexDirection:'column', 
+      justifyContent:'space-between'} } 
+      elevation={ 4 }
+    >
       <div>
         <CardMedia
           component="img"

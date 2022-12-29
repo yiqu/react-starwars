@@ -35,7 +35,7 @@ const Layout = () => {
   }, [isMobileScreenSize]);
 
   return (
-    <Box sx={ { display: 'flex' } }>
+    <Box sx={ { display: 'flex', backgroundColor:'grey.100' } }>
       <CssBaseline />
       
       <TopNav open={ open } onNavOpen={ handleDrawerOpen } />
