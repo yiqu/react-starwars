@@ -1,3 +1,10 @@
+import { PaletteOptions } from "@mui/material/styles";
+
+export const MyPaletteOptions: PaletteOptions  = {
+  primary: {
+    main: '#092250',
+  }
+};
 
 export const GREY = {
   0: '#FFFFFF',

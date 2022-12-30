@@ -38,24 +38,22 @@ const AllMovieLayout = () => {
 
 
   return (
-    <Grid container>
+    <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? 'grey.100' : null } }>
       <AppBar position="sticky" elevation={ 0 } sx={ {top: isMobile ? '56px':'64px', borderBottom: '1px solid #ccc'} }>
-        <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
+        <Toolbar 
+          variant="dense" 
+          sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? '#fff' : null, 
+            color: (theme) => theme.palette.mode === 'light' ? '#000' : null, 
+          } }>
           <Stack direction="row" justifyContent="space-between" width="100%">
-            <Typography component="div" sx={ {display: 'flex'} }>
-              <Button variant="text" startIcon={ <RefreshIcon /> }>
-                Refresh
-              </Button>
-            </Typography>
-            <Typography component="div" sx={ {display: 'flex'} }>
-              <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
-                <IconButton onClick={ filmPageDisplayToggleHandler }>
-                  {
-                      filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />)
-                    }
-                </IconButton>
-              </Tooltip>
-            </Typography>
+            <Button variant="text" startIcon={ <RefreshIcon /> }>
+              Refresh
+            </Button>
+            <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
+              <IconButton onClick={ filmPageDisplayToggleHandler }>
+                { filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />) }
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>

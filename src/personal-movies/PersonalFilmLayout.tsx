@@ -35,7 +35,12 @@ const PersonalFilmLayout = () => {
       <Grid container>
         <Grid xs={ 12 }>
           <AppBar position="sticky" elevation={ 0 }>
-            <Toolbar variant="dense" sx={ {bgcolor: '#fff', color: '#000'} }>
+            <Toolbar 
+              variant="dense" 
+              sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? '#fff' : null, 
+                color: (theme) => theme.palette.mode === 'light' ? '#000' : null, 
+              } }
+            >
               <Stack direction="row" justifyContent="space-between" width="100%">
                 <Stack direction="row">
                   <Button variant="text" startIcon={ <RefreshIcon /> }>
