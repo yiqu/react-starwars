@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
 import { Box, Button, Stack } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useCallback, useMemo, useState, useEffect } from "react";
@@ -105,7 +106,7 @@ const Movies = () => {
       <Grid container disableEqualOverflow rowSpacing={ 4 }>
         {sorted?.map((res) => {
           return (
-            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 6 } md={ 4 } xl={ 3 } xlOffset={ 4.5 }>
+            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
               <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
                 favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
               </MovieCard>

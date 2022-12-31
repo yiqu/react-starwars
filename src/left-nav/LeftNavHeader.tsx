@@ -17,14 +17,14 @@ import { getRandomArbitrary } from 'src/shared/utils/number.utils';
 
 const LOGO_LIST = [falconLogo, vaderLogo, saberLogo, dstarLogo];
 
-const LeftNavHeader: FCC<LeftNavHeaderProps> = (props) => {
+const LeftNavHeader: FCC<LeftNavHeaderProps> = ({ closeDrawerHandler }: LeftNavHeaderProps) => {
 
   const leftNavTitle = 'SWDB';
   const theme = useTheme();
   const location = useLocation();
 
   const handleDrawerClose = () => {
-    props.closeDrawerHandler(false);
+    closeDrawerHandler(false);
   };
 
   const [displayLogo, setDisplayLogo] = useState(falconLogo);

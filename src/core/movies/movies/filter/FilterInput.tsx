@@ -14,7 +14,7 @@ import { Close, Filter, Search } from '@mui/icons-material';
 import { FormInput2Props } from 'src/shared/models/form.model';
 
 
-const FilterInput: FCC<FilmFilterProp> = ({ filterChange }) => {
+const FilterInput: FCC<FilmFilterProp> = ({ filterChange }: FilmFilterProp) => {
 
   const initValue = {
     movieName: ''

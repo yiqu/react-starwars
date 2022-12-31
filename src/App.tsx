@@ -1,21 +1,17 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import routeList from './routes/Routes';
-import { createTheme, Theme, ThemeProvider } from '@mui/material/styles';
-import { getMyTheme } from './theme/AppTheme';
+import { ThemeContextProvider } from './theme/ThemeContext';
 
 function App() {
 
-  const theme: Theme = useMemo(() => {
-    return createTheme(getMyTheme('light'));
-  }, []);
-  
   return (
-    <ThemeProvider theme={ theme }>
+    <ThemeContextProvider>
       <React.Fragment>
         <RouterProvider router={ routeList } />
       </React.Fragment>
-    </ThemeProvider>
+    </ThemeContextProvider>
+    
   );
 }
 

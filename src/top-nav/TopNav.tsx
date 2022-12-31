@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -12,7 +12,8 @@ import { capitalizeFirstLetter } from "src/shared/utils/text-transform";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from "@mui/material/styles";
-import { Stack } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
+import ThemeContext from "src/theme/ThemeContext";
 
 
 export interface TopNavProps {
@@ -25,6 +26,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
   const location = useLocation();
   const theme = useTheme();
   const [title, setTitle] = useState<string>();
+  const themeContext = useContext(ThemeContext);
 
   useEffect(() => {
     const urlArray: string[] = location.pathname.split("/");
@@ -34,6 +36,10 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
 
   const handleDrawerOpen = () => {
     onNavOpen(true);
+  };
+
+  const toggleThemeHandler = () => {
+    themeContext.toggleTheme();
   };
 
   return (
@@ -58,9 +64,11 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
                 { capitalizeFirstLetter(title) }
               </Typography>
             </Stack>
-            <IconButton sx={ { ml: 1 } } color="inherit">
-              { theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon /> }
-            </IconButton>
+            <Tooltip title={ `Switch to ${themeContext.currentTheme==='light'?'dark':'light'} theme` }>
+              <IconButton sx={ { ml: 1 } } color="inherit" onClick={ toggleThemeHandler }>
+                { themeContext.currentTheme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon /> }
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Toolbar>
 

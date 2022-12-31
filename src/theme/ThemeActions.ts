@@ -1,0 +1,1 @@
+export const TOGGLE_THEME = '[Theme/UI] Toggle theme';

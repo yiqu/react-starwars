@@ -8,7 +8,7 @@ import { useDeepCompareEffect } from 'react-use';
 import { MoviesFilterInput } from 'src/shared/models/starwars.model';
 
 
-const FilterInputForm = ({...props}) => {
+const FilterInputForm = ({...props}: any) => {
 
   const { values, submitForm } = useFormikContext<any>();
 
