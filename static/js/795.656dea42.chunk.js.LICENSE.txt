@@ -1,6 +1,6 @@
 /**
  * @license React
- * use-sync-external-store-shim.production.min.js
+ * react-is.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
