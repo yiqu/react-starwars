@@ -19,7 +19,7 @@ const FilterInputForm = ({...props}: any) => {
   }, [debouncedTerm]);
 
   return (
-    <Form autoComplete="off">
+    <Form autoComplete="off" style={ { width:"100%"} }>
       <FormInput { ...props.movieNameFilter } />
     </Form>
   );

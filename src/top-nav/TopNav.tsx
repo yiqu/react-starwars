@@ -47,7 +47,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
       <AppBar position="fixed" open={ open } elevation={ 1 }>
         <Toolbar>
           <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
-            <Stack>
+            <Stack direction="row" justifyContent="start" alignItems="center">
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -64,11 +64,13 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
                 { capitalizeFirstLetter(title) }
               </Typography>
             </Stack>
+
             <Tooltip title={ `Switch to ${themeContext.currentTheme==='light'?'dark':'light'} theme` }>
               <IconButton sx={ { ml: 1 } } color="inherit" onClick={ toggleThemeHandler }>
                 { themeContext.currentTheme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon /> }
               </IconButton>
             </Tooltip>
+
           </Stack>
         </Toolbar>
 

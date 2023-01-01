@@ -1,4 +1,4 @@
-import { FavoriteToSave } from "src/shared/models/starwars.model";
+import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import moment from 'moment';
 
 export const getFilmFavoriteToggleTooltip = (favorited?: FavoriteToSave) => {
@@ -16,4 +16,18 @@ export const getFilmFavoriteToggleTooltip = (favorited?: FavoriteToSave) => {
   }
 
   return tooltip;
+};
+
+export const getSortedFilmsWithFavorited = (allFilms: ResultProperty<StarwarsFilm>[] | undefined, favorited: FavoriteMoviesObjList): ResultProperty<StarwarsFilm>[] => {
+  const sortedArr = allFilms ?? [];
+  if (sortedArr) {
+    sortedArr.sort((prev: ResultProperty<StarwarsFilm>, next: ResultProperty<StarwarsFilm>) => {
+      return prev.properties.episode_id > next.properties.episode_id ? 1 : -1;
+    });
+  }
+  sortedArr.forEach((res: ResultProperty<StarwarsFilm>) => {
+    res.properties.userFavorited = favorited[res.properties.episode_id]?.isCurrentFavorite;
+  });
+
+  return sortedArr;
 };

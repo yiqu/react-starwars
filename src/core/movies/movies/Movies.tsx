@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { saveFavorite, updateFavorite } from "src/core/fetchers/favorites";
@@ -13,6 +13,15 @@ import { FavoriteToSave, HttpResponse, HttpResponse2,
   HttpResponse2List, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
+import AppToolbar from "src/shared/components/toolbar/Toolbar";
+import useScreenSize from "src/shared/hooks/useIsMobile";
+import { DataBlockDisplayMode } from "src/shared/models/general.model";
+import { createSearchParams, Outlet, useNavigate, useSearchParams } from "react-router-dom";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import { useDeepCompareEffect } from "react-use";
+import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 
 const userId = 'yqu';
 
@@ -22,25 +31,27 @@ const Movies = () => {
   const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
   const [fetchFavoriteTime, setFetchFavoriteTime] = useState<number>(0);
   const [fetchMoviesParams, setFetchMoviesParams] = useState<HttpParams>({});
-
+  const { isMobile } = useScreenSize();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
+  const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
+  const [sortedFilms, setSortedFilms] = useState<ResultProperty<StarwarsFilm>[]>([]);
+  
   const {data: favMovies, error: favError, loading: favLoading} = 
     useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
 
   const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = 
     useFetchMovies({ params: fetchMoviesParams });
 
-  const sorted: ResultProperty<StarwarsFilm>[] | undefined = useMemo(() => {
-    const sortedArr = allFilms ?? [];
-    if (sortedArr) {
-      sortedArr.sort((prev: ResultProperty<StarwarsFilm>, next: ResultProperty<StarwarsFilm>) => {
-        return prev.properties.episode_id > next.properties.episode_id ? 1 : -1;
-      });
-    }
-    sortedArr.forEach((res: ResultProperty<StarwarsFilm>) => {
-      res.properties.userFavorited = favMovies[res.properties.episode_id]?.isCurrentFavorite;
-    });
+  const filmPageDisplayToggleHandler = () => {
+    const nextDisplayMode = {
+      moviePageDisplayMode: getNextDisplayState(filmPageDisplayMode)
+    };
+    setSearchParams(nextDisplayMode);
+  };
 
-    return sortedArr;
+  useDeepCompareEffect(() => {
+    setSortedFilms(getSortedFilmsWithFavorited(allFilms, favMovies));
   }, [allFilms, favMovies]);
 
   const onFavoriteToggleHandler = (film: StarwarsFilm, currentFavoriteStatus?: FavoriteToSave) => {
@@ -93,18 +104,38 @@ const Movies = () => {
 
   if (allFilmsLoading) return <LoadingSkeleton count={ 4 } />;
   if (allFilmsError) return <div>Error Page</div>;
+  if (sortedFilms?.length < 1) return <div>No films found.</div>;
 
   return (
-    <Stack direction="column" p={ 2 }>
-      <Grid xs={ 12 } sm={ 3 } mb={ 2 }>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <FilterInput filterChange={ onFilterChangeHandler } />
-          { allFilmsValidating && <ProgressCircle size={ 25 } /> }
-        </Stack>
-        
-      </Grid>
-      <Grid container disableEqualOverflow rowSpacing={ 4 }>
-        {sorted?.map((res) => {
+    <>
+      <AppToolbar toolbarProps={ {
+        position:"sticky",
+        sx:{top: isMobile ? '56px':'64px'}
+      } }>
+        <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+          <Grid xs={ 10 } sm={ 4 }>
+            <Stack direction="row" justifyContent="start" alignItems="center">
+              <FilterInput filterChange={ onFilterChangeHandler } />
+              { allFilmsValidating && <ProgressCircle size={ 20 } /> }
+            </Stack>
+          </Grid>
+          <Grid xs={ 2 } sm={ 8 }>
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
+                <IconButton onClick={ filmPageDisplayToggleHandler }>
+                  { filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />) }
+                </IconButton>
+              </Tooltip>
+            </Stack>
+          </Grid>
+
+          
+        </Grid>
+      </AppToolbar>
+
+      <Stack direction="column" p={ 2 }>
+        <Grid container disableEqualOverflow rowSpacing={ 4 }>
+          {sortedFilms?.map((res) => {
           return (
             <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
               <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
@@ -114,9 +145,18 @@ const Movies = () => {
           );
         })}
 
-      </Grid>
-    </Stack>
+        </Grid>
+      </Stack>
+    </>
+   
   );
 };
 
 export default Movies;
+
+const getNextDisplayState = (current: any) => {
+  if (!current) {
+    return DataBlockDisplayMode.CARD;
+  }
+  return current === DataBlockDisplayMode.CARD ? DataBlockDisplayMode.TABLE : DataBlockDisplayMode.CARD;
+};
