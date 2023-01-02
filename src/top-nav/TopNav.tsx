@@ -12,8 +12,10 @@ import { capitalizeFirstLetter } from "src/shared/utils/text-transform";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTheme } from "@mui/material/styles";
-import { Stack, Tooltip } from "@mui/material";
+import { PaletteMode, Stack, Tooltip } from "@mui/material";
 import ThemeContext from "src/theme/ThemeContext";
+import { useLocalStorage } from 'react-use';
+import { LS_APP_THEME } from "src/App";
 
 
 export interface TopNavProps {
@@ -24,10 +26,10 @@ export interface TopNavProps {
 export default function TopNav({open, onNavOpen}: TopNavProps) {
 
   const location = useLocation();
-  const theme = useTheme();
   const [title, setTitle] = useState<string>();
   const themeContext = useContext(ThemeContext);
-
+  const [currentTheme, setLocalStorageTheme, remove] = useLocalStorage<PaletteMode>(LS_APP_THEME, 'light');
+  
   useEffect(() => {
     const urlArray: string[] = location.pathname.split("/");
     const pathTitle: string = urlArray[1];
@@ -37,9 +39,10 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
   const handleDrawerOpen = () => {
     onNavOpen(true);
   };
-
   const toggleThemeHandler = () => {
-    themeContext.toggleTheme();
+    const themeToSet = themeContext.currentTheme==='light' ? 'dark' : 'light';
+    themeContext.setTheme(themeToSet);
+    setLocalStorageTheme(themeToSet);
   };
 
   return (
@@ -65,7 +68,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
               </Typography>
             </Stack>
 
-            <Tooltip title={ `Switch to ${themeContext.currentTheme==='light'?'dark':'light'} theme` }>
+            <Tooltip title={ `Turn ${themeContext.currentTheme==='light'?'off':'on'} the lights` }>
               <IconButton sx={ { ml: 1 } } color="inherit" onClick={ toggleThemeHandler }>
                 { themeContext.currentTheme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon /> }
               </IconButton>

@@ -5,12 +5,14 @@ import * as fromThemeActions from './ThemeActions';
 import { PaletteMode } from '@mui/material';
 
 export interface ThemeContextProp {
-  toggleTheme: () => void,
+  toggleTheme: () => void;
+  setTheme: (theme: PaletteMode) => void;
   currentTheme: PaletteMode;
 }
 
 const ThemeContext = React.createContext<ThemeContextProp>({
   toggleTheme: () => {},
+  setTheme: (theme: PaletteMode) => {},
   currentTheme: 'light'
 });
 
@@ -22,10 +24,15 @@ export function ThemeContextProvider(props: any) {
     dispatchThemeAction({type: fromThemeActions.TOGGLE_THEME});
   };
 
+  const setTheme = (theme: PaletteMode) => {
+    dispatchThemeAction({type: fromThemeActions.SET_THEME, payload: theme});
+  };
+
   return (
     <ThemeContext.Provider 
       value={ {
         toggleTheme: toggleTheme,
+        setTheme: setTheme,
         currentTheme: themeState.theme
       } } >
       { props.children }

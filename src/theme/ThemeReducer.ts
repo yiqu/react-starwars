@@ -24,6 +24,14 @@ export const themeReducer = (state: ThemeReducerState, action: any) => {
     };
   };
 
+  if (action.type === fromCartActions.SET_THEME) {
+
+    return {
+      ...state,
+      theme: action.payload
+    };
+  };
+
 
   return {
     ...state
