@@ -104,7 +104,6 @@ const Movies = () => {
 
   if (allFilmsLoading) return <LoadingSkeleton count={ 4 } />;
   if (allFilmsError) return <div>Error Page</div>;
-  if (sortedFilms?.length < 1) return <div>No films found.</div>;
 
   return (
     <>
@@ -133,7 +132,7 @@ const Movies = () => {
         </Grid>
       </AppToolbar>
 
-      <Stack direction="column" p={ 2 }>
+      <Stack direction="column" p={ 2 } width="100%">
         <Grid container disableEqualOverflow rowSpacing={ 4 }>
           {sortedFilms?.map((res) => {
           return (

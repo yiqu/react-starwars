@@ -12,9 +12,7 @@ export const getMyTheme = (mode: PaletteMode): ThemeOptions => {
         mode === 'light' ? 
         {
           // palette values for light mode
-          primary: {
-            main: '#092250',
-          }
+          ...MyPaletteOptions
         }
         : 
         {
@@ -29,14 +27,6 @@ export const getMyTheme = (mode: PaletteMode): ThemeOptions => {
         mode === 'light' ? 
         {
             // palette values for light mode
-          MuiToolbar: {
-            styleOverrides: {
-              root: {
-                // backgroundColor: '#fff',
-                // color: '#000'
-              }
-            }
-          }
         }
         : 
         {
@@ -47,10 +37,3 @@ export const getMyTheme = (mode: PaletteMode): ThemeOptions => {
   };
   
 };
-
-export const MyAppTheme: Theme = createTheme({
-  palette: MyPaletteOptions,
-  typography: MyTypography,
-  components: MyComponents,
-});
-

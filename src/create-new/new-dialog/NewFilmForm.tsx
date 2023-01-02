@@ -151,16 +151,16 @@ const NewFilmForm = ({ handleClose, isEditMode }: {handleClose: () => void; isEd
 
   return (
     <>
-      <DialogTitle bgcolor="primary.main" color="white">
+      <DialogTitle>
         <Stack direction={ 'row' } justifyContent="space-between" alignItems="center">
           <Stack>
             { isEditMode ? 'Editing' : 'Create New Movie' }
           </Stack>
           <Stack direction="row">
-            <IconButton sx={ {color:'white'} } onClick={ handleRefresh }>
+            <IconButton onClick={ handleRefresh }>
               <CloudDownloadIcon />
             </IconButton>
-            <IconButton sx={ {color:'white'} } onClick={ handleClose }>
+            <IconButton onClick={ handleClose }>
               <CloseIcon />
             </IconButton>
           </Stack>

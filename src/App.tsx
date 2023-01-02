@@ -4,8 +4,7 @@ import routeList from './routes/Routes';
 import { useLocalStorage } from 'react-use';
 import ThemeContext from './theme/ThemeContext';
 import { PaletteMode } from '@mui/material';
-
-export const LS_APP_THEME = 'app-theme';
+import { LS_APP_THEME } from './shared/utils/constants';
 
 function App() {
 
@@ -13,7 +12,6 @@ function App() {
   const themeContext = useContext(ThemeContext);
 
   useEffect(() => {
-    console.log("setting")
     themeContext.setTheme(theme!);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);

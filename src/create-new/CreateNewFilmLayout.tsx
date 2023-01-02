@@ -1,13 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import Grid from '@mui/material/Unstable_Grid2';
 
-const CreateNewFilmLayout = () => {
+export default function CreateNewFilmLayout() {
 
   return (
-    <React.Fragment>
-      <Outlet />
-    </React.Fragment>
+    <Outlet />
   );
 };
-
-export default CreateNewFilmLayout;

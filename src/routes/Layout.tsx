@@ -13,6 +13,8 @@ import LeftNavHeader from 'src/left-nav/LeftNavHeader';
 import { createTheme, Theme, ThemeProvider } from '@mui/material/styles';
 import { getMyTheme } from 'src/theme/AppTheme';
 import ThemeContext from 'src/theme/ThemeContext';
+import Grid from '@mui/material/Unstable_Grid2';
+
 
 const Layout = () => {
   
@@ -57,7 +59,10 @@ const Layout = () => {
 
         <Box component="main" sx={ { flexGrow: 1, bgcolor:(theme) => theme.palette.mode === 'light' ? '#fff' : null } }>
           <DrawerHeader />
-          <Outlet />
+          <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? 'grey.100' : null } }>
+            <Outlet />
+          </Grid>
+         
         </Box>
       
       </Box>

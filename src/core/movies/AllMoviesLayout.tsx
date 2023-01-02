@@ -6,10 +6,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 export default function AllMovieLayout() {
 
   return (
-    <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? 'grey.100' : null } }>
-
-      <Outlet />
-
-    </Grid>
+    <Outlet />
   );
 };

@@ -15,8 +15,8 @@ import { useTheme } from "@mui/material/styles";
 import { PaletteMode, Stack, Tooltip } from "@mui/material";
 import ThemeContext from "src/theme/ThemeContext";
 import { useLocalStorage } from 'react-use';
-import { LS_APP_THEME } from "src/App";
-
+import { LS_APP_THEME, TransformPageTitle } from "src/shared/utils/constants";
+import { startCase } from 'lodash';
 
 export interface TopNavProps {
   open: boolean;
@@ -64,7 +64,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap component="div" sx={ {fontWeight: 400} }>
-                { capitalizeFirstLetter(title) }
+                { startCase(TransformPageTitle[title+'']) }
               </Typography>
             </Stack>
 

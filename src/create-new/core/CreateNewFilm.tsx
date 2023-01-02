@@ -18,7 +18,7 @@ const CreateNewFilm = () => {
   }, []);
 
   return (
-    <>
+    <Stack direction="column" p={ 2 } width="100%">
       <Grid container>
         <Grid xs={ 12 }>
           <Stack direction="column" spacing={ 3 } alignItems="center" justifyContent="center">
@@ -44,7 +44,7 @@ const CreateNewFilm = () => {
       </Grid>
 
       { showDialog && <NewFilmDialog onClose={ handleClose } open={ showDialog }></NewFilmDialog> }     
-    </>
+    </Stack>
   );
 };
 
