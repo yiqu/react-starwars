@@ -49,12 +49,17 @@ const httpAction = <T>({ url, body, onSuccess, onFailure, onFinally, abortContro
     (data: T) => {
       onSuccess && onSuccess(data);
     }, 
-    (err: Response) => {
+    (err: Response | TypeError | any) => {
       console.error("Fetch error", err);
-      err.json()
-      .then((errData) => {
-        onFailure && onFailure(errData);
-      });
+      if (err instanceof Response) {
+        err.json().then((errData) => {
+          onFailure && onFailure(errData);
+        });
+      } else if (err instanceof TypeError) {
+        onFailure && onFailure(err);
+      } else {
+        onFailure && onFailure(err);
+      }
     }
   )
   .finally(() => {
