@@ -18,6 +18,20 @@ export const getAxiosInstance = (baseUrl: string) => {
   return axiosInstance;
 };
 
+export const axiosGet = <T>({ url, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {
+  axios.get(url)
+  .then((res: AxiosResponse) => {
+    onSuccess && onSuccess(res.data);
+  })
+  .catch((err: AxiosError) => {
+    console.log("App error GET: ", err);
+    onFailure && onFailure(err);
+  })
+  .finally(() => {
+    onFinally && onFinally();
+  });
+};
+
 
 export const axiosPost = <T>({ url, body, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {
   axios.post(url, body)
@@ -26,6 +40,34 @@ export const axiosPost = <T>({ url, body, onSuccess, onFailure, onFinally, abort
   })
   .catch((err: AxiosError) => {
     console.log("App error POST: ", err);
+    onFailure && onFailure(err);
+  })
+  .finally(() => {
+    onFinally && onFinally();
+  });
+};
+
+export const axiosPut = <T>({ url, body, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {
+  axios.put(url, body)
+  .then((res: AxiosResponse) => {
+    onSuccess && onSuccess(res.data);
+  })
+  .catch((err: AxiosError) => {
+    console.log("App error PUT: ", err);
+    onFailure && onFailure(err);
+  })
+  .finally(() => {
+    onFinally && onFinally();
+  });
+};
+
+export const axiosDelete = <T>({ url, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {
+  axios.delete(url)
+  .then((res: AxiosResponse) => {
+    onSuccess && onSuccess(res.data);
+  })
+  .catch((err: AxiosError) => {
+    console.log("App error DELETE: ", err);
     onFailure && onFailure(err);
   })
   .finally(() => {

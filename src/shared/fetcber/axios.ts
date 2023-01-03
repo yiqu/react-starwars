@@ -12,12 +12,14 @@ export const httpGet = async <T>(url: string, slow = 0): Promise<T> => {
       },
       responseType: 'json'
     });
+
     if (res.status === 200) {
       return res.data;
     }
+
     return Promise.reject(res);
   } catch (error) {
-    console.error("App error:", error);
+    console.error("App fetcher GET error:", error);
     throw error;
   }
 };

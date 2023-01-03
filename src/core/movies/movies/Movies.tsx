@@ -127,23 +127,22 @@ const Movies = () => {
               </Tooltip>
             </Stack>
           </Grid>
-
-          
         </Grid>
       </AppToolbar>
 
       <Stack direction="column" p={ 2 } width="100%">
         <Grid container disableEqualOverflow rowSpacing={ 4 }>
-          {sortedFilms?.map((res) => {
-          return (
-            <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
-              <MovieCard film={ res.properties } onFavoriteToggle={ onFavoriteToggleHandler } 
-                favorited={ favMovies[res.properties.episode_id] } uid={ res.uid } >
-              </MovieCard>
-            </Grid>
-          );
-        })}
-
+          { sortedFilms?.map((res) => {
+            return (
+              <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
+                <MovieCard 
+                  film={ res.properties } 
+                  onFavoriteToggle={ onFavoriteToggleHandler } 
+                  favorited={ favMovies[res.properties.episode_id] } 
+                  uid={ res.uid } />
+              </Grid>
+            );
+          }) }
         </Grid>
       </Stack>
     </>

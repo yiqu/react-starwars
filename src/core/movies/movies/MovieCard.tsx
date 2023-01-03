@@ -18,13 +18,11 @@ import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
 import DateDisplay from "src/shared/components/date/DateDisplay";
 
 
-const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => {
+export default function MovieCard({ film, favorited, onFavoriteToggle, uid }: StarwarsFilmCardProps) {
 
   const favoriteToggleHandler = () => {
-    props.onFavoriteToggle(props.film, props.favorited);
+    onFavoriteToggle(film, favorited);
   };
-
-  const { isXl } = useScreenSize();
 
   return (
     <Card sx={ {display:'flex',
@@ -37,33 +35,33 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
           component="img"
           alt="poster"
           height="440"
-          image={ `${process.env.PUBLIC_URL}/assets/poster-img/${props.film.episode_id}.png` }
+          image={ `${process.env.PUBLIC_URL}/assets/poster-img/${film.episode_id}.png` }
           sx={ {backgroundColor: '#000', objectFit: 'contain'} }
         />
         <CardContent>
           <Stack direction={ {lg: 'column', xl: 'row'} } justifyContent={ {xl:'space-between', lg:'flex-start'} }
             marginBottom={ {lg:'10px', xl: '0px'} }>
-            <Typography gutterBottom variant="h5" component={ Link } to={ `./${props.uid}` } sx={ {fontFamily:'Poppins',
+            <Typography gutterBottom variant="h5" component={ Link } to={ `./${uid}` } sx={ {fontFamily:'Poppins',
               fontWeight:'500'} }>
-              { props.film.title }
+              { film.title }
             </Typography>
             <Typography variant="h5" color='text.secondary' sx={ {fontWeight: '300'} }>
-              EP { props.film.episode_id }
+              EP { film.episode_id }
             </Typography>
           </Stack>
           
           <Stack spacing={ 1 }>
             <Typography variant="body2" color="text.secondary">
-              Released: <DateDisplay date={ props.film.release_date } format="MMM Do YYYY" />
+              Released: <DateDisplay date={ film.release_date } format="MMM Do YYYY" />
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Directed by: { props.film.director }
+              Directed by: { film.director }
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Produced by: { props.film.producer }
+              Produced by: { film.producer }
             </Typography>
             <Typography variant="body2" color="text.primary">
-              { props.film.opening_crawl }
+              { film.opening_crawl }
             </Typography>
           </Stack>
           
@@ -72,19 +70,17 @@ const MovieCard: FCC<StarwarsFilmCardProps> = (props: StarwarsFilmCardProps) => 
       
       <CardActions sx={ {display: 'flex', justifyContent: 'space-between'} }>
         <div>
-          <Button size="small" component={ Link } to={ `./${props.uid}` }>
-            Learn More
+          <Button size="small" component={ Link } to={ `./${uid}` }>
+            See More
           </Button>
         </div>
         <div>
           <IconButton aria-label="favorite" onClick={ favoriteToggleHandler } 
-            title={ getFilmFavoriteToggleTooltip(props.favorited) }>
-            <FavIcon color={ props.film.userFavorited ? 'error' : 'disabled' } />
+            title={ getFilmFavoriteToggleTooltip(favorited) }>
+            <FavIcon color={ film.userFavorited ? 'error' : 'disabled' } />
           </IconButton>
         </div>
       </CardActions>
     </Card>
   );
 };
-
-export default MovieCard;
