@@ -28,5 +28,5 @@ export interface SaveFavoriteHookProp {
 }
 
 export interface FilmFilterProp {
-  filterChange: (payload: MoviesFilterInput) => void;
+  filterChange: (payload: string) => void;
 }

@@ -3,69 +3,44 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage, useFormikContext, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import FormInput from 'src/shared/form/m-input/FormInput';
-import { IconButton, InputAdornment, TextFieldProps } from '@mui/material';
+import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useDebounce } from 'src/shared/hooks/useDebounce';
 import { useDeepCompareEffect } from 'react-use';
-import FilterInputForm from './FilterInputForm';
 import { FCC } from 'src/shared/models/fc-children.model';
 import { FilmFilterProp } from 'src/shared/models/core-props.model';
 import { MoviesFilterInput } from 'src/shared/models/starwars.model';
 import { Close, Filter, Search } from '@mui/icons-material';
 import { FormInput2Props } from 'src/shared/models/form.model';
+import { isEmpty } from 'lodash';
 
+export default function FilterInput({ filterChange }: FilmFilterProp) {
 
-const FilterInput: FCC<FilmFilterProp> = ({ filterChange }: FilmFilterProp) => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const debouncedTerm = useDebounce<string>(inputValue, 600);
 
-  const initValue = {
-    movieName: ''
-  };
- 
-  const filterChangeHandler = useCallback((payload: MoviesFilterInput) => {
-    filterChange(payload);
-  }, [filterChange]);
-
-  const movieNameFilter = (formik: FormikProps<MoviesFilterInput>): FormInput2Props => {
-    const clearInputHandler = () => {
-      formik.resetForm();
-    };
-    const filterInputHasValue = formik.values.movieName !== '';
-
-    return {
-      name: 'movieName',
-      type: 'text',
-      props: {
-        placeholder: 'Filter by name',
-        variant: 'standard',
-        InputProps: {
-          endAdornment: (<InputAdornment position='end'>
-            { filterInputHasValue && <IconButton onClick={ clearInputHandler }>
-              <Close />
-            </IconButton> }
-          </InputAdornment>),
-          startAdornment: (
-            <InputAdornment position='start'>
-              <Search />
-            </InputAdornment>
-          )
-        }
-      }
-    };
-  };
-
-  const submitHandler = (payload: any) => {
-  };
+  useEffect(() => {
+    filterChange(debouncedTerm);
+  }, [filterChange, debouncedTerm]);
 
   return (
-    <Formik
-      initialValues={ initValue }
-      onSubmit={ submitHandler }
-    >
-      {(formik) => {
-        return <FilterInputForm movieNameFilter={ movieNameFilter(formik) } filterChange={ filterChangeHandler } />;
-      }}
-      
-    </Formik>
+    <TextField name="movieName" type="text" fullWidth
+      value={ inputValue }
+      onChange={ (e) => setInputValue(e.target.value) }
+      placeholder='Filter by name'
+      variant='standard'
+      InputProps={ {
+        endAdornment:(<InputAdornment position='end'>
+          { !isEmpty(inputValue) && <IconButton onClick={ () => setInputValue('') } size="small">
+            <Close />
+            </IconButton> 
+          }
+        </InputAdornment>),
+        startAdornment:(
+          <InputAdornment position='start'>
+            <Search />
+          </InputAdornment>
+        )
+      } }
+    />
   );
 };
-
-export default FilterInput;

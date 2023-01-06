@@ -39,7 +39,7 @@ const useFetchFavorites = ({ userId, params={} }: FetchFavoritesHookProp) => {
       setTransformed(transformedData);
     }
   }, [data]);
-
+  
   return {
     data: transformed,
     loading: isLoading,

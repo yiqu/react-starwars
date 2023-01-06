@@ -92,18 +92,15 @@ const Movies = () => {
     }
   };
 
-  const onFilterChangeHandler = useCallback((filterValue: any) => {
-    if (filterValue.movieName) {
+  const onFilterChangeHandler = useCallback((movieName: string) => {
+    if (movieName) {
       setFetchMoviesParams({
-        title: filterValue.movieName
+        title: movieName
       });
     } else {
       setFetchMoviesParams({});
     }
   }, []);
-
-  if (allFilmsLoading) return <LoadingSkeleton count={ 4 } />;
-  if (allFilmsError) return <div>Error Page</div>;
 
   return (
     <>
@@ -114,8 +111,16 @@ const Movies = () => {
         <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
           <Grid xs={ 10 } sm={ 4 }>
             <Stack direction="row" justifyContent="start" alignItems="center">
-              <FilterInput filterChange={ onFilterChangeHandler } />
-              { allFilmsValidating && <ProgressCircle size={ 20 } /> }
+              <Grid container xs={ 12 }>
+                <Grid xs={ 10 }>
+                  <FilterInput filterChange={ onFilterChangeHandler } />
+                </Grid>
+                <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
+                  { allFilmsValidating && <ProgressCircle size={ 20 } /> }
+                </Grid>
+              </Grid>
+              
+             
             </Stack>
           </Grid>
           <Grid xs={ 2 } sm={ 8 }>
@@ -130,23 +135,27 @@ const Movies = () => {
         </Grid>
       </AppToolbar>
 
-      <Stack direction="column" p={ 2 } width="100%">
-        <Grid container disableEqualOverflow rowSpacing={ 4 }>
-          { sortedFilms?.map((res) => {
-            return (
-              <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
-                <MovieCard 
-                  film={ res.properties } 
-                  onFavoriteToggle={ onFavoriteToggleHandler } 
-                  favorited={ favMovies[res.properties.episode_id] } 
-                  uid={ res.uid } />
+      {
+        allFilmsError ? <div>Error Page</div> :
+          allFilmsLoading ? (<LoadingSkeleton count={ 4 } />) : (
+            <Stack direction="column" p={ 2 } width="100%">
+              <Grid container disableEqualOverflow rowSpacing={ 4 }>
+                { sortedFilms?.map((res) => {
+                  return (
+                    <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
+                      <MovieCard 
+                        film={ res.properties } 
+                        onFavoriteToggle={ onFavoriteToggleHandler } 
+                        favorited={ favMovies[res.properties.episode_id] } 
+                        uid={ res.uid } />
+                    </Grid>
+                  );
+                }) }
               </Grid>
-            );
-          }) }
-        </Grid>
-      </Stack>
+            </Stack>
+          )
+      }
     </>
-   
   );
 };
 
