@@ -22,6 +22,10 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { useDeepCompareEffect } from "react-use";
 import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
+
 
 const userId = 'yqu';
 
@@ -102,6 +106,7 @@ const Movies = () => {
     }
   }, []);
 
+
   return (
     <>
       <AppToolbar toolbarProps={ {
@@ -136,24 +141,28 @@ const Movies = () => {
       </AppToolbar>
 
       {
-        allFilmsError ? <div>Error Page</div> :
-          allFilmsLoading ? (<LoadingSkeleton count={ 4 } />) : (
-            <Stack direction="column" p={ 2 } width="100%">
-              <Grid container disableEqualOverflow rowSpacing={ 4 }>
-                { sortedFilms?.map((res) => {
-                  return (
-                    <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
-                      <MovieCard 
-                        film={ res.properties } 
-                        onFavoriteToggle={ onFavoriteToggleHandler } 
-                        favorited={ favMovies[res.properties.episode_id] } 
-                        uid={ res.uid } />
-                    </Grid>
-                  );
-                }) }
-              </Grid>
-            </Stack>
-          )
+        <LoadingBackdrop isLoading={ allFilmsLoading }>
+          {
+            allFilmsError ? <div>Error Page</div> :
+            (
+              <Stack direction="column" p={ 2 } width="100%">
+                <Grid container disableEqualOverflow rowSpacing={ 4 }>
+                  { sortedFilms?.map((res) => {
+                    return (
+                      <Grid key={ res.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
+                        <MovieCard 
+                          film={ res.properties } 
+                          onFavoriteToggle={ onFavoriteToggleHandler } 
+                          favorited={ favMovies[res.properties.episode_id] } 
+                          uid={ res.uid } />
+                      </Grid>
+                    );
+                  }) }
+                </Grid>
+              </Stack>
+            )
+          }
+        </LoadingBackdrop>
       }
     </>
   );

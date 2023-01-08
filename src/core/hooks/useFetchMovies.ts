@@ -23,6 +23,7 @@ const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
     {
       revalidateOnFocus: false,
       revalidateIfStale: true,
+      keepPreviousData: true
     }
   );
 
