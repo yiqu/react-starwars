@@ -41,7 +41,7 @@ const Movies = () => {
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
   const [sortedFilms, setSortedFilms] = useState<ResultProperty<StarwarsFilm>[]>([]);
   
-  const {data: favMovies, error: favError, loading: favLoading} = 
+  const { data: favMovies, error: favError, loading: favLoading } = 
     useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
 
   const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = 

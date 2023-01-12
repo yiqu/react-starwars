@@ -1,0 +1,1 @@
+export const SHOW_SNACK_BAR = '[Snackbar/UI] Show Snackbar';

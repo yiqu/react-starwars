@@ -14,6 +14,7 @@ import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/600.css';
 import '@fontsource/poppins/700.css';
 import { ThemeContextProvider } from './theme/ThemeContext';
+import { SnackbarContextProvider } from './shared/context/snackbar/SnackbarContext';
 
 
 const root = ReactDOM.createRoot(
@@ -23,7 +24,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <ThemeContextProvider>
-    <App />
+    <SnackbarContextProvider>
+      <App />
+    </SnackbarContextProvider>
   </ThemeContextProvider>
   
 );

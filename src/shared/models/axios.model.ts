@@ -1,0 +1,3 @@
+export enum AXIOS_ERRORS {
+  ERR_CANCELED = "ERR_CANCELED"
+}
