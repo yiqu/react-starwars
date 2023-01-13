@@ -42,3 +42,7 @@ a {
 .main-content {
   height: 100%;
 }
+
+pre, code{
+  white-space:normal;
+}

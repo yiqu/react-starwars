@@ -7,13 +7,15 @@ import { httpGetCancellable } from "src/shared/fetcber/axios";
 import { HttpResponse2List, StarwarsFilm } from "src/shared/models/starwars.model";
 import { BASE_SW_API } from "src/shared/api/endpoints";
 import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
+import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 
 
 const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
   
   const [url, setUrl] = useState<string>();
+  const [swrError, setSwrError] = useState<any>();
   const abortControllerRef = useRef<AbortController>(new AbortController());
-  const sbContext = useRef(useContext(SnackbarContext));
+  const { showSnackbar } = useContext(SnackbarContext);
 
   useDeepCompareEffect(() => {
     const restUrl = urlcat(BASE_SW_API, '/films', { ...params });
@@ -29,21 +31,22 @@ const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
       revalidateOnFocus: false,
       revalidateIfStale: true,
       keepPreviousData: true,
-      shouldRetryOnError: false
+      shouldRetryOnError: true
     }
   );
 
   useEffect(() => {
-    if (error) {
-      sbContext.current.showSnackbar("error", error);
+    if (error && error.code !== AXIOS_ERROR_CODE.ERR_CANCELED) {
+      showSnackbar("error", error);
+      setSwrError(error);
     }
-  }, [error]);
+  }, [error, showSnackbar]);
 
   return {
     allFilms: data?.result,
     allFilmsLoading: isLoading,
     allFilmsValidating: isValidating,
-    allFilmsError: error,
+    allFilmsError: swrError,
   };
 };
 

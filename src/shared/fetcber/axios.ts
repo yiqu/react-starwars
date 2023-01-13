@@ -37,7 +37,7 @@ export const httpGetCancellable = async <T>(url: string, abortController: AbortC
       responseType: 'json',
       signal: abortController.signal
     });
-
+    
     if (res.status === 200) {
       return res.data;
     }

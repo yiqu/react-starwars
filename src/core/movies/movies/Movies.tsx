@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useCallback, useMemo, useState, useEffect } from "react";
@@ -25,6 +25,8 @@ import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
+import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
+import ErrorPage from "src/404/ErrorPage";
 
 
 const userId = 'yqu';
@@ -40,6 +42,8 @@ const Movies = () => {
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
   const [sortedFilms, setSortedFilms] = useState<ResultProperty<StarwarsFilm>[]>([]);
+  const { showSnackbar } = useContext(SnackbarContext);
+
   
   const { data: favMovies, error: favError, loading: favLoading } = 
     useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
@@ -57,6 +61,17 @@ const Movies = () => {
   useDeepCompareEffect(() => {
     setSortedFilms(getSortedFilmsWithFavorited(allFilms, favMovies));
   }, [allFilms, favMovies]);
+
+  /**
+   * Clean up - close any snackbars
+   */
+  const cleanUp = useCallback(() => {
+    showSnackbar('info', undefined);
+  }, [showSnackbar]);
+
+  useEffect(() => {
+    return cleanUp;
+  }, [cleanUp]);
 
   const onFavoriteToggleHandler = (film: StarwarsFilm, currentFavoriteStatus?: FavoriteToSave) => {
     const { url: filmUrl } = film;
@@ -143,7 +158,7 @@ const Movies = () => {
       {
         <LoadingBackdrop isLoading={ allFilmsLoading }>
           {
-            allFilmsError ? <div>Error Page</div> :
+            allFilmsError ? <ErrorPage reason={ 'Failed loading all films.' } debug={ allFilmsError } /> :
             (
               <Stack direction="column" p={ 2 } width="100%">
                 <Grid container disableEqualOverflow rowSpacing={ 4 }>
