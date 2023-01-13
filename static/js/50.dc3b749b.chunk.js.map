@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/50.dc3b749b.chunk.js","mappings":"0KAEe,SAASA,IAEtB,OACE,SAAC,IAAG,uBAIR,C","sources":["404/NotFound.tsx"],"sourcesContent":["import { Box } from \"@mui/material\";\n\nexport default function NotFound404Page() {\n\n  return (\n    <Box>\n      404 Error\n    </Box>\n  );\n};"],"names":["NotFound404Page"],"sourceRoot":""}
