@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import useSWR from "swr/immutable";
+import useSWR from "swr";
 import { FetchFavoritesHookProp } from 'src/shared/models/core-props.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
-import { axiosGet } from "src/shared/firebase/fire-axios";
 import React, { useEffect, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
 import urlcat from "urlcat";
@@ -23,8 +22,12 @@ const useFetchFavorites = ({ userId, params={} }: FetchFavoritesHookProp) => {
   const { data, isValidating, error, isLoading } = useSWR(
     () => url ? url : null, 
     (url) => httpGet<FirebaseData<FavoriteToSave>>(url),
+    {
+      revalidateIfStale: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
-
 
   useEffect(() => {
     const transformedData: FavoriteMoviesObjList = {};

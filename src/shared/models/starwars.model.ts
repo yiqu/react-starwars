@@ -40,17 +40,11 @@ export interface StarwarsFilm {
   title: string;
   url: string;
   vehicles: string[];
-
   // added on manually
-  userFavorited?: boolean;
+  favorite?: FavoriteToSave;
 }
 
-export interface StarwarsFilmCardProps {
-  film: StarwarsFilm;
-  favorited?: FavoriteToSave;
-  onFavoriteToggle: (detail: StarwarsFilm, isCurrentlyFavorited?: FavoriteToSave) => void;
-  uid: string;
-}
+
 
 export interface StarwarFilmDetail {
   title: string; 

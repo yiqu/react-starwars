@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FCC } from "src/shared/models/fc-children.model";
-import { StarwarsFilmCardProps } from "src/shared/models/starwars.model";
-import Grid from '@mui/material/Unstable_Grid2';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,19 +6,77 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from "react-router-dom";
-import useScreenSize from "src/shared/hooks/useIsMobile";
 import FavIcon from '@mui/icons-material/Favorite';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import IconButton from '@mui/material/IconButton';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Stack } from "@mui/material";
 import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
 import DateDisplay from "src/shared/components/date/DateDisplay";
+import { StarwarsFilm, FavoriteToSave } from "src/shared/models/starwars.model";
+import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
+import { axiosPost, axiosPut } from 'src/shared/rest/axios';
+import urlcat from "urlcat";
+import { AxiosResponse } from "axios";
 
+export interface StarwarsFilmCardProps {
+  film: StarwarsFilm;
+  uid: string;
+  userId: string;
+  reloadMovies: () => void
+}
 
-export default function MovieCard({ film, favorited, onFavoriteToggle, uid }: StarwarsFilmCardProps) {
+export default function MovieCard({ film, uid, userId, reloadMovies }: StarwarsFilmCardProps) {
 
+  const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
+  
   const favoriteToggleHandler = () => {
-    onFavoriteToggle(film, favorited);
+    const { url: filmUrl } = film;
+    const filmId = (filmUrl.split("/"))[filmUrl.split("/").length - 1];
+    const restUrl: string = urlcat(
+      BASE_FIREBASE_URL, 
+      `swdb/:user/favorites${film.favorite?.fireId ? ('/'+film.favorite?.fireId) :''}.json`, 
+      { user: userId }
+    );
+
+    const favorite: FavoriteToSave = {
+      filmUrl,
+      filmId,
+      lastUpdated: new Date().getTime(),
+      episodeId: film.episode_id,
+      isCurrentFavorite: true,
+    };
+
+    setSaveFavLoading(true);
+    if (film.favorite) {
+      favorite.isCurrentFavorite = !film.favorite.isCurrentFavorite;
+      favorite.fireId = film.favorite.fireId;
+      axiosPut<AxiosResponse>({ 
+        url: restUrl, 
+        body: favorite, 
+        onSuccess: (res) => {
+          reloadMovies();
+        },
+        onFailure: (err) => {
+        },
+        onFinally: () => {
+          setSaveFavLoading(false);
+        }
+      });
+    } else {
+      axiosPost<AxiosResponse>({ 
+        url: restUrl, 
+        body: favorite, 
+        onSuccess: (res) => {
+          reloadMovies();
+        },
+        onFailure: (err) => {
+        },
+        onFinally: () => {
+          setSaveFavLoading(false);
+        }
+      });
+    }
   };
 
   return (
@@ -75,9 +130,12 @@ export default function MovieCard({ film, favorited, onFavoriteToggle, uid }: St
           </Button>
         </div>
         <div>
-          <IconButton aria-label="favorite" onClick={ favoriteToggleHandler } 
-            title={ getFilmFavoriteToggleTooltip(favorited) }>
-            <FavIcon color={ film.userFavorited ? 'error' : 'disabled' } />
+          <IconButton 
+            aria-label="favorite" 
+            onClick={ favoriteToggleHandler } 
+            title={ getFilmFavoriteToggleTooltip(film.favorite) }
+            disabled={ !!saveFavLoading } >
+            { saveFavLoading ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
           </IconButton>
         </div>
       </CardActions>

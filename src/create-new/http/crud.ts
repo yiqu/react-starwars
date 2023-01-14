@@ -14,7 +14,6 @@ export const createNewFilm = <T>({film, onSuccess, onFailure}: CreationNewFilm<T
   axiosPost({
     url: urlcat(BASE_URL, '/swdb/:user/added-films.json', { user: 'yqu' }),
     body: JSON.stringify(film),
-    method: 'POST',
     onSuccess,
     onFailure
   });

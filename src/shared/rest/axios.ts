@@ -1,6 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { HttpAction } from './fetch';
 
+export interface HttpAction<T> {
+  url: string;
+  body?: any;
+  abortController?: AbortController;
+  onSuccess: (data: T) => void;
+  onFailure: (errorData: any) => void;
+  onFinally?: () => void;
+}
 /**
  * Create a Axios instance
  * @param baseUrl 
