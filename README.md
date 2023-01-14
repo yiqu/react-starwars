@@ -3,7 +3,7 @@
 
 
 ## Prod
-https://swdb.web.app/movies
+https://swdb.web.app/
 
 
 ## API used
