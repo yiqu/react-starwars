@@ -23,12 +23,20 @@ export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
   uid: string;
   userId: string;
+  allFavoritesLoading?: boolean;
   reloadMovies: () => void
 }
 
-export default function MovieCard({ film, uid, userId, reloadMovies }: StarwarsFilmCardProps) {
+export default function MovieCard({ film, uid, userId, allFavoritesLoading, reloadMovies }: StarwarsFilmCardProps) {
 
   const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
+  const [localSaveFavLoading, setLocalSaveFavLoading ] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!allFavoritesLoading) {
+      setLocalSaveFavLoading(false);
+    }
+  }, [allFavoritesLoading]);
   
   const favoriteToggleHandler = () => {
     const { url: filmUrl } = film;
@@ -48,6 +56,7 @@ export default function MovieCard({ film, uid, userId, reloadMovies }: StarwarsF
     };
 
     setSaveFavLoading(true);
+    setLocalSaveFavLoading(true);
     if (film.favorite) {
       favorite.isCurrentFavorite = !film.favorite.isCurrentFavorite;
       favorite.fireId = film.favorite.fireId;
@@ -134,8 +143,8 @@ export default function MovieCard({ film, uid, userId, reloadMovies }: StarwarsF
             aria-label="favorite" 
             onClick={ favoriteToggleHandler } 
             title={ getFilmFavoriteToggleTooltip(film.favorite) }
-            disabled={ !!saveFavLoading } >
-            { saveFavLoading ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
+            disabled={ !!(saveFavLoading || localSaveFavLoading) } >
+            { (saveFavLoading || localSaveFavLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
           </IconButton>
         </div>
       </CardActions>

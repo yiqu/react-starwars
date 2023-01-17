@@ -21,6 +21,7 @@ import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
 import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
 import ErrorPage from "src/404/ErrorPage";
+import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 
 const userId = 'yqu';
 
@@ -45,6 +46,15 @@ const Movies = () => {
   useDeepCompareEffect(() => {
     setSortedFilms(getSortedFilmsWithFavorited(allFilms, favMovies));
   }, [allFilms, favMovies]);
+
+  /**
+   * Error handling
+   */
+  useEffect(() => {
+    if (allFilmsError && allFilmsError.code !== AXIOS_ERROR_CODE.ERR_CANCELED) {
+      showSnackbar("error", allFilmsError);
+    }
+  }, [allFilmsError, showSnackbar]);
 
   /**
    * Clean up - close any snackbars
@@ -121,7 +131,9 @@ const Movies = () => {
                           userId={ userId }
                           reloadMovies={ onReloadMoviesHandler }
                           film={ film.properties } 
-                          uid={ film.uid } />
+                          uid={ film.uid }
+                          allFavoritesLoading={ favLoading }
+                           />
                       </Grid>
                     );
                   }) }
