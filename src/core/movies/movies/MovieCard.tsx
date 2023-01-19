@@ -92,7 +92,7 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, relo
     <Card sx={ {display:'flex',
       flexDirection:'column', 
       justifyContent:'space-between'} } 
-      elevation={ 4 }
+      elevation={ 2 }
     >
       <div>
         <CardMedia

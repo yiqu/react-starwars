@@ -14,6 +14,7 @@ import { createTheme, Theme, ThemeProvider } from '@mui/material/styles';
 import { getMyTheme } from 'src/theme/AppTheme';
 import ThemeContext from 'src/theme/ThemeContext';
 import Grid from '@mui/material/Unstable_Grid2';
+import { GREY } from 'src/theme/palette';
 
 
 const Layout = () => {
@@ -57,9 +58,9 @@ const Layout = () => {
 
         </Drawer>
 
-        <Box component="main" sx={ { flexGrow: 1, bgcolor:(theme) => theme.palette.mode === 'light' ? '#fff' : null } }>
+        <Box component="main" sx={ { flexGrow: 1, bgcolor:(theme) => theme.palette.mode === 'light' ? GREY[100] : null } }>
           <DrawerHeader />
-          <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? 'grey.100' : null } }>
+          <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? GREY[100] : null } }>
             <Outlet />
           </Grid>
          

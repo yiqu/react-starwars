@@ -63,7 +63,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" noWrap component="div" sx={ {fontWeight: 400} }>
+              <Typography variant="h6" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins'} }>
                 { startCase(TransformPageTitle[title+'']) }
               </Typography>
             </Stack>
