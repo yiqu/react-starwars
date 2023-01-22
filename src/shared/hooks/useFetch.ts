@@ -14,7 +14,7 @@ export default function useFetch<T>({ url, params={} }: UseFetchProps) {
 
   const [ isLoading, setIsLoading ] = useState<boolean>(false);
   const [ payload, setPayload ] = useState<T>();
-  const [ error, setError ] = useState<any>();
+  const [ error, setError ] = useState<any>(undefined);
 
   useDeepCompareEffect(() => {
     const abortController = new AbortController();
@@ -30,11 +30,12 @@ export default function useFetch<T>({ url, params={} }: UseFetchProps) {
           setError(err);
         }
       })
-      .then(() => {
+      .finally(() => {
         setIsLoading(false);
       });
 
     return (() => {
+      setError(undefined);
       abortController.abort();
     });
 
