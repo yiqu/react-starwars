@@ -3,6 +3,7 @@ import { Router } from '@remix-run/router';
 import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
+import { loader as movieDetailLoader } from '../core/movies/movies/movie/Movie';
 
 // Lazy load components
 const MovieLayoutLazy = loadable(() => import('../core/movies/AllMoviesLayout'));
@@ -43,7 +44,7 @@ const routeList: Router = createBrowserRouter([
           {
             path: ':movieId',
             element: <CoreMovieLazy />,
-            //loader: QuoteDetailLoader
+            loader: movieDetailLoader
           }
         ]
       },

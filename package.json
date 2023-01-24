@@ -16,8 +16,8 @@
     "firebase": "^9.10.0",
     "formik": "^2.2.9",
     "gh-pages": "^4.0.0",
-    "lodash": "^4.17.21",
     "immer": "^9.0.17",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "object-hash": "^3.0.0",
     "react": "^18.2.0",
@@ -27,7 +27,7 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-use": "^17.4.0",
-    "rxjs": "^7.5.6",
+    "rxjs": "^7.8.0",
     "swr": "^2.0.0",
     "typescript": "^4.8.4",
     "urlcat": "^3.0.0",
@@ -66,7 +66,7 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unused-vars" : "off",
+      "@typescript-eslint/no-unused-vars": "off",
       "react/prop-types": "warn",
       "semi": [
         1,
