@@ -15,7 +15,11 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import urlcat from "urlcat";
 import { ajax } from 'rxjs/ajax';
 import { map, catchError, of, lastValueFrom } from 'rxjs';
+import MovieDetailEntityTable from './EntityTable';
+import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
+import PublicIcon from '@mui/icons-material/Public';
 
+const tables = ['characters', 'planets', 'species', 'starships', 'vehicles'];
 
 const Movie = () => {
 
@@ -37,7 +41,7 @@ const Movie = () => {
             </Stack>
           </Grid>
           <Grid xs={ 12 } sm={ 7 }>
-            <Stack direction="column">
+            <Stack direction="column" spacing={ 2 }>
               <Typography variant='h4'>
                 { movieData.title }
               </Typography>
@@ -47,6 +51,22 @@ const Movie = () => {
                   { movieData.opening_crawl }
                 </Typography>
               </Box>
+              {
+                tables.map((tab) => {
+                  return (
+                    <MovieDetailEntityTable columns={ ['id', 'link'] } columnData={ movieData[tab as keyof StarwarFilmDetail] as any[] } key={ tab }
+                      header={ <Typography
+                        sx={ { display: 'flex', justifyContent:"center", alignItems:"center", pt:2 } }
+                        variant="h5"
+                        component="div">
+                        <SportsMartialArtsIcon sx={ {mr: 1} } />
+                        <div>
+                          { tab }
+                        </div>
+                      </Typography> } />
+                  );
+                })
+              }
             </Stack>
           </Grid>
         </Grid>

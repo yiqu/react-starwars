@@ -8,7 +8,7 @@ export interface MovieDetailCardProps {
   movieDetail: StarwarFilmDetail;
 }
 
-const displayKeys = ['release_date', 'director', 'producer', 'planets', 'species', 'starships', 'vehicles'];
+const displayKeys = ['release_date', 'director', 'producer', 'characters', 'planets', 'species', 'starships', 'vehicles'];
 
 export default function MovieDetailCard({ movieDetail }: MovieDetailCardProps) {
 
