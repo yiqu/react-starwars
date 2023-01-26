@@ -1,6 +1,10 @@
-import { Box, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { Box, Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import React, { ReactNode, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
+import { upperFirst } from 'lodash';
+import usePopover from "src/shared/hooks/usePopover";
+import ClickAwayListener from '@mui/base/ClickAwayListener';
+import Popover from '@mui/material/Popover';
 
 
 export interface MovieDetailEntityTableProps {
@@ -11,16 +15,21 @@ export interface MovieDetailEntityTableProps {
 
 export interface MovieDetailEntityTableData {
   id: string;
-  link: string;
+  detail: string;
 }
 
 export default function MovieDetailEntityTable({ columns, columnData, header }: MovieDetailEntityTableProps) {
   
   const [tableData, setTableData] = useState<MovieDetailEntityTableData[]>([]);
+  const { popover, handlePopoverClose, handlePopoverOpen } = usePopover({ id: 'film-detail-popover'});
 
   useDeepCompareEffect(() => {
     setTableData(convertTableData(columnData));
   }, [columnData]);
+
+  const onViewClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    handlePopoverOpen(e.currentTarget);
+  };
 
   return (
     <Stack>
@@ -33,7 +42,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
                 <TableRow>
                   {
                     columns.map((col) => {
-                      return <TableCell key={ col } width="50%">{ col }</TableCell>;
+                      return <TableCell key={ col } width="50%">{ upperFirst(col) }</TableCell>;
                     })
                   }
                 </TableRow>
@@ -42,19 +51,27 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
               <TableBody>
                 {
                   tableData.map((row: MovieDetailEntityTableData) => (
-                    <TableRow key={ row.link } sx={ { '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': {
+                    <TableRow key={ row.detail } sx={ { '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': {
                       backgroundColor: (theme)=> theme.palette.action.hover,
                       }} }>
                       {
                         Object.keys(tableData[0]).map((dataKey: string) => {
                           return (
-                            <TableCell component="th" scope="row" key={ dataKey }>
-                              { row[dataKey as keyof MovieDetailEntityTableData] }
+                            <TableCell component="th" scope="row" key={ dataKey } >
+                              <Box sx={ {display: 'flex'} }>
+                                <Typography title={ row[dataKey as keyof MovieDetailEntityTableData] } sx={ {cursor: 'pointer'} }>
+                                  {
+                                    dataKey === 'id' ? (row[dataKey as keyof MovieDetailEntityTableData]) : 
+                                    (
+                                      <Button variant="outlined" size="small" onClick={ onViewClickHandler }>View</Button>
+                                    )
+                                  }
+                                </Typography>
+                              </Box>
                             </TableCell>
                           );
                         })
                       }
-                      
                     </TableRow>
                   ))
                 }
@@ -63,6 +80,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
           </TableContainer>
         </Paper>
       </Box>
+      { popover }
     </Stack>
   );
 };
@@ -73,7 +91,7 @@ function convertTableData(data: string[] = []): MovieDetailEntityTableData[] {
     const charId = arr[arr.length - 1];
     return {
       id: charId,
-      link: char
+      detail: char
     };
   });
 }

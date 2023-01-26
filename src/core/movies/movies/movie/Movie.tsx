@@ -54,9 +54,9 @@ const Movie = () => {
               {
                 tables.map((tab) => {
                   return (
-                    <MovieDetailEntityTable columns={ ['id', 'link'] } columnData={ movieData[tab as keyof StarwarFilmDetail] as any[] } key={ tab }
+                    <MovieDetailEntityTable columns={ ['id', 'detail'] } columnData={ movieData[tab as keyof StarwarFilmDetail] as any[] } key={ tab }
                       header={ <Typography
-                        sx={ { display: 'flex', justifyContent:"center", alignItems:"center", pt:2 } }
+                        sx={ { display: 'flex', justifyContent: "start", alignItems: "center", pt: 2, pl: 2 } }
                         variant="h5"
                         component="div">
                         <SportsMartialArtsIcon sx={ {mr: 1} } />
