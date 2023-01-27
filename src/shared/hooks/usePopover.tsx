@@ -1,39 +1,38 @@
 import React, { useEffect } from 'react';
 import Popover, { PopoverOrigin } from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
+import { Popper, PopperPlacementType } from '@mui/material';
 
 
 export interface PopoverProps {
   id: string;
-  open?: boolean;
-  target?: EventTarget & HTMLElement;
-  position?: PopoverOrigin;
-  handlePopoverOpen?: () => void;
+  position?: PopperPlacementType;
+  handlePopoverOpen?: (target: any) => void;
 }
 
-export default function usePopover({ id, position={vertical: 'bottom',horizontal: 'left'} }: PopoverProps) {
+export default function usePopover({ id, position="bottom" }: PopoverProps) {
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [content, setContent] = React.useState<any>(null);
 
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
 
-  const handlePopoverOpen = (event: any) => {
-    setAnchorEl(event);
+  const handlePopoverOpen = (target: any, content: any) => {
+    setAnchorEl(anchorEl ? null : target);
+    setContent(content);
   };
 
   const popover = (
-    <Popover
+    <Popper 
       id={ id }
       open={ !!anchorEl }
       anchorEl={ anchorEl }
-      anchorOrigin={ position }
-      onClose={ handlePopoverClose }
-      disableRestoreFocus
+      placement={ position }
     >
-      <Typography sx={ { p: 1 } }>I use Popover.</Typography>
-    </Popover>
+      { content }
+    </Popper>
   );
 
   return {

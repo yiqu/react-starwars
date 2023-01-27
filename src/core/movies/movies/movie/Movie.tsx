@@ -18,6 +18,7 @@ import { map, catchError, of, lastValueFrom } from 'rxjs';
 import MovieDetailEntityTable from './EntityTable';
 import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
 import PublicIcon from '@mui/icons-material/Public';
+import { startCase } from 'lodash';
 
 const tables = ['characters', 'planets', 'species', 'starships', 'vehicles'];
 
@@ -60,8 +61,8 @@ const Movie = () => {
                         variant="h5"
                         component="div">
                         <SportsMartialArtsIcon sx={ {mr: 1} } />
-                        <div>
-                          { tab }
+                        <div style={ {fontFamily: 'Poppins'} }>
+                          { startCase(tab) }
                         </div>
                       </Typography> } />
                   );

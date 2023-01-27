@@ -23,6 +23,7 @@ export interface ResultProperty<T> {
   description: string;
   _id: string;
   uid: string;
+  __v: string;
 }
 
 export interface StarwarsFilm {
@@ -103,4 +104,19 @@ export interface StarwarFilmPersonal {
   species: StarwarsContent[];
   starships: StarwarsContent[];
   vehicles: StarwarsContent[];
+}
+
+export interface StarwarCharacter {
+  height: string;
+  mass: string;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
+  created: string;
+  edited: string;
+  name: string;
+  homeworld: string;
+  url: string;
 }

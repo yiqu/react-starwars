@@ -5,6 +5,7 @@ import { upperFirst } from 'lodash';
 import usePopover from "src/shared/hooks/usePopover";
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import Popover from '@mui/material/Popover';
+import MoviePopoverContent from "./MoviePopoverContent";
 
 
 export interface MovieDetailEntityTableProps {
@@ -27,8 +28,8 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
     setTableData(convertTableData(columnData));
   }, [columnData]);
 
-  const onViewClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    handlePopoverOpen(e.currentTarget);
+  const onViewClickHandler = (url: string) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    handlePopoverOpen(e.currentTarget, <MoviePopoverContent url={ url } onCloseClick={ handlePopoverClose } />);
   };
 
   return (
@@ -63,7 +64,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
                                   {
                                     dataKey === 'id' ? (row[dataKey as keyof MovieDetailEntityTableData]) : 
                                     (
-                                      <Button variant="outlined" size="small" onClick={ onViewClickHandler }>View</Button>
+                                      <Button variant="outlined" size="small" onClick={ onViewClickHandler(row['detail']) }>View</Button>
                                     )
                                   }
                                 </Typography>

@@ -28,7 +28,7 @@ export const getAxiosInstance = (baseUrl: string) => {
 export const axiosGet = <T>({ url, onSuccess, onFailure, onFinally, abortController }: HttpAction<T>) => {
   axios.get(url)
   .then((res: AxiosResponse) => {
-    onSuccess && onSuccess(res.data);
+    onSuccess && onSuccess(res.data as T);
   })
   .catch((err: AxiosError) => {
     console.log("App error GET: ", err);
