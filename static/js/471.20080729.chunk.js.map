@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/471.20080729.chunk.js","mappings":"6HASA,UATmB,WAEjB,OACE,iCAIJ,C","sources":["core/characters/CharactersLayout.tsx"],"sourcesContent":["const Characters = () => {\n\n  return (\n    <div>\n      Char\n    </div>\n  );\n};\n\nexport default Characters;"],"names":[],"sourceRoot":""}
