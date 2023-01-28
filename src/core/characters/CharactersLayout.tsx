@@ -1,9 +1,9 @@
+import { Outlet } from "react-router-dom";
+
 const Characters = () => {
 
   return (
-    <div>
-      Char
-    </div>
+    <Outlet />
   );
 };
 

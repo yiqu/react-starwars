@@ -8,3 +8,6 @@ export const TransformPageTitle: {[key: string]: string} = {
   'personal-films': 'My films',
   about: 'About'
 };
+
+export const PAGE_LIMIT = 100;
+export const PAGE_COUNT = 1;

@@ -62,7 +62,10 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
                               <Box sx={ {display: 'flex'} }>
                                 <Typography title={ row[dataKey as keyof MovieDetailEntityTableData] } sx={ {cursor: 'pointer'} }>
                                   {
-                                    dataKey === 'id' ? (row[dataKey as keyof MovieDetailEntityTableData]) : 
+                                    dataKey === 'id' ? 
+                                    (
+                                      row[dataKey as keyof MovieDetailEntityTableData]
+                                    ) : 
                                     (
                                       <Button variant="outlined" size="small" onClick={ onViewClickHandler(row['detail']) }>View</Button>
                                     )

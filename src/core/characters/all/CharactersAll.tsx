@@ -1,10 +1,90 @@
+import { Link, LoaderFunctionArgs, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import { delay, firstValueFrom, map } from "rxjs";
+import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { BASE_SW_API } from "src/shared/api/endpoints";
+import { PAGE_COUNT, PAGE_LIMIT } from "src/shared/utils/constants";
+import urlcat from "urlcat";
+import { HttpResponse, StarwarsContent } from 'src/shared/models/starwars.model';
+import AppToolbar from "src/shared/components/toolbar/Toolbar";
+import useScreenSize from "src/shared/hooks/useIsMobile";
+import { Stack, Tooltip, IconButton, Typography } from "@mui/material";
+import ErrorPage from "src/404/ErrorPage";
+import FilterInput from "src/core/movies/movies/filter/FilterInput";
+import MovieCard from "src/core/movies/movies/MovieCard";
+import ProgressCircle from "src/shared/components/progress/CircleProgress";
+import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
+import { DataBlockDisplayMode } from "src/shared/models/general.model";
+import { useCallback } from "react";
+import Grid from '@mui/material/Unstable_Grid2';
+
 const CharactersAll = () => {
 
+  const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
+  const { isMobile } = useScreenSize();
+
+  const onFilterChangeHandler = useCallback((movieName: string) => {
+  }, []);
+  
   return (
-    <div>
-      Char all
-    </div>
+    <Stack direction="column" width="100%">
+      <AppToolbar toolbarProps={ {
+        position:"sticky",
+        sx:{top: isMobile ? '56px':'64px'}
+      } }>
+        <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+          <Grid xs={ 10 } sm={ 4 }>
+            <Stack direction="row" justifyContent="start" alignItems="center">
+              <Grid container xs={ 12 }>
+                <Grid xs={ 8 }>
+                  <FilterInput filterChange={ onFilterChangeHandler } />
+                </Grid>
+                <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
+                  { false && <ProgressCircle size={ 20 } /> }
+                </Grid>
+              </Grid>
+            </Stack>
+          </Grid>
+          <Grid xs={ 2 } sm={ 8 }>
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+            </Stack>
+          </Grid>
+        </Grid>
+      </AppToolbar>
+
+      <Grid container spacing={ 2 } sm={ 8 } smOffset={ 2 } m={ 2 }>
+        {
+          characters.map((char: StarwarsContent) => {
+            return (
+              <Grid xs={ 12 } sm={ 4 } md={ 3 } lg={ 2 } key={ char.uid }>
+                <Link to={ char.uid }>
+                  <Typography variant="body1">{ char.name } </Typography>
+                </Link>
+              </Grid>
+            );
+          })
+        }
+      </Grid>
+    </Stack>
   );
 };
 
 export default CharactersAll;
+
+export function loader({ params }: LoaderFunctionArgs): Promise<StarwarsContent[]> {
+
+  const restUrl: string = urlcat(
+    BASE_SW_API, 
+    `people`, 
+    { limit: PAGE_LIMIT, page: PAGE_COUNT }
+  );
+
+  
+  const people$ = ajax<HttpResponse<StarwarsContent>>(restUrl).pipe(
+    delay(0),
+    map((res) => {
+      return res.response.results;
+    })
+  );
+
+  return firstValueFrom(people$);
+};

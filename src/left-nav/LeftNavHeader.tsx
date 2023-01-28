@@ -12,8 +12,10 @@ import { useTheme } from '@mui/material/styles';
 import { FCC } from 'src/shared/models/fc-children.model';
 import { LeftNavHeaderProps } from 'src/shared/models/nav-item.model';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigation } from 'react-router-dom';
 import { getRandomArbitrary } from 'src/shared/utils/number.utils';
+import { yellow } from '@mui/material/colors';
+
 
 const LOGO_LIST = [falconLogo, vaderLogo, saberLogo, dstarLogo];
 
@@ -22,6 +24,7 @@ const LeftNavHeader: FCC<LeftNavHeaderProps> = ({ closeDrawerHandler }: LeftNavH
   const leftNavTitle = 'SWDB';
   const theme = useTheme();
   const location = useLocation();
+  const navigation = useNavigation();
 
   const handleDrawerClose = () => {
     closeDrawerHandler(false);
@@ -38,7 +41,7 @@ const LeftNavHeader: FCC<LeftNavHeaderProps> = ({ closeDrawerHandler }: LeftNavH
     <DrawerHeader >
       <Typography component='div' sx={ {display: 'flex', flexDirection:"row", alignItems:"center"} }>
         <Typography component="img" src={ displayLogo } sx={ {height: '2rem', mr: '10px'} } alt="logo"></Typography>
-        <Typography variant='h6'>{ leftNavTitle }</Typography>
+        <Typography variant='h6' color={ navigation.state === 'loading' ? yellow[800] : undefined }>{ leftNavTitle }</Typography>
         
       </Typography>
       <IconButton onClick={ handleDrawerClose }>
