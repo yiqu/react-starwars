@@ -8,9 +8,13 @@ import { BASE_SW_API } from "src/shared/api/endpoints";
 import { PAGE_COUNT, PAGE_LIMIT } from "src/shared/utils/constants";
 import urlcat from "urlcat";
 import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
+import CharacterDetailCard from "./CharacterCard";
+import useScreenSize from "src/shared/hooks/useIsMobile";
 
 export const Character: FC = () => {
 
+  const { isMobile } = useScreenSize();
+  
   const deferredData = useLoaderData() as {
     character: Promise<StarwarCharacter>;
     planets: Promise<StarwarsContent[]>;
@@ -19,28 +23,45 @@ export const Character: FC = () => {
   return (
     <Grid xs={ 12 } container sx={ {p: 2} }>
       <Grid xs={ 12 } sm={ 8 } xsOffset={ 0 } smOffset={ 2 }>
-        <Stack direction="column" spacing={ 2 }>
+        <Stack direction="column" spacing={ 4 }>
           <Suspense fallback={ 'Loading...' }>
             <Await resolve={ deferredData.character }>
               { (loadedCharacter: StarwarCharacter) => {
                 return (
-                  <Stack direction="column" spacing={ 2 }>
-                    <Typography variant='h4'>
-                      { loadedCharacter.name }
-                    </Typography>
+                  <Grid xs={ 12 } container 
+                    justifyContent="space-between"
+                    alignItems="start"
+                    flexDirection={ { xs: 'column', sm: 'row' } } columnSpacing={ {md: 2} }>
 
-                    <Box>
-                      <Typography variant='body1'>
-                        Character description
-                      </Typography>
-                    </Box>
-                  </Stack>
+                    <Grid xs={ 12 } sm={ 4.3 } sx={ { mb: isMobile ? 2: 0 } }>
+                      <CharacterDetailCard character={ loadedCharacter } />
+                    </Grid>
+                    <Grid xs={ 12 } sm={ 7.1 }>
+                      <Stack direction="column" spacing={ 2 }>
+                        <Typography variant='h4' sx={ {fontWeight: 500} }>
+                          { loadedCharacter.name }
+                        </Typography>
+                        <Divider  />
+                        <Typography variant='body1'>
+                          { `${loadedCharacter.name} was born ${loadedCharacter.birth_year} with ${loadedCharacter.skin_color} 
+                          skin color and ${loadedCharacter.eye_color} eyes.` }
+                        </Typography>
+                        
+                        <Typography variant='h5' pt={ 2 }>
+                          Home Planet
+                        </Typography>
+                        <Divider  />
+
+                      </Stack>
+                        
+                    </Grid>
+                  </Grid>
                 );
               } }
             </Await>
           </Suspense>
           
-          <Divider  />
+          <Divider />
 
           <Suspense fallback={ 'Loading...' }>
             <Await resolve={ deferredData.planets }>

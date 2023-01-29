@@ -43,7 +43,7 @@ const Movie = () => {
           </Grid>
           <Grid xs={ 12 } sm={ 7 }>
             <Stack direction="column" spacing={ 2 }>
-              <Typography variant='h4'>
+              <Typography variant='h4' sx={ {fontWeight: 500} }>
                 { movieData.title }
               </Typography>
               <Divider sx={ {my: 2} } />
@@ -64,7 +64,8 @@ const Movie = () => {
                         <div style={ {fontFamily: 'Poppins'} }>
                           { startCase(tab) }
                         </div>
-                      </Typography> } />
+                      </Typography> }
+                    />
                   );
                 })
               }
