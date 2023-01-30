@@ -10,6 +10,7 @@ import urlcat from "urlcat";
 import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
 import CharacterDetailCard from "./CharacterCard";
 import useScreenSize from "src/shared/hooks/useIsMobile";
+import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 
 export const Character: FC = () => {
 
@@ -69,22 +70,11 @@ export const Character: FC = () => {
                 return (
                   <Stack direction="column" spacing={ 2 }>
                     <Typography>
-                      Check out these characters&apos; homes:
+                      Check out other planets:
                     </Typography>
 
-                    <Grid container spacing={ 2 }>
-                      {
-                        loadedPlanets.map((planet: StarwarsContent) => {
-                          return (
-                            <Grid xs={ 12 } sm={ 4 } md={ 3 } lg={ 2 } key={ planet.uid }>
-                              <Link to={ `/planets/${planet.uid}` }>
-                                <Typography variant="body1">{ planet.name } </Typography>
-                              </Link>
-                            </Grid>
-                          );
-                        })
-                      }
-                    </Grid>
+                    <SimpleGridDisplay data={ loadedPlanets } itemUrlPath="planets"/>
+
                   </Stack>
                 );
               } }

@@ -17,6 +17,7 @@ import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 import Face4Icon from '@mui/icons-material/Face4';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import useScreenSize from "src/shared/hooks/useIsMobile";
 
 export interface MoviePopoverContentProps {
   url: string;
@@ -92,9 +93,12 @@ export default function MoviePopoverContent({ url, onCloseClick }: MoviePopoverC
 };
 
 const Wrapper: FC<PropsWithChildren<{props?: any}>> = ({ props, children }) => {
+
+  const { isMobile } = useScreenSize();
+
   return (
     <Box>
-      <Paper sx={ {p: 0, width: '100%', height: '100%', minHeight: '20rem', minWidth: '20rem', 
+      <Paper sx={ {p: 0, width: '100%', height: '100%', minHeight: '20rem', minWidth: (isMobile ? '0rem' : '20rem'), 
         display: 'flex', justifyContent: 'center', alignItems: 'start', ...props} }>
         { children }
       </Paper>

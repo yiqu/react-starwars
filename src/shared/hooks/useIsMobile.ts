@@ -1,6 +1,11 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
+/**
+ * A media query string
+ * which matches screen widths less than the screen size given by the breakpoint key (down)
+ * @returns 
+ */
 const useScreenSize = () => {
 
   const theme = useTheme();

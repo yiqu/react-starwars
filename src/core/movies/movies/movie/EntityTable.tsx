@@ -6,6 +6,7 @@ import usePopover from "src/shared/hooks/usePopover";
 import ClickAwayListener from '@mui/base/ClickAwayListener';
 import Popover from '@mui/material/Popover';
 import MoviePopoverContent from "./MoviePopoverContent";
+import useScreenSize from "src/shared/hooks/useIsMobile";
 
 
 export interface MovieDetailEntityTableProps {
@@ -23,6 +24,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
   
   const [tableData, setTableData] = useState<MovieDetailEntityTableData[]>([]);
   const { popover, handlePopoverClose, handlePopoverOpen } = usePopover({ id: 'film-detail-popover'});
+  const { isXl } = useScreenSize();
 
   useDeepCompareEffect(() => {
     setTableData(convertTableData(columnData));
@@ -38,7 +40,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
         <Paper sx={ { width: '100%', mb: 2 } } elevation={ 1 }>
           { header }
           <TableContainer>
-            <Table sx={ { minWidth: 750 } } size="medium">
+            <Table sx={ { minWidth: isXl ? 0 : 750 } } size="medium">
               <TableHead>
                 <TableRow>
                   {

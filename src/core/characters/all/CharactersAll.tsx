@@ -16,6 +16,7 @@ import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
 import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useCallback } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
+import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 
 const CharactersAll = () => {
 
@@ -51,19 +52,8 @@ const CharactersAll = () => {
         </Grid>
       </AppToolbar>
 
-      <Grid container spacing={ 2 } sm={ 8 } smOffset={ 2 } m={ 2 }>
-        {
-          characters.map((char: StarwarsContent) => {
-            return (
-              <Grid xs={ 12 } sm={ 4 } md={ 3 } lg={ 2 } key={ char.uid }>
-                <Link to={ char.uid }>
-                  <Typography variant="body1">{ char.name } </Typography>
-                </Link>
-              </Grid>
-            );
-          })
-        }
-      </Grid>
+      <SimpleGridDisplay data={ characters } itemUrlPath="characters" gridStyles={ {p: 3} } />
+
     </Stack>
   );
 };
