@@ -22,6 +22,9 @@ import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
 import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
 import ErrorPage from "src/404/ErrorPage";
 import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
+import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
+import { useAppSelector } from "src/store/appHook";
+
 
 const userId = 'yqu';
 
@@ -39,6 +42,9 @@ const Movies = () => {
 
   const { data: favMovies, error: favError, loading: favLoading } = useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
   const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = useFetchMovies({ params: fetchMoviesParams });
+
+  // using redux
+  const films: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.selectAll);
 
   /**
    * Sort the films by ID, and set favorites to true
@@ -124,7 +130,7 @@ const Movies = () => {
             (
               <Stack direction="column" p={ 2 } width="100%">
                 <Grid container disableEqualOverflow rowSpacing={ 4 }>
-                  { sortedFilms?.map((film) => {
+                  { films?.map((film) => {
                     return (
                       <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
                         <MovieCard 

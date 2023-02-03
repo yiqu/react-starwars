@@ -15,6 +15,8 @@ import '@fontsource/poppins/600.css';
 import '@fontsource/poppins/700.css';
 import { ThemeContextProvider } from './theme/ThemeContext';
 import { SnackbarContextProvider } from './shared/context/snackbar/SnackbarContext';
+import { Provider } from 'react-redux';
+import { appStore } from './store/appStore';
 
 
 const root = ReactDOM.createRoot(
@@ -23,12 +25,13 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-  <ThemeContextProvider>
-    <SnackbarContextProvider>
-      <App />
-    </SnackbarContextProvider>
-  </ThemeContextProvider>
-  
+  <Provider store={ appStore }>
+    <ThemeContextProvider>
+      <SnackbarContextProvider>
+        <App />
+      </SnackbarContextProvider>
+    </ThemeContextProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
