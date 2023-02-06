@@ -1,9 +1,23 @@
+import { createAction } from '@reduxjs/toolkit';
 import { map } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { HttpParams } from 'src/shared/models/http.model';
 import { HttpResponse2List, ResultProperty, StarwarsFilm } from 'src/shared/models/starwars.model';
 import { allFilmsSlice } from './films.reducer';
 
-export const { fetchFailure, fetchPayloadSuccess, setApiLoading, setFirstTimeLoading, setUrl } = allFilmsSlice.actions;
+export const { fetchFailure, fetchPayloadSuccess, setValidating, setLoading, setUrl, setParams2 } = allFilmsSlice.actions;
+
+export const setApiParams = createAction(
+  'setApiParams',
+  function prepare(params: HttpParams) {
+    return {
+      payload: {
+        params
+      }
+    };
+  }
+);
+
 
 export const fetchAllFilmsThunk = (params: any) => {
   return (dispatch: any, getState: any) => {

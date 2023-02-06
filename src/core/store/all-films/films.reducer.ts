@@ -10,11 +10,11 @@ import { HttpResponse2List, ResultProperty, StarwarsFilm } from 'src/shared/mode
 import { FetchProp } from './films.state';
 
 export interface AllFilmsEntityState extends EntityState<ResultProperty<StarwarsFilm>> {
-  apiLoading?: boolean;
+  isValidating?: boolean;
   apiUrl?: string;
   apiParams?: HttpParams;
 
-  firstTimeLoading: boolean;
+  isLoading: boolean;
   error?: boolean;
   errMsg?: string;
   lastValidationDate?: number;
@@ -39,7 +39,6 @@ export const adapter = createEntityAdapter<ResultProperty<StarwarsFilm>>({
 export const allFilmsSlice = createSlice({
   name: 'allFilms',
   initialState: adapter.getInitialState<Partial<AllFilmsEntityState>>({
-    firstTimeLoading: true,
   }),
   reducers: {
 
@@ -51,16 +50,31 @@ export const allFilmsSlice = createSlice({
       state.apiParams = action.payload;
     },
 
+    setParams2: {
+      reducer: (state, action: PayloadAction<HttpParams>) => {
+        state.apiParams = action.payload;
+      },
+      prepare: (userInput: HttpParams) => {
+        return {
+          payload: {
+            ...userInput
+          }
+        };
+      }
+    },
+
     fetchPayloadSuccess: (state, action: PayloadAction<ResultProperty<StarwarsFilm>[]>) => {
       adapter.upsertMany(state, action.payload);
+      state.error = false;
+      state.errMsg = undefined;
     },
 
-    setFirstTimeLoading: (state, action: PayloadAction<boolean>) => {
-      state.firstTimeLoading = action.payload;
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
 
-    setApiLoading: (state, action: PayloadAction<boolean>) => {
-      state.apiLoading = action.payload;
+    setValidating: (state, action: PayloadAction<boolean>) => {
+      state.isValidating = action.payload;
       state.lastValidationDate = new Date().getTime();
     },
 

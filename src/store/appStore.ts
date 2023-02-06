@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { allFilmsSlice } from 'src/core/store/all-films/films.reducer';
+import { favoriteFilmslice } from 'src/core/store/favorites/favorites.reducer';
 
 export const appStore = configureStore({
   reducer: {
-    allFilms: allFilmsSlice.reducer
+    allFilms: allFilmsSlice.reducer,
+    favoriteFilms: favoriteFilmslice.reducer
   },
   devTools: {
     trace: true

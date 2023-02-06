@@ -1,6 +1,7 @@
 import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import moment from 'moment';
 import produce from 'immer';
+import { Dictionary } from "@reduxjs/toolkit";
 
 
 export const getFilmFavoriteToggleTooltip = (favorited?: FavoriteToSave) => {
@@ -20,7 +21,7 @@ export const getFilmFavoriteToggleTooltip = (favorited?: FavoriteToSave) => {
   return tooltip;
 };
 
-export const getSortedFilmsWithFavorited = (allFilms: ResultProperty<StarwarsFilm>[] | undefined, favorited: FavoriteMoviesObjList): ResultProperty<StarwarsFilm>[] => {
+export const getSortedFilmsWithFavorited = (allFilms: ResultProperty<StarwarsFilm>[] | undefined, favorited: Dictionary<FavoriteToSave>): ResultProperty<StarwarsFilm>[] => {
   const result = produce((allFilms ?? []), (draft: ResultProperty<StarwarsFilm>[]) => {
     draft.sort((prev: ResultProperty<StarwarsFilm>, next: ResultProperty<StarwarsFilm>) => {
       return prev.properties.episode_id > next.properties.episode_id ? 1 : -1;

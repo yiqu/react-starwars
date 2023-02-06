@@ -8,12 +8,12 @@ const allFilmsSlice = (state: RootState) => {
 export const { selectAll, selectById, selectEntities, selectIds, selectTotal } =
   fromFilmsReducer.adapter.getSelectors((state: RootState) => state.allFilms);
 
-export const selectLoading = (state: RootState) => {
-  return allFilmsSlice(state).apiLoading;
+export const selectIsLoading = (state: RootState) => {
+  return allFilmsSlice(state).isLoading;
 };
 
-export const selectFirstTimeLoading = (state: RootState) => {
-  return allFilmsSlice(state).firstTimeLoading;
+export const selectIsValidating = (state: RootState) => {
+  return allFilmsSlice(state).isValidating;
 };
 
 export const selectApiUrl = (state: RootState) => {
@@ -22,4 +22,8 @@ export const selectApiUrl = (state: RootState) => {
 
 export const selectApiParams = (state: RootState) => {
   return allFilmsSlice(state).apiParams;
+};
+
+export const selectError = (state: RootState) => {
+  return allFilmsSlice(state).errMsg;
 };

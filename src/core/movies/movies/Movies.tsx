@@ -7,7 +7,7 @@ import useFetchFavorites from "src/core/hooks/useFetchFavorites";
 import useFetchMovies from "src/core/hooks/useFetchMovies";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import { HttpParams } from "src/shared/models/http.model";
-import { ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
+import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
@@ -23,12 +23,16 @@ import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
 import ErrorPage from "src/404/ErrorPage";
 import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
-import { useAppSelector } from "src/store/appHook";
+import { useAppDispatch, useAppSelector } from "src/store/appHook";
+import * as fromFavoriteFilmsActions from '../../store/favorites/favorites.actions';
+import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
+import { Dictionary } from "@reduxjs/toolkit";
 
 
 const userId = 'yqu';
 
 const Movies = () => {
+  const dispatch = useAppDispatch();
   const { showSnackbar } = useContext(SnackbarContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
@@ -36,31 +40,38 @@ const Movies = () => {
 
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
 
-  const [fetchFavoriteTime, setFetchFavoriteTime] = useState<number>(0);
+  // TODO: dispatch set api params action
   const [fetchMoviesParams, setFetchMoviesParams] = useState<HttpParams>({});
+
   const [sortedFilms, setSortedFilms] = useState<ResultProperty<StarwarsFilm>[]>([]);
 
-  const { data: favMovies, error: favError, loading: favLoading } = useFetchFavorites({userId: userId, params: {fetchTime: fetchFavoriteTime}});
-  const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = useFetchMovies({ params: fetchMoviesParams });
-
-  // using redux
   const films: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.selectAll);
+  const isFilmsLoading: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsLoading);
+  const isFilmsValidating: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsValidating);
+  const fetchFilmsError: any = useAppSelector(fromAllFilmsSelectors.selectError);
+
+  const favorites: FavoriteMoviesObjList = useAppSelector(fromFavoriteFilmsSelectors.selectAllByEpId);
+  const favoritesLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsLoading);
 
   /**
    * Sort the films by ID, and set favorites to true
    */
   useDeepCompareEffect(() => {
-    setSortedFilms(getSortedFilmsWithFavorited(allFilms, favMovies));
-  }, [allFilms, favMovies]);
+    setSortedFilms(getSortedFilmsWithFavorited(films, favorites));
+  }, [films, favorites]);
 
   /**
    * Error handling
    */
+  // useEffect(() => {
+  //   if (allFilmsError && allFilmsError.code !== AXIOS_ERROR_CODE.ERR_CANCELED) {
+  //     showSnackbar("error", allFilmsError);
+  //   }
+  // }, [allFilmsError, showSnackbar]);
+
   useEffect(() => {
-    if (allFilmsError && allFilmsError.code !== AXIOS_ERROR_CODE.ERR_CANCELED) {
-      showSnackbar("error", allFilmsError);
-    }
-  }, [allFilmsError, showSnackbar]);
+    dispatch(fromFavoriteFilmsActions.fetchFavoritesThunk());
+  }, [dispatch]);
 
   /**
    * Clean up - close any snackbars
@@ -72,7 +83,7 @@ const Movies = () => {
   }, [showSnackbar]);
 
   const onReloadMoviesHandler = () => {
-    setFetchFavoriteTime(new Date().getTime());
+    dispatch(fromFavoriteFilmsActions.fetchFavoritesThunk());
   };
 
   const onFilterChangeHandler = useCallback((movieName: string) => {
@@ -106,7 +117,7 @@ const Movies = () => {
                   <FilterInput filterChange={ onFilterChangeHandler } />
                 </Grid>
                 <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
-                  { allFilmsValidating && <ProgressCircle size={ 20 } /> }
+                  { isFilmsValidating && <ProgressCircle size={ 20 } /> }
                 </Grid>
               </Grid>
             </Stack>
@@ -124,13 +135,13 @@ const Movies = () => {
       </AppToolbar>
 
       {
-        <LoadingBackdrop isLoading={ allFilmsLoading }>
+        <LoadingBackdrop isLoading={ isFilmsLoading }>
           {
-            allFilmsError ? <ErrorPage reason={ 'Failed loading all films.' } debug={ allFilmsError } /> :
+            fetchFilmsError ? <ErrorPage reason={ 'Failed loading all films.' } debug={ fetchFilmsError } /> :
             (
               <Stack direction="column" p={ 2 } width="100%">
                 <Grid container disableEqualOverflow rowSpacing={ 4 }>
-                  { films?.map((film) => {
+                  { sortedFilms?.map((film) => {
                     return (
                       <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
                         <MovieCard 
@@ -138,7 +149,7 @@ const Movies = () => {
                           reloadMovies={ onReloadMoviesHandler }
                           film={ film.properties } 
                           uid={ film.uid }
-                          allFavoritesLoading={ favLoading }
+                          allFavoritesLoading={ favoritesLoading }
                            />
                       </Grid>
                     );
