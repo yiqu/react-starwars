@@ -7,18 +7,11 @@ import { allFilmsSlice } from './films.reducer';
 
 export const { fetchFailure, fetchPayloadSuccess, setValidating, setLoading, setUrl, setParams2 } = allFilmsSlice.actions;
 
-export const setApiParams = createAction(
-  'setApiParams',
-  function prepare(params: HttpParams) {
-    return {
-      payload: {
-        params
-      }
-    };
-  }
-);
-
-
+/**
+ * NOT USED - Using SWR
+ * @param params 
+ * @returns 
+ */
 export const fetchAllFilmsThunk = (params: any) => {
   return (dispatch: any, getState: any) => {
 

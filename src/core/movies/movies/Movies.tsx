@@ -26,7 +26,7 @@ import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsActions from '../../store/favorites/favorites.actions';
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
-import { Dictionary } from "@reduxjs/toolkit";
+import * as fromAllFilmsActions from '../../store/all-films/films.actions';
 
 
 const userId = 'yqu';
@@ -40,25 +40,12 @@ const Movies = () => {
 
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
 
-  // TODO: dispatch set api params action
-  const [fetchMoviesParams, setFetchMoviesParams] = useState<HttpParams>({});
-
-  const [sortedFilms, setSortedFilms] = useState<ResultProperty<StarwarsFilm>[]>([]);
-
-  const films: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.selectAll);
   const isFilmsLoading: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsLoading);
   const isFilmsValidating: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsValidating);
   const fetchFilmsError: any = useAppSelector(fromAllFilmsSelectors.selectError);
-
-  const favorites: FavoriteMoviesObjList = useAppSelector(fromFavoriteFilmsSelectors.selectAllByEpId);
   const favoritesLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsLoading);
+  const sortedFilms: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.getAllFilmsWithFavorites);
 
-  /**
-   * Sort the films by ID, and set favorites to true
-   */
-  useDeepCompareEffect(() => {
-    setSortedFilms(getSortedFilmsWithFavorited(films, favorites));
-  }, [films, favorites]);
 
   /**
    * Error handling
@@ -87,14 +74,8 @@ const Movies = () => {
   };
 
   const onFilterChangeHandler = useCallback((movieName: string) => {
-    if (movieName) {
-      setFetchMoviesParams({
-        title: movieName
-      });
-    } else {
-      setFetchMoviesParams({});
-    }
-  }, []);
+    dispatch(fromAllFilmsActions.setParams2({title: movieName}));
+  }, [dispatch]);
 
   const filmPageDisplayToggleHandler = () => {
     const nextDisplayMode = {

@@ -30,7 +30,7 @@ const useFetchMovies = ({ params={refetch: 0} }: FetchMovieHookProp) => {
       shouldRetryOnError: true
     }
   );
-
+  
   return {
     allFilms: data?.result,
     allFilmsLoading: isLoading,

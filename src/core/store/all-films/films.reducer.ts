@@ -51,10 +51,10 @@ export const allFilmsSlice = createSlice({
     },
 
     setParams2: {
-      reducer: (state, action: PayloadAction<HttpParams>) => {
+      reducer: (state, action: PayloadAction<HttpParams | undefined>) => {
         state.apiParams = action.payload;
       },
-      prepare: (userInput: HttpParams) => {
+      prepare: (userInput?: HttpParams) => {
         return {
           payload: {
             ...userInput
@@ -64,7 +64,7 @@ export const allFilmsSlice = createSlice({
     },
 
     fetchPayloadSuccess: (state, action: PayloadAction<ResultProperty<StarwarsFilm>[]>) => {
-      adapter.upsertMany(state, action.payload);
+      adapter.setAll(state, action.payload);
       state.error = false;
       state.errMsg = undefined;
     },

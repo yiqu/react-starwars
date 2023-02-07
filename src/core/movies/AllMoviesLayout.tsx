@@ -10,12 +10,9 @@ import { HttpParams } from "src/shared/models/http.model";
 import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 
 export default function AllMovieLayout() {
-
   const dispatch = useAppDispatch();
-
-  const apiParams: HttpParams | undefined = useAppSelector(fromAllFilmsSelectors.selectApiParams);
-
-  const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = useFetchMovies({ params: undefined });
+  const apiParams = useAppSelector(fromAllFilmsSelectors.getFetchParams);
+  const { allFilms, allFilmsError, allFilmsLoading, allFilmsValidating } = useFetchMovies({ params: apiParams });
   
   useEffect(() => {
     dispatch(fromAllFilmsActions.fetchPayloadSuccess(allFilms ?? []));
@@ -35,9 +32,6 @@ export default function AllMovieLayout() {
     }
   }, [allFilmsError, dispatch]);
 
-  useEffect(() => {
-    dispatch(fromAllFilmsActions.setParams2({fetchTime: new Date().getTime()}));
-  }, [dispatch]);
 
   return (
     <Outlet />
