@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { FavoriteMoviesObjList, FavoriteToSave, HttpResponse2List, ResultProperty, StarwarsFilm } from 'src/shared/models/starwars.model';
 import urlcat from "urlcat";
@@ -8,8 +8,10 @@ import { BASE_FIREBASE_URL } from 'src/shared/api/endpoints';
 import { HttpParams } from 'src/shared/models/http.model';
 import { ajaxGet } from 'src/shared/rest/ajax';
 import { transformFirebaseData } from 'src/shared/utils/firebase';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-export const { getFavoritesFailure, getFavoritesStart, getFavoritesSuccess } = favoriteFilmslice.actions;
+
 
 export const fetchFavoritesThunk = (params?: HttpParams) => {
   const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { user: 'yqu', ...params });
@@ -29,3 +31,5 @@ export const fetchFavoritesThunk = (params?: HttpParams) => {
    
   };
 };
+
+export const { getFavoritesFailure, getFavoritesStart, getFavoritesSuccess } = favoriteFilmslice.actions;

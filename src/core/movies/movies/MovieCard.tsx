@@ -30,14 +30,7 @@ export interface StarwarsFilmCardProps {
 export default function MovieCard({ film, uid, userId, allFavoritesLoading, reloadMovies }: StarwarsFilmCardProps) {
 
   const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
-  const [localSaveFavLoading, setLocalSaveFavLoading ] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!allFavoritesLoading) {
-      setLocalSaveFavLoading(false);
-    }
-  }, [allFavoritesLoading]);
-  
   const favoriteToggleHandler = () => {
     const { url: filmUrl } = film;
     const filmId = (filmUrl.split("/"))[filmUrl.split("/").length - 1];
@@ -56,7 +49,6 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, relo
     };
 
     setSaveFavLoading(true);
-    setLocalSaveFavLoading(true);
     if (film.favorite) {
       favorite.isCurrentFavorite = !film.favorite.isCurrentFavorite;
       favorite.fireId = film.favorite.fireId;
@@ -143,8 +135,8 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, relo
             aria-label="favorite" 
             onClick={ favoriteToggleHandler } 
             title={ getFilmFavoriteToggleTooltip(film.favorite) }
-            disabled={ !!(saveFavLoading || localSaveFavLoading) } >
-            { (saveFavLoading || localSaveFavLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
+            disabled={ !!(saveFavLoading || allFavoritesLoading) } >
+            { (saveFavLoading || allFavoritesLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
           </IconButton>
         </div>
       </CardActions>

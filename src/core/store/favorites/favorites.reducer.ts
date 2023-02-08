@@ -1,12 +1,20 @@
 import {
+  createAsyncThunk,
   createEntityAdapter,
   createSlice,
   EntityState,
   PayloadAction,
   Update,
 } from '@reduxjs/toolkit';
-import { FavoriteToSave } from 'src/shared/models/starwars.model';
+import { lastValueFrom, map } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+import { BASE_FIREBASE_URL } from 'src/shared/api/endpoints';
+import { HttpParams } from 'src/shared/models/http.model';
+import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
+import { transformFirebaseData } from 'src/shared/utils/firebase';
+import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
+import { FulfilledAction, PendingAction, RejectedAction } from './favorites.state';
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -37,8 +45,8 @@ export const favoriteFilmslice = createSlice({
   initialState: adapter.getInitialState<Partial<FavoritesEntityState>>({
     firstTimeLoading: true
   }),
-  reducers: {
 
+  reducers: {
     getFavoritesStart: (state) => {
       state.loading = true;
     },
@@ -54,6 +62,37 @@ export const favoriteFilmslice = createSlice({
       state.error = true;
       state.errMsg = action.payload;
     },
-
   },
+
+  extraReducers: (builder) => {
+    builder.addCase(fetchFavoritesAsyncThunk.fulfilled, (state, action: FulfilledAction<HttpParams, FavoriteMoviesObjList>) => {
+      const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
+      adapter.setAll(state, dataList);
+      state.loading = false;
+      state.firstTimeLoading = false;
+    });
+    builder.addCase(fetchFavoritesAsyncThunk.pending, (state, action: PendingAction<HttpParams>) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchFavoritesAsyncThunk.rejected, (state, action) => {
+      state.loading = false;
+    });
+  }
 });
+
+
+
+/** ASYNC THUNKS */
+
+export const fetchFavoritesAsyncThunk = createAsyncThunk(
+  '[FAVORITE FILMS / API] Get all favorites',
+  async (thunkParams: HttpParams, thunkAPI) => {
+    const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams });
+    const req = ajax.getJSON<FavoriteMoviesObjList>(`${restUrl}`).pipe(
+      map((res: FavoriteMoviesObjList) => {
+        return res;
+      })
+    );
+    return lastValueFrom(req);
+  },
+);
