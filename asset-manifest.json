@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/static/css/main.b65ced53.css",
-    "main.js": "/static/js/main.8100a7e8.js",
-    "static/js/261.935cc08f.chunk.js": "/static/js/261.935cc08f.chunk.js",
-    "static/css/47.93ea8ac7.chunk.css": "/static/css/47.93ea8ac7.chunk.css",
-    "static/js/47.ce4ecf2d.chunk.js": "/static/js/47.ce4ecf2d.chunk.js",
+    "main.js": "/static/js/main.d6e8adab.js",
+    "static/js/261.77b7057e.chunk.js": "/static/js/261.77b7057e.chunk.js",
+    "static/css/903.9f480d6e.chunk.css": "/static/css/903.9f480d6e.chunk.css",
+    "static/js/903.6a2c6f9f.chunk.js": "/static/js/903.6a2c6f9f.chunk.js",
     "static/js/986.df25f40b.chunk.js": "/static/js/986.df25f40b.chunk.js",
     "static/js/977.072557ee.chunk.js": "/static/js/977.072557ee.chunk.js",
     "static/js/315.66f40a2f.chunk.js": "/static/js/315.66f40a2f.chunk.js",
@@ -76,10 +76,10 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/index.html",
     "main.b65ced53.css.map": "/static/css/main.b65ced53.css.map",
-    "main.8100a7e8.js.map": "/static/js/main.8100a7e8.js.map",
-    "261.935cc08f.chunk.js.map": "/static/js/261.935cc08f.chunk.js.map",
-    "47.93ea8ac7.chunk.css.map": "/static/css/47.93ea8ac7.chunk.css.map",
-    "47.ce4ecf2d.chunk.js.map": "/static/js/47.ce4ecf2d.chunk.js.map",
+    "main.d6e8adab.js.map": "/static/js/main.d6e8adab.js.map",
+    "261.77b7057e.chunk.js.map": "/static/js/261.77b7057e.chunk.js.map",
+    "903.9f480d6e.chunk.css.map": "/static/css/903.9f480d6e.chunk.css.map",
+    "903.6a2c6f9f.chunk.js.map": "/static/js/903.6a2c6f9f.chunk.js.map",
     "986.df25f40b.chunk.js.map": "/static/js/986.df25f40b.chunk.js.map",
     "977.072557ee.chunk.js.map": "/static/js/977.072557ee.chunk.js.map",
     "315.66f40a2f.chunk.js.map": "/static/js/315.66f40a2f.chunk.js.map",
@@ -97,6 +97,6 @@
   },
   "entrypoints": [
     "static/css/main.b65ced53.css",
-    "static/js/main.8100a7e8.js"
+    "static/js/main.d6e8adab.js"
   ]
 }
