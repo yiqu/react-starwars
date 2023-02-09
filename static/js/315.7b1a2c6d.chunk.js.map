@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/315.7b1a2c6d.chunk.js","mappings":"qKAAe,SAASA,IAEtB,OACE,uCAIJ,C","sources":["core/favorites/favorite/Favorite.tsx"],"sourcesContent":["export default function Favorites() {\n\n  return (\n    <div>\n      Fav single\n    </div>\n  );\n};"],"names":["Favorites"],"sourceRoot":""}

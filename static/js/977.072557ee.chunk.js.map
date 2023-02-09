@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/977.072557ee.chunk.js","mappings":"6HASA,UATqB,WAEnB,OACE,oCAIJ,C","sources":["core/favorites/all/FavoritesAll.tsx"],"sourcesContent":["const FavoritesAll = () => {\n\n  return (\n    <div>\n      All Fav\n    </div>\n  );\n};\n\nexport default FavoritesAll;"],"names":[],"sourceRoot":""}

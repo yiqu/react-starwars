@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[315],{1315:function(s,r,a){a.r(r);var e=a(184);r.default=function(){return(0,e.jsx)("div",{children:"Fav single"})}}}]);
-//# sourceMappingURL=315.66f40a2f.chunk.js.map

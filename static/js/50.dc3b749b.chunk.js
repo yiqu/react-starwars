@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[50],{50:function(r,n,s){s.r(n),s.d(n,{default:function(){return e}});var t=s(6015),u=s(184);function e(){return(0,u.jsx)(t.Z,{children:"404 Error"})}}}]);
-//# sourceMappingURL=50.dc3b749b.chunk.js.map
