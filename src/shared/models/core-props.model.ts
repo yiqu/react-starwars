@@ -29,4 +29,5 @@ export interface SaveFavoriteHookProp {
 
 export interface FilmFilterProp {
   filterChange: (payload: string) => void;
+  count?: number;
 }

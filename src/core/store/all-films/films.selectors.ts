@@ -2,10 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 import { FavoriteMoviesObjList, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
 import * as fromFilmsReducer from './films.reducer';
-import * as fromFavFilmsSelectors from '../favorites/favorites.selectors';
 import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 import { HttpParams } from "src/shared/models/http.model";
 import produce from "immer";
+import { selectAllByEpId } from "../favorites/favorites.selectors";
 
 const allFilmsSlice = (state: RootState) => {
   return state.allFilms;
@@ -37,7 +37,7 @@ export const selectError = (state: RootState) => {
 
 export const getAllFilmsWithFavorites = createSelector(
   selectAll,
-  fromFavFilmsSelectors.selectAllByEpId,
+  selectAllByEpId,
   (allFilms: ResultProperty<StarwarsFilm>[], favFilmsMap: FavoriteMoviesObjList): ResultProperty<StarwarsFilm>[] => {
     const result = getSortedFilmsWithFavorited(allFilms, favFilmsMap);
     return result;

@@ -27,7 +27,7 @@ import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsActions from '../../store/favorites/favorites.actions';
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
 import * as fromAllFilmsActions from '../../store/all-films/films.actions';
-import { fetchFavoritesAsyncThunk } from "src/core/store/favorites/favorites.reducer";
+import { fetchFavoritesThunk } from "src/core/store/favorites/favorites.thunks";
 
 
 const userId = 'yqu';
@@ -58,7 +58,7 @@ const Movies = () => {
   // }, [allFilmsError, showSnackbar]);
 
   useEffect(() => {
-    dispatch(fetchFavoritesAsyncThunk({user: 'yqu'}));
+    dispatch(fetchFavoritesThunk({user: 'yqu'}));
   }, [dispatch]);
 
   /**
@@ -71,7 +71,7 @@ const Movies = () => {
   }, [showSnackbar]);
 
   const onReloadMoviesHandler = () => {
-    dispatch(fetchFavoritesAsyncThunk({user: 'yqu'}));
+    dispatch(fetchFavoritesThunk({user: 'yqu'}));
   };
 
   const onFilterChangeHandler = useCallback((movieName: string) => {

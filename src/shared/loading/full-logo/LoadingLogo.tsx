@@ -3,8 +3,12 @@ import React, { useEffect, useReducer, useState, useContext, useMemo, Suspense }
 import classes from './LoadingLogo.module.scss';
 import logo from '../../../static/img/quotes.png';
 
+export interface LoadingLogoProps {
+  message: string;
+  children: any;
+}
 
-const LoadingLogo = (props) => {
+export default function LoadingLogo(props: LoadingLogoProps) {
 
 
   return (
@@ -25,5 +29,3 @@ const LoadingLogo = (props) => {
     </div>
   );
 };
-
-export default LoadingLogo;

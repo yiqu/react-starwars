@@ -15,6 +15,7 @@ import { transformFirebaseData } from 'src/shared/utils/firebase';
 import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
 import { FulfilledAction, PendingAction, RejectedAction } from './favorites.state';
+import { fetchFavoritesSwitchThunk, fetchFavoritesThunk } from './favorites.thunks';
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -65,34 +66,42 @@ export const favoriteFilmslice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchFavoritesAsyncThunk.fulfilled, (state, action: FulfilledAction<HttpParams, FavoriteMoviesObjList>) => {
+    builder.addCase(fetchFavoritesThunk.fulfilled, (state, action: FulfilledAction<HttpParams, FavoriteMoviesObjList>) => {
       const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
       adapter.setAll(state, dataList);
       state.loading = false;
       state.firstTimeLoading = false;
     });
-    builder.addCase(fetchFavoritesAsyncThunk.pending, (state, action: PendingAction<HttpParams>) => {
+
+    builder.addCase(fetchFavoritesThunk.pending, (state, action: PendingAction<HttpParams>) => {
       state.loading = true;
     });
-    builder.addCase(fetchFavoritesAsyncThunk.rejected, (state, action) => {
+    
+    builder.addCase(fetchFavoritesThunk.rejected, (state, action) => {
       state.loading = false;
+    });
+
+    builder.addCase(fetchFavoritesSwitchThunk.pending, (state, action: PendingAction<HttpParams | undefined>) => {
+      state.loading = true;
+    });
+
+    builder.addCase(fetchFavoritesSwitchThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {
+      const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
+      adapter.setAll(state, dataList);
+      state.loading = false;
+      state.firstTimeLoading = false;
+      state.error = false;
+      state.errMsg = undefined;
+    });
+
+    builder.addCase(fetchFavoritesSwitchThunk.rejected, (state, action) => {
+      if (action.error.name !== 'AbortError') {
+        state.loading = false;
+        state.error = true;
+        state.errMsg = action.error.message;
+      }
     });
   }
 });
 
 
-
-/** ASYNC THUNKS */
-
-export const fetchFavoritesAsyncThunk = createAsyncThunk(
-  '[FAVORITE FILMS / API] Get all favorites',
-  async (thunkParams: HttpParams, thunkAPI) => {
-    const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams });
-    const req = ajax.getJSON<FavoriteMoviesObjList>(`${restUrl}`).pipe(
-      map((res: FavoriteMoviesObjList) => {
-        return res;
-      })
-    );
-    return lastValueFrom(req);
-  },
-);

@@ -1,16 +1,15 @@
 import { createSelector, createAction } from "@reduxjs/toolkit";
 import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
-import * as fromFavoritesReducer from './favorites.reducer';
 import produce from 'immer';
-
+import { adapter } from "./favorites.reducer";
 
 const favoriteFilmsSlice = (state: RootState) => {
   return state.favoriteFilms;
 };
 
 export const { selectAll, selectById, selectEntities, selectIds, selectTotal } =
-  fromFavoritesReducer.adapter.getSelectors((state: RootState) => state.favoriteFilms);
+  adapter.getSelectors((state: RootState) => state.favoriteFilms);
 
 export const selectIsLoading = (state: RootState) => {
   return favoriteFilmsSlice(state).loading;
@@ -39,5 +38,17 @@ export const selectAllByEpId = createSelector(
       };
     });
     return transformedData;
+  }
+);
+
+export const selectFavorited = createSelector(
+  selectAll,
+  (allFavs: FavoriteToSave[]) => {
+    const result: FavoriteToSave[] = produce(allFavs, (draft) => {
+      return draft.filter((fav) => {
+        return !!fav.isCurrentFavorite;
+      });
+    });
+    return result;
   }
 );
