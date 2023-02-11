@@ -18,18 +18,20 @@ import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
 import { axiosPost, axiosPut } from 'src/shared/rest/axios';
 import urlcat from "urlcat";
 import { AxiosResponse } from "axios";
+import { useAppDispatch } from 'src/store/appHook';
+import { addNewFavoriteExhaustThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk } from 'src/core/store/favorites/favorites.thunks';
+import { FulfilledAction } from 'src/shared/models/redux.model';
+import { ToggleFavoriteArg } from 'src/core/store/favorites/favorites.state';
 
 export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
   uid: string;
   userId: string;
   allFavoritesLoading?: boolean;
-  reloadMovies: () => void
 }
 
-export default function MovieCard({ film, uid, userId, allFavoritesLoading, reloadMovies }: StarwarsFilmCardProps) {
-
-  const [saveFavLoading, setSaveFavLoading] = useState<boolean>(false);
+export default function MovieCard({ film, uid, userId, allFavoritesLoading }: StarwarsFilmCardProps) {
+  const dispatch = useAppDispatch();
 
   const favoriteToggleHandler = () => {
     const { url: filmUrl } = film;
@@ -48,36 +50,21 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, relo
       isCurrentFavorite: true,
     };
 
-    setSaveFavLoading(true);
+    let promise;
     if (film.favorite) {
       favorite.isCurrentFavorite = !film.favorite.isCurrentFavorite;
       favorite.fireId = film.favorite.fireId;
-      axiosPut<AxiosResponse>({ 
-        url: restUrl, 
-        body: favorite, 
-        onSuccess: (res) => {
-          reloadMovies();
-        },
-        onFailure: (err) => {
-        },
-        onFinally: () => {
-          setSaveFavLoading(false);
-        }
-      });
+      promise = dispatch(toggleFavoriteExhaustThunk({
+        fav: favorite,
+        url: restUrl
+      }));
     } else {
-      axiosPost<AxiosResponse>({ 
-        url: restUrl, 
-        body: favorite, 
-        onSuccess: (res) => {
-          reloadMovies();
-        },
-        onFailure: (err) => {
-        },
-        onFinally: () => {
-          setSaveFavLoading(false);
-        }
-      });
+      promise = dispatch(addNewFavoriteExhaustThunk({
+        fav: favorite,
+        url: restUrl
+      }));
     }
+    promise.then((_) => dispatch(fetchFavoritesThunk({user: 'yqu'})));
   };
 
   return (
@@ -135,8 +122,8 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, relo
             aria-label="favorite" 
             onClick={ favoriteToggleHandler } 
             title={ getFilmFavoriteToggleTooltip(film.favorite) }
-            disabled={ !!(saveFavLoading || allFavoritesLoading) } >
-            { (saveFavLoading || allFavoritesLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
+            disabled={ !!(allFavoritesLoading) } >
+            { (allFavoritesLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
           </IconButton>
         </div>
       </CardActions>

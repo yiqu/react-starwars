@@ -9,13 +9,14 @@ import {
 import { lastValueFrom, map } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { BASE_FIREBASE_URL } from 'src/shared/api/endpoints';
+import { FirebasePostPayload } from 'src/shared/models/firebase.model';
 import { HttpParams } from 'src/shared/models/http.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
 import { transformFirebaseData } from 'src/shared/utils/firebase';
 import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
-import { FulfilledAction, PendingAction, RejectedAction } from './favorites.state';
-import { fetchFavoritesSwitchThunk, fetchFavoritesThunk } from './favorites.thunks';
+import { FulfilledAction, PendingAction, RejectedAction, ToggleFavoriteArg } from './favorites.state';
+import { addNewFavoriteExhaustThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk } from './favorites.thunks';
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -72,11 +73,9 @@ export const favoriteFilmslice = createSlice({
       state.loading = false;
       state.firstTimeLoading = false;
     });
-
     builder.addCase(fetchFavoritesThunk.pending, (state, action: PendingAction<HttpParams>) => {
       state.loading = true;
     });
-    
     builder.addCase(fetchFavoritesThunk.rejected, (state, action) => {
       state.loading = false;
     });
@@ -84,7 +83,6 @@ export const favoriteFilmslice = createSlice({
     builder.addCase(fetchFavoritesSwitchThunk.pending, (state, action: PendingAction<HttpParams | undefined>) => {
       state.loading = true;
     });
-
     builder.addCase(fetchFavoritesSwitchThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {
       const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
       adapter.setAll(state, dataList);
@@ -93,7 +91,6 @@ export const favoriteFilmslice = createSlice({
       state.error = false;
       state.errMsg = undefined;
     });
-
     builder.addCase(fetchFavoritesSwitchThunk.rejected, (state, action) => {
       if (action.error.name !== 'AbortError') {
         state.loading = false;
@@ -101,7 +98,36 @@ export const favoriteFilmslice = createSlice({
         state.errMsg = action.error.message;
       }
     });
+
+    builder.addCase(toggleFavoriteExhaustThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
+      state.loading = true;
+    });
+    builder.addCase(toggleFavoriteExhaustThunk.fulfilled, (state, action: FulfilledAction<ToggleFavoriteArg, FavoriteToSave>) => {
+      state.loading = false;
+      state.error = false;
+      state.errMsg = undefined;
+    });
+    builder.addCase(toggleFavoriteExhaustThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.errMsg = action.error.message;
+    });
+
+    builder.addCase(addNewFavoriteExhaustThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
+      state.loading = true;
+    });
+    builder.addCase(addNewFavoriteExhaustThunk.fulfilled, (state, action: FulfilledAction<ToggleFavoriteArg, FirebasePostPayload>) => {
+      state.loading = false;
+      state.error = false;
+      state.errMsg = undefined;
+    });
+    builder.addCase(addNewFavoriteExhaustThunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.errMsg = action.error.message;
+    });
   }
+  
 });
 
 

@@ -70,9 +70,6 @@ const Movies = () => {
     });
   }, [showSnackbar]);
 
-  const onReloadMoviesHandler = () => {
-    dispatch(fetchFavoritesThunk({user: 'yqu'}));
-  };
 
   const onFilterChangeHandler = useCallback((movieName: string) => {
     dispatch(fromAllFilmsActions.setParams2({title: movieName}));
@@ -128,11 +125,9 @@ const Movies = () => {
                       <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
                         <MovieCard 
                           userId={ userId }
-                          reloadMovies={ onReloadMoviesHandler }
                           film={ film.properties } 
                           uid={ film.uid }
-                          allFavoritesLoading={ favoritesLoading }
-                           />
+                          allFavoritesLoading={ favoritesLoading } />
                       </Grid>
                     );
                   }) }

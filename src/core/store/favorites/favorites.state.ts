@@ -1,3 +1,5 @@
+import { FavoriteToSave } from "src/shared/models/starwars.model";
+
 export interface  FetchProp {
   url: string;
 }
@@ -70,3 +72,9 @@ type RejectedWithValue = <ThunkArg, RejectedValue>(
   requestId: string,
   arg: ThunkArg
 ) => RejectedWithValueAction<ThunkArg, RejectedValue>
+
+
+export interface ToggleFavoriteArg {
+  fav: FavoriteToSave;
+  url: string;
+}
