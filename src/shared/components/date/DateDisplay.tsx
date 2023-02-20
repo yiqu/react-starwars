@@ -13,7 +13,7 @@ const DateDisplay = ({ date=0, fromNow=true, format="MM/DD/YY HH:mm" }: DateDisp
   return (
     <Tooltip title={ date ? moment(date).format(format) : 'No date found' }>
       <span>
-        {date ? (<Moment date={ date } fromNow={ fromNow } />) : (<>N/A</>)}
+        {date ? (<Moment date={ date } fromNow={ fromNow } format={ fromNow ? undefined: format } />) : (<>N/A</>)}
       </span>
     </Tooltip>
   );

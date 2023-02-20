@@ -40,7 +40,7 @@ export default function MovieDetailEntityTable({ columns, columnData, header }: 
         <Paper sx={ { width: '100%', mb: 2 } } elevation={ 1 }>
           { header }
           <TableContainer>
-            <Table sx={ { minWidth: isXl ? 0 : 750 } } size="medium">
+            <Table size="medium">
               <TableHead>
                 <TableRow>
                   {
