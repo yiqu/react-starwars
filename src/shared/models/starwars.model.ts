@@ -71,6 +71,7 @@ export interface FavoriteToSave {
   isCurrentFavorite: boolean;
   lastUpdated: number;
   episodeId: number;
+  apiWorking?: boolean;
 }
 
 export interface FavoriteMoviesObjList {

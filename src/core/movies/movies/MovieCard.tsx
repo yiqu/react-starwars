@@ -28,9 +28,10 @@ export interface StarwarsFilmCardProps {
   uid: string;
   userId: string;
   allFavoritesLoading?: boolean;
+  favToggleLoading?: boolean;
 }
 
-export default function MovieCard({ film, uid, userId, allFavoritesLoading }: StarwarsFilmCardProps) {
+export default function MovieCard({ film, uid, userId, allFavoritesLoading, favToggleLoading }: StarwarsFilmCardProps) {
   const dispatch = useAppDispatch();
 
   const favoriteToggleHandler = () => {
@@ -94,9 +95,15 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading }: St
           </Stack>
           
           <Stack spacing={ 1 }>
-            <Typography variant="body2" color="text.secondary">
-              Released: <DateDisplay date={ film.release_date } format="MMM Do YYYY" />
-            </Typography>
+            <Stack direction="row" spacing={ 0.5 }>
+              <Typography variant="body2" color="text.secondary">
+                Released:
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <DateDisplay date={ film.release_date } format="MMM Do YYYY" />
+              </Typography>
+            </Stack>
+            
             <Typography variant="body2" color="text.secondary">
               Directed by: { film.director }
             </Typography>

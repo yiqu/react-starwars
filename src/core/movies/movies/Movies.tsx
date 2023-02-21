@@ -45,6 +45,7 @@ const Movies = () => {
   const isFilmsValidating: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsValidating);
   const fetchFilmsError: any = useAppSelector(fromAllFilmsSelectors.selectError);
   const favoritesLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsLoading);
+  const favToggleLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsFavToggleLoading);
   const sortedFilms: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.getAllFilmsWithFavorites);
 
 
@@ -127,7 +128,8 @@ const Movies = () => {
                           userId={ userId }
                           film={ film.properties } 
                           uid={ film.uid }
-                          allFavoritesLoading={ favoritesLoading } />
+                          allFavoritesLoading={ favoritesLoading }
+                          favToggleLoading={ favToggleLoading } />
                       </Grid>
                     );
                   }) }

@@ -15,6 +15,10 @@ export const selectIsLoading = (state: RootState) => {
   return favoriteFilmsSlice(state).loading;
 };
 
+export const selectIsFavToggleLoading = (state: RootState) => {
+  return favoriteFilmsSlice(state).favoriteToggleLoading;
+};
+
 export const selectIsFirstTimeLoading = (state: RootState) => {
   return favoriteFilmsSlice(state).firstTimeLoading;
 };
@@ -47,6 +51,8 @@ export const selectFavorited = createSelector(
     const result: FavoriteToSave[] = produce(allFavs, (draft) => {
       return draft.filter((fav) => {
         return !!fav.isCurrentFavorite;
+      }).sort((a, b) => {
+        return a.lastUpdated < b.lastUpdated ? 1 : -1;
       });
     });
     return result;

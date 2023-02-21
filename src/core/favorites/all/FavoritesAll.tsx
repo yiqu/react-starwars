@@ -4,11 +4,15 @@ import * as fromFavSelectors from '../../store/favorites/favorites.selectors';
 import Grid from '@mui/material/Unstable_Grid2';
 import LoadingSkeleton from "src/shared/loading/LoadingSkeleton";
 import FavoriteCard from "./FavoriteCard";
+import { Box, Typography } from "@mui/material";
 
 export default function FavoritesAll() {
 
   const favorites: FavoriteToSave[] = useAppSelector(fromFavSelectors.selectFavorited);
   const isFirstTimeLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsFirstTimeLoading);
+  const isLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsLoading);
+
+  if (!isLoading && favorites.length < 1) return (<Grid container><Grid md={ 4 } xs={ 12 }><Typography>No favorites found.</Typography></Grid></Grid>);
 
   return (
     <LoadingSkeleton loading={ isFirstTimeLoading }>

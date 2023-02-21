@@ -21,6 +21,7 @@ import { addNewFavoriteExhaustThunk, fetchFavoritesSwitchThunk, fetchFavoritesTh
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
   loading?: boolean;
+  favoriteToggleLoading?: boolean;
   error?: boolean;
   errMsg?: string;
   lastFetchedData?: number;
@@ -100,14 +101,25 @@ export const favoriteFilmslice = createSlice({
     });
 
     builder.addCase(toggleFavoriteExhaustThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
+      state.favoriteToggleLoading = true;
       state.loading = true;
+      // const result: Update<FavoriteToSave> = {
+      //   id: action.meta.arg.fav.fireId!,
+      //   changes: {
+      //     ...action.meta.arg.fav,
+      //     apiWorking: true
+      //   },
+      // };
+      // adapter.updateOne(state, result);
     });
     builder.addCase(toggleFavoriteExhaustThunk.fulfilled, (state, action: FulfilledAction<ToggleFavoriteArg, FavoriteToSave>) => {
+      state.favoriteToggleLoading = false;
       state.loading = false;
       state.error = false;
       state.errMsg = undefined;
     });
     builder.addCase(toggleFavoriteExhaustThunk.rejected, (state, action) => {
+      state.favoriteToggleLoading = false;
       state.loading = false;
       state.error = true;
       state.errMsg = action.error.message;
