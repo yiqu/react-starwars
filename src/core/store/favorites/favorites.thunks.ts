@@ -34,12 +34,13 @@ export const fetchFavoritesThunk = createAsyncThunk(
 
 /**
  * Thunk - Fetch favorite films
- * Behavior: switch
+ * Behavior: Merge
  */
 export const fetchFavoritesSwitchThunk = createAsyncThunk(
   '[FAVORITE FILMS / API / Switch] Get all favorites',
   async (thunkParams: HttpParams | undefined, thunkAPI) => {
     const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams });
+
     const obs$ = fromFetch(restUrl, {
       signal: thunkAPI.signal,
     }).pipe(
@@ -50,8 +51,9 @@ export const fetchFavoritesSwitchThunk = createAsyncThunk(
         throw new Error('API Error: ' + res.status);
       })
     );
+
     return lastValueFrom(obs$);
-  },
+  }
 );
 
 /**
@@ -61,7 +63,12 @@ export const fetchFavoritesSwitchThunk = createAsyncThunk(
 export const toggleFavoriteExhaustThunk = createAsyncThunk(
   '[FAVORITE FILMS / API / Exhaust] Toggle favorite',
   async (thunkParams: ToggleFavoriteArg, thunkAPI) => {
-    const obs$ = ajax.put<FavoriteToSave>(thunkParams.url, thunkParams.fav).pipe(
+    const fav = {
+      ...thunkParams.fav,
+      lastUpdated: new Date().getTime(),
+      isCurrentFavorite: thunkParams.favStatus,
+    };
+    const obs$ = ajax.put<FavoriteToSave>(thunkParams.url, fav).pipe(
       map((res: AjaxResponse<FavoriteToSave>) => {
         return res.response;
       })
@@ -77,13 +84,48 @@ export const toggleFavoriteExhaustThunk = createAsyncThunk(
 );
 
 /**
+ * Thunk - Toggle favorite status
+ * Chain - GET favorites
+ * Behavior: Merge
+ */
+export const toggleFavoriteThunk = createAsyncThunk(
+  '[FAVORITE FILMS / API / Merge] Toggle favorite',
+  async (thunkParams: ToggleFavoriteArg, thunkAPI) => {
+    const fav = {
+      ...thunkParams.fav,
+      lastUpdated: new Date().getTime(),
+      isCurrentFavorite: thunkParams.favStatus,
+    };
+    const obs$ = ajax.put<FavoriteToSave>(thunkParams.url, fav).pipe(
+      map((res: AjaxResponse<FavoriteToSave>) => {
+        return res.response;
+      })
+    );
+
+    const toggleFavoriteResult = await lastValueFrom(obs$);
+    thunkAPI.dispatch(fetchFavoritesSwitchThunk({user: 'yqu'}));
+    return toggleFavoriteResult;
+  },
+  {
+    condition: (args: HttpParams, thunkAPI) => {
+      return true;
+    },
+  }
+);
+
+/**
  * Thunk - Add a new favorite film
  * Behavior: exhaust
  */
 export const addNewFavoriteExhaustThunk = createAsyncThunk(
   '[FAVORITE FILMS / API / Exhaust] Add new favorite',
   async (thunkParams: ToggleFavoriteArg, thunkAPI) => {
-    const obs$ = ajax.post<FirebasePostPayload>(thunkParams.url, thunkParams.fav).pipe(
+    const fav = {
+      ...thunkParams.fav,
+      lastUpdated: new Date().getTime(),
+      isCurrentFavorite: thunkParams.favStatus,
+    };
+    const obs$ = ajax.post<FirebasePostPayload>(thunkParams.url, fav).pipe(
       map((res: AjaxResponse<FirebasePostPayload>) => {
         return res.response;
       })

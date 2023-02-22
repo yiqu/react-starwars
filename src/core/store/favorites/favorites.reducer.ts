@@ -16,7 +16,7 @@ import { transformFirebaseData } from 'src/shared/utils/firebase';
 import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
 import { FulfilledAction, PendingAction, RejectedAction, ToggleFavoriteArg } from './favorites.state';
-import { addNewFavoriteExhaustThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk } from './favorites.thunks';
+import { addNewFavoriteExhaustThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -81,6 +81,9 @@ export const favoriteFilmslice = createSlice({
       state.loading = false;
     });
 
+    /**
+     * GET - Favorites
+     */
     builder.addCase(fetchFavoritesSwitchThunk.pending, (state, action: PendingAction<HttpParams | undefined>) => {
       state.loading = true;
     });
@@ -100,31 +103,94 @@ export const favoriteFilmslice = createSlice({
       }
     });
 
+    /**
+     * PUT - Toggle favorites
+     */
     builder.addCase(toggleFavoriteExhaustThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
       state.favoriteToggleLoading = true;
       state.loading = true;
-      // const result: Update<FavoriteToSave> = {
-      //   id: action.meta.arg.fav.fireId!,
-      //   changes: {
-      //     ...action.meta.arg.fav,
-      //     apiWorking: true
-      //   },
-      // };
-      // adapter.updateOne(state, result);
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.meta.arg.fav,
+          apiWorking: true
+        },
+      };
+      adapter.updateOne(state, result);
     });
     builder.addCase(toggleFavoriteExhaustThunk.fulfilled, (state, action: FulfilledAction<ToggleFavoriteArg, FavoriteToSave>) => {
       state.favoriteToggleLoading = false;
       state.loading = false;
       state.error = false;
       state.errMsg = undefined;
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.payload,
+          apiWorking: false
+        },
+      };
+      adapter.updateOne(state, result);
     });
     builder.addCase(toggleFavoriteExhaustThunk.rejected, (state, action) => {
       state.favoriteToggleLoading = false;
       state.loading = false;
       state.error = true;
       state.errMsg = action.error.message;
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.meta.arg.fav,
+          apiWorking: false
+        },
+      };
+      adapter.updateOne(state, result);
     });
 
+    builder.addCase(toggleFavoriteThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
+      state.favoriteToggleLoading = true;
+      state.loading = true;
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.meta.arg.fav,
+          apiWorking: true
+        },
+      };
+      adapter.updateOne(state, result);
+    });
+    builder.addCase(toggleFavoriteThunk.fulfilled, (state, action: FulfilledAction<ToggleFavoriteArg, FavoriteToSave>) => {
+      state.favoriteToggleLoading = false;
+      state.loading = false;
+      state.error = false;
+      state.errMsg = undefined;
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.payload,
+          apiWorking: false
+        },
+      };
+      adapter.updateOne(state, result);
+    });
+    builder.addCase(toggleFavoriteThunk.rejected, (state, action) => {
+      state.favoriteToggleLoading = false;
+      state.loading = false;
+      state.error = true;
+      state.errMsg = action.error.message;
+      const result: Update<FavoriteToSave> = {
+        id: action.meta.arg.fav.fireId!,
+        changes: {
+          ...action.meta.arg.fav,
+          apiWorking: false
+        },
+      };
+      adapter.updateOne(state, result);
+    });
+
+    /**
+     * POST - Mark for new favorite
+     */
     builder.addCase(addNewFavoriteExhaustThunk.pending, (state, action: PendingAction<ToggleFavoriteArg>) => {
       state.loading = true;
     });

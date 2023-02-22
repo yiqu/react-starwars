@@ -57,12 +57,14 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
       favorite.fireId = film.favorite.fireId;
       promise = dispatch(toggleFavoriteExhaustThunk({
         fav: favorite,
-        url: restUrl
+        url: restUrl,
+        favStatus: !film.favorite.isCurrentFavorite
       }));
     } else {
       promise = dispatch(addNewFavoriteExhaustThunk({
         fav: favorite,
-        url: restUrl
+        url: restUrl,
+        favStatus: true
       }));
     }
     promise.then((_) => dispatch(fetchFavoritesThunk({user: 'yqu'})));

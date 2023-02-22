@@ -76,5 +76,6 @@ type RejectedWithValue = <ThunkArg, RejectedValue>(
 
 export interface ToggleFavoriteArg {
   fav: FavoriteToSave;
+  favStatus: boolean;
   url: string;
 }

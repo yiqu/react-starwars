@@ -20,7 +20,7 @@ export default function FavoritesAll() {
         {
           favorites.map((fav) => {
             return (
-              <Grid md={ 4 } xs={ 12 } key={ fav.fireId } >
+              <Grid md={ 2 } xs={ 12 } key={ fav.fireId } >
                 <FavoriteCard fav={ fav } />
               </Grid>
             );
