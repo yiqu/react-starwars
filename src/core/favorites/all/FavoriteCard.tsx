@@ -13,6 +13,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link } from "react-router-dom";
+import ConfirmDialog from "src/shared/components/dialog/ConfirmDialog";
+import { useState } from "react";
 
 export interface FavoriteCardProps {
   fav: FavoriteToSave;
@@ -22,6 +24,7 @@ export default function FavoriteCard({ fav }: FavoriteCardProps) {
   const userId = 'yqu';
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
+  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   
   const unfavoriteHandler = () => {
     if (fav.isCurrentFavorite) {
@@ -43,43 +46,59 @@ export default function FavoriteCard({ fav }: FavoriteCardProps) {
     }
   };
 
+  const openUnfavoriteConfirm = () => {
+    setOpenConfirm(true);
+  };
+
+  const onConfirmHandler = (choice: boolean) => {
+    setOpenConfirm(false);
+    if (choice) {
+      unfavoriteHandler();
+    }
+  };
+
   return (
-    <Card>
-      <CardContent>
-        <Stack direction="row" spacing={ 2 }>
-          <Box>
-            <CardMedia
+    <>
+      <Card>
+        <CardContent>
+          <Stack direction="row" spacing={ 2 }>
+            <Box>
+              <CardMedia
               component="img"
               alt="poster"
               height="100"
               image={ `${process.env.PUBLIC_URL}/assets/poster-img/${fav.episodeId}.png` }
               sx={ {backgroundColor: '#000', objectFit: 'contain', borderRadius: '20px'} }
             />
-          </Box>
-          <Stack direction="column" spacing={ 0.3 }>
-            <Typography variant="h5" sx={ {fontWeight: '500', fontFamily:'Poppins'} } component={ Link } to={ `/movies/${fav.filmId}` }>
-              EP { fav.episodeId }
-            </Typography>
-            <Box color="text.secondary">
-              <Stack direction="row" spacing={ 0.3 }>
-                <Box>Favorited</Box>
-                <DateDisplay date={ fav.lastUpdated } fromNow />
-              </Stack>
             </Box>
+            <Stack direction="column" spacing={ 0.3 }>
+              <Typography variant="h5" sx={ {fontWeight: '500', fontFamily:'Poppins'} } component={ Link } to={ `/movies/${fav.filmId}` }>
+                EP { fav.episodeId }
+              </Typography>
+              <Box color="text.secondary">
+                <Stack direction="row" spacing={ 0.3 }>
+                  <Box>Favorited</Box>
+                  <DateDisplay date={ fav.lastUpdated } fromNow />
+                </Stack>
+              </Box>
+            </Stack>
           </Stack>
-        </Stack>
-      </CardContent>
-      <CardActions>
-        <Button variant="text" startIcon={ (fav.apiWorking) ? <HourglassBottomIcon /> : <ClearIcon /> } 
-          onClick={ unfavoriteHandler } 
+        </CardContent>
+        <CardActions>
+          <Button variant="text" startIcon={ (fav.apiWorking) ? <HourglassBottomIcon /> : <ClearIcon /> } 
+          onClick={ openUnfavoriteConfirm } 
           title={ fav.isCurrentFavorite ? 'Unfavorite this film' : '' }
           disabled={ fav.apiWorking }
           fullWidth
           color="error"
         >
-          Remove
-        </Button>
-      </CardActions>
-    </Card>
+            Remove
+          </Button>
+        </CardActions>
+      </Card>
+
+      <ConfirmDialog handleClose={ onConfirmHandler } open={ openConfirm } message={ `Are you sure you want to remove EP ${fav.episodeId} from favorites?` } />
+    </>
+    
   );
 };
