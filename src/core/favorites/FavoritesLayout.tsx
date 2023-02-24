@@ -9,7 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { RefreshOutlined } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavSelectors from '../store/favorites/favorites.selectors';
-import { fetchFavoritesSwitchThunk, fetchFavoritesThunk } from "../store/favorites/favorites.thunks";
+import { fetchFavoritesParamsSwitchThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk } from "../store/favorites/favorites.thunks";
 
 const Favorites = () => {
 
@@ -26,8 +26,14 @@ const Favorites = () => {
     });
   }, [dispatch, fetchTime]);
 
+  //?orderBy="episodeId"&startAt=1
   const onFilterChangeHandler = useCallback((userInput: string) => {
-  }, []);
+    const params = {
+      orderBy: '"episodeId"',
+      equalTo: `${userInput.trim()}`
+    };
+    dispatch(fetchFavoritesParamsSwitchThunk({httpParams: {user: 'yqu'}, extra: params}));
+  }, [dispatch]);
 
   const refreshFavoritesHandler = () => {
     setFetchTime(new Date().getTime());
@@ -44,7 +50,7 @@ const Favorites = () => {
             <Stack direction="row" justifyContent="start" alignItems="center">
               <Grid container xs={ 12 }>
                 <Grid xs={ 8 }>
-                  <FilterInput filterChange={ onFilterChangeHandler } count={ favCount }/>
+                  <FilterInput filterChange={ onFilterChangeHandler } count={ favCount } placeholderText={ 'Filter by EP number. e.g. 3' } />
                 </Grid>
                 <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
                   { isLoading && <ProgressCircle size={ 20 } /> }

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { lastValueFrom, map, switchMap } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
 import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
-import { HttpParams } from "src/shared/models/http.model";
+import { HttpParams, HttpParamsWithSearch } from "src/shared/models/http.model";
 import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
 import urlcat from "urlcat";
@@ -137,5 +137,39 @@ export const addNewFavoriteExhaustThunk = createAsyncThunk(
       const isLoading = (thunkAPI.getState() as RootState).favoriteFilms.loading;
       return !isLoading;
     },
+  }
+);
+
+/**
+ * Thunk - Fetch favorite films with params
+ * Behavior: Merge
+ */
+export const fetchFavoritesParamsSwitchThunk = createAsyncThunk(
+  '[FAVORITE FILMS / API / Switch] Get all favorites with params',
+  async (thunkParams: HttpParamsWithSearch | undefined, thunkAPI) => {
+    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...thunkParams?.extra });
+    // if (thunkParams?.extra) {
+    //   const keys = Object.keys(thunkParams.extra);
+    //   keys.forEach((key,  index) => {
+    //     if (index === 0) {
+    //       restUrl = restUrl + "?" + key + "=" + thunkParams.extra![key];
+    //     } else {
+    //       restUrl = restUrl + "&" + key + '=' + thunkParams.extra![key];
+    //     }
+    //   });
+    // }
+
+    const obs$ = fromFetch(restUrl, {
+      signal: thunkAPI.signal,
+    }).pipe(
+      switchMap((res: Response) => {
+        if (res.ok) {
+          return res.json() as Promise<FavoriteMoviesObjList>;
+        }
+        throw new Error('API Error: ' + res.status);
+      })
+    );
+
+    return lastValueFrom(obs$);
   }
 );
