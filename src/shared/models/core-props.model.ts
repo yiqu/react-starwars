@@ -31,4 +31,5 @@ export interface FilmFilterProp {
   filterChange: (payload: string) => void;
   count?: number;
   placeholderText?: string;
+  currentText?: string;
 }

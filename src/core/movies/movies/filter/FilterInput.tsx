@@ -13,7 +13,7 @@ import { Close, Filter, Search } from '@mui/icons-material';
 import { FormInput2Props } from 'src/shared/models/form.model';
 import { isEmpty } from 'lodash';
 
-export default function FilterInput({ count, filterChange, placeholderText }: FilmFilterProp) {
+export default function FilterInput({ count, filterChange, placeholderText, currentText }: FilmFilterProp) {
 
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedTerm = useDebounce<string>(inputValue, 400);
@@ -21,6 +21,12 @@ export default function FilterInput({ count, filterChange, placeholderText }: Fi
   useUpdateEffect(() => {
     filterChange(debouncedTerm);
   }, [filterChange, debouncedTerm]);
+
+  useEffect(() => {
+    if (currentText) {
+      setInputValue(currentText);
+    }
+  }, [currentText]);
 
   return (
     <TextField name="movieName" type="text" fullWidth

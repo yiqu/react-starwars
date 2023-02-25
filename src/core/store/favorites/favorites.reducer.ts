@@ -10,13 +10,16 @@ import { lastValueFrom, map } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { BASE_FIREBASE_URL } from 'src/shared/api/endpoints';
 import { FirebasePostPayload } from 'src/shared/models/firebase.model';
-import { HttpParams } from 'src/shared/models/http.model';
+import { HttpParams, HttpParamsWithSearch } from 'src/shared/models/http.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
 import { transformFirebaseData } from 'src/shared/utils/firebase';
 import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
 import { FulfilledAction, PendingAction, RejectedAction, ToggleFavoriteArg } from './favorites.state';
-import { addNewFavoriteExhaustThunk, fetchFavoritesParamsSwitchThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
+import { addNewFavoriteExhaustThunk, fetchFavoritesParamsSwitchThunk, fetchFavoritesSwitchThunk, 
+  fetchFavoritesThunk, toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
+
+export const NO_CHANGE = "NO_CHANGE";
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -25,6 +28,8 @@ export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   error?: boolean;
   errMsg?: string;
   lastFetchedData?: number;
+  extraFetchParams?: HttpParams;
+  triggerFetchTime: number;
 }
 
 export function selectIdentifer(config: FavoriteToSave) {
@@ -46,7 +51,8 @@ export const adapter = createEntityAdapter<FavoriteToSave>({
 export const favoriteFilmslice = createSlice({
   name: 'favoriteFilms',
   initialState: adapter.getInitialState<Partial<FavoritesEntityState>>({
-    firstTimeLoading: true
+    firstTimeLoading: true,
+    triggerFetchTime: 0
   }),
 
   reducers: {
@@ -65,6 +71,17 @@ export const favoriteFilmslice = createSlice({
       state.error = true;
       state.errMsg = action.payload;
     },
+
+    setTriggerFetchTime: (state, action: PayloadAction<{time: number, extraParams?: HttpParams | 'NO_CHANGE'}>) => {
+      if (action.payload.extraParams !== NO_CHANGE) {
+        state.extraFetchParams = action.payload.extraParams;
+      }
+      state.triggerFetchTime = action.payload.time;
+    },
+
+    resetFirstTimeLoading: (state, action: PayloadAction<undefined>) => {
+      state.firstTimeLoading = true;
+    }
   },
 
   extraReducers: (builder) => {
@@ -72,7 +89,7 @@ export const favoriteFilmslice = createSlice({
       const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
       adapter.setAll(state, dataList);
       state.loading = false;
-      state.firstTimeLoading = false;
+      //state.firstTimeLoading = false;
     });
     builder.addCase(fetchFavoritesThunk.pending, (state, action: PendingAction<HttpParams>) => {
       state.loading = true;
@@ -103,7 +120,12 @@ export const favoriteFilmslice = createSlice({
       }
     });
 
-    builder.addCase(fetchFavoritesParamsSwitchThunk.pending, (state, action: PendingAction<HttpParams | undefined>) => {
+    builder.addCase(fetchFavoritesParamsSwitchThunk.pending, (state, action: PendingAction<HttpParamsWithSearch | undefined>) => {
+      if (action.meta.arg?.extra !== NO_CHANGE) {
+        state.extraFetchParams = {
+          ...action.meta.arg?.extra
+        };
+      }
       state.loading = true;
     });
     builder.addCase(fetchFavoritesParamsSwitchThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {

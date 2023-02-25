@@ -3,6 +3,7 @@ import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwar
 import { RootState } from "src/store/appStore";
 import produce from 'immer';
 import { adapter } from "./favorites.reducer";
+import { HttpParams } from "src/shared/models/http.model";
 
 const favoriteFilmsSlice = (state: RootState) => {
   return state.favoriteFilms;
@@ -56,5 +57,19 @@ export const selectFavorited = createSelector(
       });
     });
     return result;
+  }
+);
+
+export const selectExtraFetchParams = createSelector(
+  favoriteFilmsSlice,
+  (state): HttpParams | undefined => {
+    return state.extraFetchParams;
+  }
+);
+
+export const selectTriggerFetchTime = createSelector(
+  favoriteFilmsSlice,
+  (state): number => {
+    return state.triggerFetchTime  ?? 0;
   }
 );

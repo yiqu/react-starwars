@@ -147,18 +147,9 @@ export const addNewFavoriteExhaustThunk = createAsyncThunk(
 export const fetchFavoritesParamsSwitchThunk = createAsyncThunk(
   '[FAVORITE FILMS / API / Switch] Get all favorites with params',
   async (thunkParams: HttpParamsWithSearch | undefined, thunkAPI) => {
-    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...thunkParams?.extra });
-    // if (thunkParams?.extra) {
-    //   const keys = Object.keys(thunkParams.extra);
-    //   keys.forEach((key,  index) => {
-    //     if (index === 0) {
-    //       restUrl = restUrl + "?" + key + "=" + thunkParams.extra![key];
-    //     } else {
-    //       restUrl = restUrl + "&" + key + '=' + thunkParams.extra![key];
-    //     }
-    //   });
-    // }
-
+    const extraFetchParams: HttpParams | undefined = (thunkAPI.getState() as RootState).favoriteFilms.extraFetchParams;
+    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...extraFetchParams });
+    
     const obs$ = fromFetch(restUrl, {
       signal: thunkAPI.signal,
     }).pipe(
@@ -170,6 +161,7 @@ export const fetchFavoritesParamsSwitchThunk = createAsyncThunk(
       })
     );
 
-    return lastValueFrom(obs$);
-  }
+    const favs = await lastValueFrom(obs$);
+    return favs;
+  },
 );

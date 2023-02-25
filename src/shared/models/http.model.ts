@@ -5,7 +5,7 @@ export interface HttpParams {
 
 export interface HttpParamsWithSearch {
   httpParams: HttpParams;
-  extra?: HttpParams;
+  extra?: HttpParams | 'NO_CHANGE';
 }
 
 export interface GetHookProps {
