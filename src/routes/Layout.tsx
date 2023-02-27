@@ -15,6 +15,9 @@ import { getMyTheme } from 'src/theme/AppTheme';
 import ThemeContext from 'src/theme/ThemeContext';
 import Grid from '@mui/material/Unstable_Grid2';
 import { GREY } from 'src/theme/palette';
+import { useAppDispatch } from 'src/store/appHook';
+import { fetchFavoritesThunk } from 'src/core/store/favorites/favorites.thunks';
+import { NO_CHANGE } from 'src/core/store/favorites/favorites.reducer';
 
 
 const Layout = () => {
@@ -26,6 +29,7 @@ const Layout = () => {
   const theme: Theme = useMemo(() => {
     return createTheme(getMyTheme(themeContext.currentTheme));
   }, [themeContext.currentTheme]);
+  const dispatch = useAppDispatch();
 
   const handleDrawerOpen = (openState: boolean) => {
     setOpen(openState);
@@ -40,6 +44,13 @@ const Layout = () => {
       setOpen(false);
     }
   }, [isMobileScreenSize]);
+
+  useEffect(() => {
+    const promise = dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}}));
+    return (() => {
+      promise.abort();
+    });
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={ theme }>
@@ -61,11 +72,12 @@ const Layout = () => {
         <Box component="main" sx={ { flexGrow: 1, bgcolor:(theme) => theme.palette.mode === 'light' ? GREY[100] : null } }>
           <DrawerHeader />
           <Grid container sx={ {bgcolor:(theme) => theme.palette.mode === 'light' ? GREY[100] : null } }>
+
             <Outlet />
+
           </Grid>
-         
         </Box>
-      
+
       </Box>
     </ThemeProvider>
     

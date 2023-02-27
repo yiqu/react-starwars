@@ -16,10 +16,11 @@ import { transformFirebaseData } from 'src/shared/utils/firebase';
 import urlcat from 'urlcat';
 import { FetchProp } from '../all-films/films.state';
 import { FulfilledAction, PendingAction, RejectedAction, ToggleFavoriteArg } from './favorites.state';
-import { addNewFavoriteExhaustThunk, fetchFavoritesParamsSwitchThunk, fetchFavoritesSwitchThunk, 
-  fetchFavoritesThunk, toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
+import { addNewFavoriteExhaustThunk, fetchFavoritesThunk, 
+  toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
 
 export const NO_CHANGE = "NO_CHANGE";
+export const RESET = "RESET";
 
 export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   firstTimeLoading?: boolean;
@@ -30,6 +31,7 @@ export interface FavoritesEntityState extends EntityState<FavoriteToSave> {
   lastFetchedData?: number;
   extraFetchParams?: HttpParams;
   triggerFetchTime: number;
+  filteredFavorites?: FavoriteToSave[];
 }
 
 export function selectIdentifer(config: FavoriteToSave) {
@@ -52,7 +54,8 @@ export const favoriteFilmslice = createSlice({
   name: 'favoriteFilms',
   initialState: adapter.getInitialState<Partial<FavoritesEntityState>>({
     firstTimeLoading: true,
-    triggerFetchTime: 0
+    triggerFetchTime: 0,
+    filteredFavorites: []
   }),
 
   reducers: {
@@ -72,71 +75,38 @@ export const favoriteFilmslice = createSlice({
       state.errMsg = action.payload;
     },
 
-    setTriggerFetchTime: (state, action: PayloadAction<{time: number, extraParams?: HttpParams | 'NO_CHANGE'}>) => {
-      if (action.payload.extraParams !== NO_CHANGE) {
-        state.extraFetchParams = action.payload.extraParams;
-      }
-      state.triggerFetchTime = action.payload.time;
-    },
-
-    resetFirstTimeLoading: (state, action: PayloadAction<undefined>) => {
-      state.firstTimeLoading = true;
+    resetExtraParams: (state) => {
+      state.extraFetchParams = undefined;
     }
+
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchFavoritesThunk.fulfilled, (state, action: FulfilledAction<HttpParams, FavoriteMoviesObjList>) => {
-      const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
-      adapter.setAll(state, dataList);
-      state.loading = false;
-      //state.firstTimeLoading = false;
-    });
-    builder.addCase(fetchFavoritesThunk.pending, (state, action: PendingAction<HttpParams>) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchFavoritesThunk.rejected, (state, action) => {
-      state.loading = false;
-    });
-
     /**
      * GET - Favorites
      */
-    builder.addCase(fetchFavoritesSwitchThunk.pending, (state, action: PendingAction<HttpParams | undefined>) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchFavoritesSwitchThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {
-      const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
-      adapter.setAll(state, dataList);
-      state.loading = false;
-      state.firstTimeLoading = false;
-      state.error = false;
-      state.errMsg = undefined;
-    });
-    builder.addCase(fetchFavoritesSwitchThunk.rejected, (state, action) => {
-      if (action.error.name !== 'AbortError') {
-        state.loading = false;
-        state.error = true;
-        state.errMsg = action.error.message;
-      }
-    });
-
-    builder.addCase(fetchFavoritesParamsSwitchThunk.pending, (state, action: PendingAction<HttpParamsWithSearch | undefined>) => {
+    builder.addCase(fetchFavoritesThunk.pending, (state, action: PendingAction<HttpParamsWithSearch | undefined>) => {
       if (action.meta.arg?.extra !== NO_CHANGE) {
         state.extraFetchParams = {
           ...action.meta.arg?.extra
         };
       }
+
       state.loading = true;
     });
-    builder.addCase(fetchFavoritesParamsSwitchThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {
+    builder.addCase(fetchFavoritesThunk.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, FavoriteMoviesObjList>) => {
       const dataList: FavoriteToSave[] = transformFirebaseData(action.payload);
-      adapter.setAll(state, dataList);
+      if (action.meta.arg?.extra?.equalTo) {
+        state.filteredFavorites = dataList;
+      } else {
+        adapter.setAll(state, dataList);
+      }
       state.loading = false;
       state.firstTimeLoading = false;
       state.error = false;
       state.errMsg = undefined;
     });
-    builder.addCase(fetchFavoritesParamsSwitchThunk.rejected, (state, action) => {
+    builder.addCase(fetchFavoritesThunk.rejected, (state, action) => {
       if (action.error.name !== 'AbortError') {
         state.loading = false;
         state.error = true;

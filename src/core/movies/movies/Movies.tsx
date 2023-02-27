@@ -27,7 +27,6 @@ import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsActions from '../../store/favorites/favorites.actions';
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
 import * as fromAllFilmsActions from '../../store/all-films/films.actions';
-import { fetchFavoritesThunk } from "src/core/store/favorites/favorites.thunks";
 
 
 const userId = 'yqu';
@@ -58,9 +57,6 @@ const Movies = () => {
   //   }
   // }, [allFilmsError, showSnackbar]);
 
-  useEffect(() => {
-    dispatch(fetchFavoritesThunk({user: 'yqu'}));
-  }, [dispatch]);
 
   /**
    * Clean up - close any snackbars

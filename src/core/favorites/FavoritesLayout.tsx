@@ -9,11 +9,9 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { RefreshOutlined } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavSelectors from '../store/favorites/favorites.selectors';
-import { fetchFavoritesParamsSwitchThunk, fetchFavoritesSwitchThunk, fetchFavoritesThunk } from "../store/favorites/favorites.thunks";
+import { fetchFavoritesThunk } from "../store/favorites/favorites.thunks";
 import { HttpParams } from "src/shared/models/http.model";
-import { NO_CHANGE } from "../store/favorites/favorites.reducer";
-import { resetFirstTimeLoading, setTriggerFetchTime } from "../store/favorites/favorites.actions";
-import { useUpdateEffect } from "react-use";
+import { resetExtraParams } from "../store/favorites/favorites.actions";
 
 const Favorites = () => {
 
@@ -22,15 +20,6 @@ const Favorites = () => {
   const favCount: number = useAppSelector(fromFavSelectors.selectFavorited).length;
   const isLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsLoading);
   const extraFetchParams: HttpParams | undefined = useAppSelector(fromFavSelectors.selectExtraFetchParams);
-  const triggerFetchTime: number = useAppSelector(fromFavSelectors.selectTriggerFetchTime);
-  const [fetchTime, setFetchTime] = useState<number>(0);
-
-  useEffect(() => {
-    const promise = dispatch(fetchFavoritesParamsSwitchThunk({httpParams: {user: 'yqu'}, extra: NO_CHANGE}));
-    return (() => {
-      promise.abort();
-    });
-  }, [dispatch, fetchTime]);
 
   //?orderBy="episodeId"&startAt=1
   const onFilterChangeHandler = useCallback((userInput: string) => {
@@ -38,18 +27,17 @@ const Favorites = () => {
       orderBy: '"episodeId"',
       equalTo: `${userInput.trim()}`
     };
-    dispatch(fetchFavoritesParamsSwitchThunk({httpParams: {user: 'yqu'}, extra: params}));
+    dispatch(fetchFavoritesThunk({ httpParams: {user: 'yqu'}, extra: params }));
   }, [dispatch]);
 
   const refreshFavoritesHandler = () => {
-    setFetchTime(new Date().getTime());
+    if (extraFetchParams?.equalTo) {
+      dispatch(resetExtraParams());
+    } else {
+      dispatch(fetchFavoritesThunk({ httpParams: {user: 'yqu'} }));
+    }
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetFirstTimeLoading());
-    };
-  }, [dispatch]);
 
   return (
     <Stack direction="column" width="100%">

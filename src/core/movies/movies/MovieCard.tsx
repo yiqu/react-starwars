@@ -67,7 +67,7 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
         favStatus: true
       }));
     }
-    promise.then((_) => dispatch(fetchFavoritesThunk({user: 'yqu'})));
+    promise.then((_) => dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}})));
   };
 
   return (

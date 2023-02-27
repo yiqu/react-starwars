@@ -12,35 +12,19 @@ import { FirebasePostPayload } from "src/shared/models/firebase.model";
 
 /** ASYNC THUNKS */
 
-
 /**
- * Thunk - Fetch favorite films
- * Behavior: exhaust
- */
-export const fetchFavoritesThunk = createAsyncThunk(
-  '[FAVORITE FILMS / API / Exhaust] Get all favorites',
-  async (thunkParams: HttpParams, thunkAPI) => {
-    const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams });
-    const req = ajax.getJSON<FavoriteMoviesObjList>(`${restUrl}`);
-    return lastValueFrom(req);
-  },
-  {
-    condition: (args: HttpParams, thunkAPI) => {
-      const isLoading = (thunkAPI.getState() as RootState).favoriteFilms.loading;
-      return !isLoading;
-    },
-  }
-);
-
-/**
- * Thunk - Fetch favorite films
+ * Thunk - Fetch favorite films with params
  * Behavior: Merge
  */
-export const fetchFavoritesSwitchThunk = createAsyncThunk(
-  '[FAVORITE FILMS / API / Switch] Get all favorites',
-  async (thunkParams: HttpParams | undefined, thunkAPI) => {
-    const restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams });
+export const fetchFavoritesThunk = createAsyncThunk(
+  '[FAVORITE FILMS / API / Switch] Get all favorites with params',
+  async (thunkParams: HttpParamsWithSearch | undefined, thunkAPI) => {
+    const extraFetchParams: HttpParams | undefined = {...(thunkAPI.getState() as RootState).favoriteFilms.extraFetchParams};
 
+    const cleanedParams = removeFalseyValueFromObject(extraFetchParams);
+
+    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...cleanedParams });
+    
     const obs$ = fromFetch(restUrl, {
       signal: thunkAPI.signal,
     }).pipe(
@@ -52,8 +36,9 @@ export const fetchFavoritesSwitchThunk = createAsyncThunk(
       })
     );
 
-    return lastValueFrom(obs$);
-  }
+    const favs = await lastValueFrom(obs$);
+    return favs;
+  },
 );
 
 /**
@@ -103,7 +88,7 @@ export const toggleFavoriteThunk = createAsyncThunk(
     );
 
     const toggleFavoriteResult = await lastValueFrom(obs$);
-    thunkAPI.dispatch(fetchFavoritesSwitchThunk({user: 'yqu'}));
+    thunkAPI.dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}}));
     return toggleFavoriteResult;
   },
   {
@@ -140,28 +125,17 @@ export const addNewFavoriteExhaustThunk = createAsyncThunk(
   }
 );
 
-/**
- * Thunk - Fetch favorite films with params
- * Behavior: Merge
- */
-export const fetchFavoritesParamsSwitchThunk = createAsyncThunk(
-  '[FAVORITE FILMS / API / Switch] Get all favorites with params',
-  async (thunkParams: HttpParamsWithSearch | undefined, thunkAPI) => {
-    const extraFetchParams: HttpParams | undefined = (thunkAPI.getState() as RootState).favoriteFilms.extraFetchParams;
-    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...extraFetchParams });
-    
-    const obs$ = fromFetch(restUrl, {
-      signal: thunkAPI.signal,
-    }).pipe(
-      switchMap((res: Response) => {
-        if (res.ok) {
-          return res.json() as Promise<FavoriteMoviesObjList>;
-        }
-        throw new Error('API Error: ' + res.status);
-      })
-    );
 
-    const favs = await lastValueFrom(obs$);
-    return favs;
-  },
-);
+export const removeFalseyValueFromObject = (obj?: HttpParams): HttpParams | undefined  => {
+  if (obj) {
+    const copy = {...obj};
+    const keysOfParams = Object.keys(copy);
+    keysOfParams.forEach((key) => {
+      if (!copy[key]) {
+        delete copy[key];
+      }
+    });
+    return copy;
+  }
+  return obj;
+};

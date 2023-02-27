@@ -1,17 +1,12 @@
 import { Card, CardContent, Typography, CardActions, Button, IconButton, Stack, Box, CardMedia, Divider } from "@mui/material";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
-import FavIcon from '@mui/icons-material/Favorite';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import DateDisplay from "src/shared/components/date/DateDisplay";
-import useScreenSize from "src/shared/hooks/useIsMobile";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
-import { fetchFavoritesSwitchThunk, toggleFavoriteExhaustThunk, toggleFavoriteThunk } from "src/core/store/favorites/favorites.thunks";
+import { toggleFavoriteExhaustThunk, toggleFavoriteThunk } from "src/core/store/favorites/favorites.thunks";
 import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
 import urlcat from "urlcat";
-import * as fromFavSelectors from '../../store/favorites/favorites.selectors';
 import ClearIcon from '@mui/icons-material/Clear';
-import EditIcon from '@mui/icons-material/Edit';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link } from "react-router-dom";
 import ConfirmDialog from "src/shared/components/dialog/ConfirmDialog";
 import { useState } from "react";
@@ -22,7 +17,6 @@ export interface FavoriteCardProps {
 
 export default function FavoriteCard({ fav }: FavoriteCardProps) {
   const userId = 'yqu';
-  const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   

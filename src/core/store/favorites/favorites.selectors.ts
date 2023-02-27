@@ -67,9 +67,18 @@ export const selectExtraFetchParams = createSelector(
   }
 );
 
-export const selectTriggerFetchTime = createSelector(
+export const selectFilteredFavorites = createSelector(
+  selectAll,
   favoriteFilmsSlice,
-  (state): number => {
-    return state.triggerFetchTime  ?? 0;
+  (allFavs, state) => {
+    const favs = state.extraFetchParams?.equalTo ? (state.filteredFavorites ?? []) : allFavs;
+    const result: FavoriteToSave[] = produce(favs, (draft) => {
+      return draft.filter((fav) => {
+        return !!fav.isCurrentFavorite;
+      }).sort((a, b) => {
+        return a.lastUpdated < b.lastUpdated ? 1 : -1;
+      });
+    });
+    return result;
   }
 );

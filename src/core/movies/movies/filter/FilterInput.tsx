@@ -1,16 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Formik, Field, Form, ErrorMessage, useFormikContext, FormikProps } from 'formik';
-import * as Yup from 'yup';
-import FormInput from 'src/shared/form/m-input/FormInput';
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { useDebounce } from 'src/shared/hooks/useDebounce';
 import { useDeepCompareEffect, useUpdateEffect } from 'react-use';
-import { FCC } from 'src/shared/models/fc-children.model';
 import { FilmFilterProp } from 'src/shared/models/core-props.model';
-import { MoviesFilterInput } from 'src/shared/models/starwars.model';
 import { Close, Filter, Search } from '@mui/icons-material';
-import { FormInput2Props } from 'src/shared/models/form.model';
 import { isEmpty } from 'lodash';
 
 export default function FilterInput({ count, filterChange, placeholderText, currentText }: FilmFilterProp) {
@@ -23,9 +16,7 @@ export default function FilterInput({ count, filterChange, placeholderText, curr
   }, [filterChange, debouncedTerm]);
 
   useEffect(() => {
-    if (currentText) {
-      setInputValue(currentText);
-    }
+    setInputValue(currentText ?? '');
   }, [currentText]);
 
   return (

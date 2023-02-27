@@ -8,7 +8,7 @@ import { Box, Typography } from "@mui/material";
 
 export default function FavoritesAll() {
 
-  const favorites: FavoriteToSave[] = useAppSelector(fromFavSelectors.selectFavorited);
+  const favorites: FavoriteToSave[] = useAppSelector(fromFavSelectors.selectFilteredFavorites);
   const isFirstTimeLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsFirstTimeLoading);
   const isLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsLoading);
 
