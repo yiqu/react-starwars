@@ -5,7 +5,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import { loader as movieDetailLoader } from '../core/movies/movies/movie/Movie';
 import { loader as charactersLoader } from '../core/characters/all/CharactersAll';
-import { loader as  characterLoader, loaderWithPlanets } from '../core/characters/character/Character';
+import { loader as  characterLoader, loaderWithPlanets } from '../core/characters/character/CharacterLayout';
 
 
 // Lazy load components
@@ -19,7 +19,7 @@ const Favorite = loadable(() => import('../core/favorites/favorite/Favorite'));
 
 const CharactersLayout = loadable(() => import('../core/characters/CharactersLayout'));
 const CharactersAll = loadable(() => import('../core/characters/all/CharactersAll'));
-const Character = loadable(() => import('../core/characters/character/Character'));
+const CharacterLayout = loadable(() => import('../core/characters/character/CharacterLayout'));
 
 const CreateNewFilmLayout = loadable(() => import('../create-new/CreateNewFilmLayout'));
 const CreateNewFilm = loadable(() => import('../create-new/core/CreateNewFilm'));
@@ -63,7 +63,6 @@ const routeList: Router = createBrowserRouter([
           {
             path: ':favoriteId',
             element: <Favorite />,
-            //loader: QuoteDetailLoader
           }
         ]
       },
@@ -79,7 +78,7 @@ const routeList: Router = createBrowserRouter([
           },
           {
             path: ':characterId',
-            element: <Character />,
+            element: <CharacterLayout />,
             loader: loaderWithPlanets
           },
         ]
