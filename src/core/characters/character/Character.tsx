@@ -6,8 +6,13 @@ import urlcat from "urlcat";
 import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
 import CharacterDetailCard from "./CharacterCard";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { useAppDispatch } from "src/store/appHook";
+import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { fetchHomeWorld } from "src/core/store/characters/characters.thunks";
+import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
+import ProgressCircle from "src/shared/components/progress/CircleProgress";
+import Planet from "src/core/planets/planet/Planet";
+import { resetCurrentCharacterHomeWorld } from "src/core/store/characters/characters.actions";
+import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 
 export interface CharacterProps {
   loadedCharacter: StarwarCharacter;
@@ -17,10 +22,18 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
+  const isHomePlanetLoading: boolean = useAppSelector(fromCharactersSelectors.characterHomePlanetLoading); 
+  const homePlanet: StarwarsPlanet | undefined = useAppSelector(fromCharactersSelectors.characterHomePlanet); 
 
   useEffect(() => {
     dispatch(fetchHomeWorld({url: loadedCharacter.homeworld}));
   }, [dispatch, loadedCharacter.homeworld]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetCurrentCharacterHomeWorld());
+    };
+  }, [dispatch]);
 
   return (
     <Grid xs={ 12 } container 
@@ -41,14 +54,20 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
             { `${loadedCharacter.name} was born ${loadedCharacter.birth_year} with ${loadedCharacter.skin_color} 
                           skin color and ${loadedCharacter.eye_color} eyes.` }
           </Typography>
-                        
-          <Typography variant='h5' pt={ 2 }>
-            Home Planet
-          </Typography>
+
+          <Stack direction="row" spacing={ 1 }>
+            <Typography variant='h5' >
+              Home Planet
+            </Typography>
+            { isHomePlanetLoading && <ProgressCircle size={ 15 } styleProps={ {justifyContent: 'center', alignItems: 'center'} } color="#092250"  />}
+          </Stack>            
           <Divider  />
 
+          { isHomePlanetLoading ? (<LoadingLogo message="home planet" />) : (
+            homePlanet && <Planet planet={ homePlanet } />
+          )}
+
         </Stack>
-                        
       </Grid>
     </Grid>
   );

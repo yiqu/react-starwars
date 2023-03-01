@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useReducer, useState, useContext, useMemo, Suspense } from 'react';
 import classes from './LoadingLogo.module.scss';
-import logo from '../../../static/img/quotes.png';
+import logo from '../../../static/img/death-star.png';
 
 export interface LoadingLogoProps {
   message: string;
-  children: any;
+  children?: any;
 }
 
 export default function LoadingLogo(props: LoadingLogoProps) {
