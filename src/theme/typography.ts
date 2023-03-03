@@ -15,10 +15,20 @@ export const MyTypography: TypographyOptions | ((palette: Palette) => Typography
   body1: {
     fontSize: '14px'
   },
+  body2: {
+    fontSize: '18px'
+  },
   h4: {
     fontSize: '21px'
   },
   h5: {
     fontSize: '18px'
+  },
+  h6: {
+    fontSize: '15px'
   }
+};
+
+export const ELLIPIS_STYLE = {
+  whiteSpace: 'nowrap', overflow:'hidden', textOverflow:'ellipsis'
 };

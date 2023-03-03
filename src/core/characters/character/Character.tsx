@@ -46,22 +46,32 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
       </Grid>
       <Grid xs={ 12 } sm={ 7.1 }>
         <Stack direction="column" spacing={ 2 }>
-          <Typography variant='h4' sx={ {fontWeight: 500} }>
+          <Typography variant='h4' sx={ {fontWeight: 500, mb: 2} }>
             { loadedCharacter.name }
           </Typography>
-          <Divider  />
-          <Typography variant='body1'>
+
+          <Stack direction="column" spacing={ 1 }>
+            <Typography variant='h5' >
+              Physical Description
+            </Typography>
+            <Divider  />
+          </Stack>         
+          
+
+          <Typography variant='body2' fontWeight={ 300 }>
             { `${loadedCharacter.name} was born ${loadedCharacter.birth_year} with ${loadedCharacter.skin_color} 
                           skin color and ${loadedCharacter.eye_color} eyes.` }
           </Typography>
 
-          <Stack direction="row" spacing={ 1 }>
-            <Typography variant='h5' >
-              Home Planet
-            </Typography>
-            { isHomePlanetLoading && <ProgressCircle size={ 15 } styleProps={ {justifyContent: 'center', alignItems: 'center'} } color="#092250"  />}
-          </Stack>            
-          <Divider  />
+          <Stack direction="column" spacing={ 1 }>
+            <Stack direction="row" spacing={ 1 }  pt={ 2 }>
+              <Typography variant='h5' >
+                Home Planet Properties
+              </Typography>
+              { isHomePlanetLoading && <ProgressCircle size={ 15 } styleProps={ {justifyContent: 'center', alignItems: 'center'} } color="#092250"  />}
+            </Stack>            
+            <Divider />
+          </Stack>
 
           { isHomePlanetLoading ? (<LoadingLogo message="home planet" />) : (
             homePlanet && <Planet planet={ homePlanet } />
