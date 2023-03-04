@@ -23,7 +23,7 @@ const CharactersAll = () => {
   const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
   const { isMobile } = useScreenSize();
 
-  const onFilterChangeHandler = useCallback((movieName: string) => {
+  const onFilterChangeHandler = useCallback((charName: string) => {
   }, []);
   
   return (

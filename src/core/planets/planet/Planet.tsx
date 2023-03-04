@@ -20,7 +20,7 @@ export default function Planet({ planet }: PlanetProps) {
   if (!planet) return <Box>No planet</Box>;
 
   return (
-    <Masonry columns={ 3 } spacing={ 2 }>
+    <Masonry columns={ {xs: 1, sm: 3} } spacing={ 2 } >
       { keysToDisplay.map((key, index) => (
         <Card key={ key } sx={ { minHeight: heights[index], p: 3 } }>
           <PlanetDisplay displayKey={ key } value={ planet[key as keyof StarwarsPlanet] } />
