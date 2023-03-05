@@ -18,6 +18,7 @@ export interface FavoritesEntityState extends EntityState<StarwarsContent> {
   firstTimeLoading?: boolean;
   error: boolean;
   errMsg?: string;
+  totalCharacters: number;
   characterHomePlanetApiLoading: boolean;
   characterHomePlanetApiError: boolean;
   characterHomePlanetApiErrMsg?: string;
@@ -69,11 +70,32 @@ export const charactersSlice = createSlice({
     });
 
     // Get all characters
-    builder.addCase(fetchCharacters.pending, (state, action: PendingAction<UrlThunkParam | undefined>) => {
+    builder.addCase(fetchCharacters.pending, (state, action: PendingAction<HttpParams | undefined>) => {
+      state.apiLoading = true;
     });
-    builder.addCase(fetchCharacters.fulfilled, (state, action: FulfilledAction<UrlThunkParam, HttpResponse<StarwarsContent>>) => {
+    builder.addCase(fetchCharacters.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, HttpResponse<StarwarsContent>>) => {
+      if (action.payload.results) {
+        adapter.setAll(state, action.payload.results);
+      } else if (action.payload.result) {
+        const chars = action.payload.result?.map((char) => {
+          return {
+            name: char.properties.name,
+            uid: char.uid,
+            url: char.properties.url
+          };
+        });
+        adapter.setAll(state, chars);
+      }
+      state.totalCharacters = action.payload.total_records;
+      state.apiLoading = false;
+      state.firstTimeLoading = false;
+      state.errMsg = undefined;
+      state.error = false;
     });
     builder.addCase(fetchCharacters.rejected, (state, action) => {
+      state.apiLoading = false;
+      state.errMsg = action.error.message;
+      state.error = true;
     });
   },
 });

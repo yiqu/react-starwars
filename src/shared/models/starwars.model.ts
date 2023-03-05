@@ -6,6 +6,9 @@ export interface HttpResponse<T> {
   total_records: number;
   total_pages: number;
   results: T[];
+
+  //
+  result?: ResultProperty<T>[];
 }
 
 export interface HttpResponse2<T> {

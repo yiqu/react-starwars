@@ -17,14 +17,34 @@ import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useCallback } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
+import { useAppDispatch, useAppSelector } from "src/store/appHook";
+import { fetchCharacters } from "src/core/store/characters/characters.thunks";
+import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
+import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
+
 
 const CharactersAll = () => {
 
-  const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
+  //const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
+  const characters: StarwarsContent[] = useAppSelector(fromCharactersSelectors.selectAll);
+  const firstTimeLoading: boolean = useAppSelector(fromCharactersSelectors.firstTimeLoading);
+  const apiLoading: boolean = useAppSelector(fromCharactersSelectors.apiLoading);
   const { isMobile } = useScreenSize();
-
+  const dispatch = useAppDispatch();
+  
   const onFilterChangeHandler = useCallback((charName: string) => {
-  }, []);
+    if (charName && charName.trim() !== '') {
+      dispatch(fetchCharacters({name: charName}));
+    } else {
+      dispatch(fetchCharacters());
+    }
+  }, [dispatch]);
+
+  if (firstTimeLoading) return (
+    <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
+      <LoadingLogo message="characters" />
+    </Stack>
+  );
   
   return (
     <Stack direction="column" width="100%">
@@ -40,7 +60,7 @@ const CharactersAll = () => {
                   <FilterInput filterChange={ onFilterChangeHandler } />
                 </Grid>
                 <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
-                  { false && <ProgressCircle size={ 20 } /> }
+                  { apiLoading && <ProgressCircle size={ 20 } /> }
                 </Grid>
               </Grid>
             </Stack>

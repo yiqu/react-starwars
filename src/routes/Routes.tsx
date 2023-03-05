@@ -70,7 +70,7 @@ const routeList: Router = createBrowserRouter([
         path: 'characters',
         element: <CharactersLayout />,
         id: 'swCharacters',
-        loader: charactersLoader,
+        //loader: charactersLoader,
         children: [
           {
             index: true,

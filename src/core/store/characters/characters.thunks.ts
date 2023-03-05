@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { lastValueFrom, map, switchMap } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
-import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
+import { BASE_FIREBASE_URL, BASE_SW_API } from "src/shared/api/endpoints";
 import { HttpParams, HttpParamsWithSearch } from "src/shared/models/http.model";
 import { FavoriteMoviesObjList, FavoriteToSave, HttpResponse, StarwarsContent } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
@@ -34,9 +34,13 @@ export const fetchHomeWorld = createAsyncThunk(
 
 export const fetchCharacters = createAsyncThunk(
   '[CHARACTERS / API] Get all characters',
-  async (thunkParams: UrlThunkParam, thunkAPI) => {
+  async (thunkParams: HttpParams | undefined, thunkAPI) => {
+
+    const restUrl: string = urlcat(BASE_SW_API, `people`, 
+      { limit: PAGE_LIMIT, page: PAGE_COUNT, ...thunkParams }
+    );
     
-    const obs$ = fromFetch(thunkParams.url, {
+    const obs$ = fromFetch(restUrl, {
       signal: thunkAPI.signal,
     }).pipe(
       switchMap((res) => {
