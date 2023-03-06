@@ -23,7 +23,7 @@ export interface TopNavProps {
   onNavOpen: (openState: boolean) => void;
 }
 
-export default function TopNav({open, onNavOpen}: TopNavProps) {
+export default function TopNav({ open, onNavOpen }: TopNavProps) {
 
   const location = useLocation();
   const [title, setTitle] = useState<string>();
@@ -63,7 +63,7 @@ export default function TopNav({open, onNavOpen}: TopNavProps) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins'} }>
+              <Typography variant="h5" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins'} }>
                 { startCase(TransformPageTitle[title+'']) }
               </Typography>
             </Stack>

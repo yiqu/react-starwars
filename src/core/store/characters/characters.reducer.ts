@@ -72,6 +72,9 @@ export const charactersSlice = createSlice({
     // Get all characters
     builder.addCase(fetchCharacters.pending, (state, action: PendingAction<HttpParams | undefined>) => {
       state.apiLoading = true;
+      state.extraFetchParams ={
+        ...action.meta.arg
+      };
     });
     builder.addCase(fetchCharacters.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, HttpResponse<StarwarsContent>>) => {
       if (action.payload.results) {

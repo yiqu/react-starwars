@@ -37,7 +37,7 @@ export const fetchCharacters = createAsyncThunk(
   async (thunkParams: HttpParams | undefined, thunkAPI) => {
 
     const restUrl: string = urlcat(BASE_SW_API, `people`, 
-      { limit: PAGE_LIMIT, page: PAGE_COUNT, ...thunkParams }
+      { ...defaultParams, ...thunkParams }
     );
     
     const obs$ = fromFetch(restUrl, {

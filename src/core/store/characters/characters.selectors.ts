@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { HttpParams } from "src/shared/models/http.model";
 import { StarwarsPlanet } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
 import { adapter } from "./characters.reducer";
@@ -35,5 +36,12 @@ export const apiLoading = createSelector(
   allCharactersSlice,
   (state): boolean => {
     return !!state.apiLoading;
+  }
+);
+
+export const extraParams = createSelector(
+  allCharactersSlice,
+  (state): HttpParams | undefined => {
+    return state.extraFetchParams;
   }
 );

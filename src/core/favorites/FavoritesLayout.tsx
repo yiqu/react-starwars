@@ -21,7 +21,6 @@ const Favorites = () => {
   const isLoading: boolean | undefined = useAppSelector(fromFavSelectors.selectIsLoading);
   const extraFetchParams: HttpParams | undefined = useAppSelector(fromFavSelectors.selectExtraFetchParams);
 
-  //?orderBy="episodeId"&startAt=1
   const onFilterChangeHandler = useCallback((userInput: string) => {
     const params = {
       orderBy: '"episodeId"',

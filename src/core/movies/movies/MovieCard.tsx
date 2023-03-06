@@ -87,7 +87,7 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
         <CardContent>
           <Stack direction={ {lg: 'column', xl: 'row'} } justifyContent={ {xl:'space-between', lg:'flex-start'} }
             marginBottom={ {lg:'10px', xl: '0px'} }>
-            <Typography gutterBottom variant="h5" component={ Link } to={ `./${uid}` } sx={ {fontFamily:'Poppins',
+            <Typography gutterBottom variant="h5" component={ Link } to={ `./${uid}` } sx={ {
               fontWeight:'500'} }>
               { film.title }
             </Typography>
@@ -98,21 +98,21 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
           
           <Stack spacing={ 1 }>
             <Stack direction="row" spacing={ 0.5 }>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body1" color="text.secondary">
                 Released:
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body1" color="text.secondary">
                 <DateDisplay date={ film.release_date } format="MMM Do YYYY" />
               </Typography>
             </Stack>
             
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body1" color="text.secondary">
               Directed by: { film.director }
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body1" color="text.secondary">
               Produced by: { film.producer }
             </Typography>
-            <Typography variant="body2" color="text.primary">
+            <Typography variant="body1" color="text.primary">
               { film.opening_crawl }
             </Typography>
           </Stack>

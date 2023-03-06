@@ -10,6 +10,13 @@ export default function FilterInput({ count, filterChange, placeholderText, curr
 
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedTerm = useDebounce<string>(inputValue, 400);
+  const [placeholderTextt, setPlaceholderTextt] = useState<string>("");
+
+  useEffect(() => {
+    if (!currentText) {
+      setPlaceholderTextt(placeholderText ?? `Filter by name ${count !== undefined ? ('('+count+')') : ''}`);
+    }
+  }, [count, currentText, placeholderText]);
 
   useUpdateEffect(() => {
     filterChange(debouncedTerm);
@@ -23,7 +30,7 @@ export default function FilterInput({ count, filterChange, placeholderText, curr
     <TextField name="movieName" type="text" fullWidth
       value={ inputValue }
       onChange={ (e) => setInputValue(e.target.value) }
-      placeholder={ placeholderText ?? `Filter by name ${count !== undefined ? ('('+count+')') : ''}` }
+      placeholder={ placeholderTextt }
       variant='standard'
       InputProps={ {
         endAdornment:(<InputAdornment position='end'>

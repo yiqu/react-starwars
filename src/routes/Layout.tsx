@@ -17,8 +17,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { GREY } from 'src/theme/palette';
 import { useAppDispatch } from 'src/store/appHook';
 import { fetchFavoritesThunk } from 'src/core/store/favorites/favorites.thunks';
-import { NO_CHANGE } from 'src/core/store/favorites/favorites.reducer';
-
+import { fetchCharacters } from "src/core/store/characters/characters.thunks";
 
 const Layout = () => {
   
@@ -50,6 +49,10 @@ const Layout = () => {
     return (() => {
       promise.abort();
     });
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchCharacters());
   }, [dispatch]);
 
   return (

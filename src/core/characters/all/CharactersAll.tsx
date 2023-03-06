@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { fetchCharacters } from "src/core/store/characters/characters.thunks";
 import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
+import { HttpParams } from "src/shared/models/http.model";
 
 
 const CharactersAll = () => {
@@ -29,6 +30,7 @@ const CharactersAll = () => {
   const characters: StarwarsContent[] = useAppSelector(fromCharactersSelectors.selectAll);
   const firstTimeLoading: boolean = useAppSelector(fromCharactersSelectors.firstTimeLoading);
   const apiLoading: boolean = useAppSelector(fromCharactersSelectors.apiLoading);
+  const currentFetchParams: HttpParams | undefined = useAppSelector(fromCharactersSelectors.extraParams);
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   
@@ -57,7 +59,7 @@ const CharactersAll = () => {
             <Stack direction="row" justifyContent="start" alignItems="center">
               <Grid container xs={ 12 }>
                 <Grid xs={ 8 }>
-                  <FilterInput filterChange={ onFilterChangeHandler } />
+                  <FilterInput filterChange={ onFilterChangeHandler } currentText={ currentFetchParams?.name } />
                 </Grid>
                 <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
                   { apiLoading && <ProgressCircle size={ 20 } /> }
