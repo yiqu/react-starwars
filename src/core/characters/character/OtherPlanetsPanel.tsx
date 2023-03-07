@@ -15,7 +15,7 @@ export default function OtherPlanetsPanel({ loadedPlanets }: CharacterDetailPane
         Check out other planets:
       </Typography>
 
-      <SimpleGridDisplay data={ loadedPlanets } itemUrlPath="planets"/>
+      <SimpleGridDisplay data={ loadedPlanets } itemUrlPath="planets" gutterSize="full" />
 
     </Stack>
   );

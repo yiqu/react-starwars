@@ -74,7 +74,7 @@ const CharactersAll = () => {
         </Grid>
       </AppToolbar>
 
-      <SimpleGridDisplay data={ characters } itemUrlPath="characters" gridStyles={ {p: 3} } />
+      <SimpleGridDisplay data={ characters } itemUrlPath="characters" />
 
     </Stack>
   );
