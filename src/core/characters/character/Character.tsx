@@ -11,8 +11,8 @@ import { fetchHomeWorld } from "src/core/store/characters/characters.thunks";
 import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import Planet from "src/core/planets/planet/Planet";
-import { resetCurrentCharacterHomeWorld } from "src/core/store/characters/characters.actions";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
+import { resetCurrentCharacterHomeWorld } from "src/core/store/characters";
 
 export interface CharacterProps {
   loadedCharacter: StarwarCharacter;

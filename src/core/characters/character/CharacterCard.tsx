@@ -36,8 +36,8 @@ export default function CharacterDetailCard({ character }: CharacterDetailCardPr
         sx={ {objectFit: 'contain', p: 4} }
       />
       <CardContent>
-        <Stack direction="column">
-          <Typography  sx={ {fontFamily:'Poppins', fontWeight:'500'} }>
+        <Stack direction="column" spacing={ 0.5 }>
+          <Typography  sx={ {fontWeight:'400'} }>
             { character.name }
           </Typography>
           <Typography sx={ {fontWeight: '300'} }>

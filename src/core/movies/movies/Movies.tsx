@@ -3,10 +3,7 @@ import React, { useContext } from "react";
 import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useCallback, useMemo, useState, useEffect } from "react";
-import useFetchFavorites from "src/core/hooks/useFetchFavorites";
-import useFetchMovies from "src/core/hooks/useFetchMovies";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
-import { HttpParams } from "src/shared/models/http.model";
 import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
@@ -16,17 +13,13 @@ import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useSearchParams } from "react-router-dom";
 import TableChartIcon from '@mui/icons-material/TableChart';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import { useDeepCompareEffect } from "react-use";
-import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
 import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
 import ErrorPage from "src/404/ErrorPage";
-import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
-import * as fromFavoriteFilmsActions from '../../store/favorites/favorites.actions';
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
-import * as fromAllFilmsActions from '../../store/all-films/films.actions';
+import { setParams2 } from "src/core/store/all-films";
 
 
 const userId = 'yqu';
@@ -69,7 +62,7 @@ const Movies = () => {
 
 
   const onFilterChangeHandler = useCallback((movieName: string) => {
-    dispatch(fromAllFilmsActions.setParams2({title: movieName}));
+    dispatch(setParams2({title: movieName}));
   }, [dispatch]);
 
   const filmPageDisplayToggleHandler = () => {

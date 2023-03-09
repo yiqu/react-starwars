@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavSelectors from '../store/favorites/favorites.selectors';
 import { fetchFavoritesThunk } from "../store/favorites/favorites.thunks";
 import { HttpParams } from "src/shared/models/http.model";
-import { resetExtraParams } from "../store/favorites/favorites.actions";
+import { resetExtraParams } from "../store/favorites";
 
 const Favorites = () => {
 

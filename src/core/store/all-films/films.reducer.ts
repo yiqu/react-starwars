@@ -85,3 +85,6 @@ export const allFilmsSlice = createSlice({
 
   },
 });
+
+export const { fetchFailure, fetchPayloadSuccess, setValidating, setLoading, setUrl, setParams2 } = allFilmsSlice.actions;
+export default allFilmsSlice.reducer;

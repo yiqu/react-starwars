@@ -10,7 +10,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { getFilledIcon, GET_LEFT_NAV_ITEMS } from "src/shared/utils/left-nav.utils";
 
 
-const LeftNav: FC<LeftNavProps> = (props: LeftNavProps) => {
+function LeftNav (props: LeftNavProps) {
 
   const location = useLocation();
 

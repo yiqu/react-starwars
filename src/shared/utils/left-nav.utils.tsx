@@ -18,12 +18,15 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import { CameraRoll, CameraRollOutlined } from "@mui/icons-material";
 
+import PublicIconOutlined from '@mui/icons-material/PublicOutlined';
+import PublicIcon from '@mui/icons-material/Public';
 
 export const GET_LEFT_NAV_ITEMS = () => {
   const LEFT_NAV_ITEMS = [
     new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteBorderOutlinedIcon color='primary' />),
     new NavigationItem('All', 'movies', ['/', 'movies'], <MovieIconOutlined color='primary' />),
     new NavigationItem('Characters', 'characters', ['/', 'characters'], <Person4IconOutlined color='primary' />),
+    new NavigationItem('Planets', 'planets', ['/', 'planets'], <PublicIconOutlined color='primary' />),
     new NavigationItem('Mine', 'personal-films', ['/', 'personal-films'], <CameraRollOutlined color='primary' />),
     new NavigationItem('Add', 'create-new', ['/', 'create-new'], <AddAPhotoOutlinedIcon color='primary' />),
     new NavigationItem('About', 'about', ['/', 'about'], <InfoIconOutlined color='primary' />),
@@ -41,6 +44,9 @@ export const getFilledIcon = (pathName: string): JSX.Element => {
     }
     case 'characters': {
       return <Person4Icon color='primary' />;
+    }
+    case 'planets': {
+      return <PublicIcon color='primary' />;
     }
     case 'about': {
       return <InfoIcon color='primary' />;

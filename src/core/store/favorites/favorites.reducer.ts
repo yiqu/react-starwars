@@ -219,4 +219,5 @@ export const favoriteFilmslice = createSlice({
   
 });
 
-
+export const { getFavoritesFailure, getFavoritesStart, getFavoritesSuccess, resetExtraParams } = favoriteFilmslice.actions;
+export default favoriteFilmslice.reducer;

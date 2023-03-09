@@ -84,12 +84,7 @@ export default CharactersAll;
 
 export function loader({ params }: LoaderFunctionArgs): Promise<StarwarsContent[]> {
 
-  const restUrl: string = urlcat(
-    BASE_SW_API, 
-    `people`, 
-    { limit: PAGE_LIMIT, page: PAGE_COUNT }
-  );
-
+  const restUrl: string = urlcat(BASE_SW_API, `people`, { limit: PAGE_LIMIT, page: PAGE_COUNT });
   
   const people$ = ajax<HttpResponse<StarwarsContent>>(restUrl).pipe(
     delay(0),

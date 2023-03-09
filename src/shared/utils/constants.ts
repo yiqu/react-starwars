@@ -4,6 +4,7 @@ export const TransformPageTitle: {[key: string]: string} = {
   movies: 'All Films',
   favorites: 'Favorites',
   characters: 'Characters',
+  planets: 'Planets',
   'create-new': 'Create a Film',
   'personal-films': 'My films',
   about: 'About'

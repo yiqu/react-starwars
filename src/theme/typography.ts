@@ -16,7 +16,7 @@ export const MyTypography: TypographyOptions | ((palette: Palette) => Typography
     fontSize: '14px'
   },
   body2: {
-    fontSize: '18px'
+    fontSize: '16px'
   },
   h4: {
     fontSize: '21px'

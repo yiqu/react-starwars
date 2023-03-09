@@ -68,7 +68,7 @@ const Layout = () => {
 
           <Divider />
         
-          <LeftNav open={ open } ></LeftNav>
+          <LeftNav open={ open } />
 
         </Drawer>
 

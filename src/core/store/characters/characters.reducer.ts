@@ -77,6 +77,12 @@ export const charactersSlice = createSlice({
       };
     });
     builder.addCase(fetchCharacters.fulfilled, (state, action: FulfilledAction<HttpParams | undefined, HttpResponse<StarwarsContent>>) => {
+      state.totalCharacters = action.payload.total_records;
+      state.apiLoading = false;
+      state.firstTimeLoading = false;
+      state.errMsg = undefined;
+      state.error = false;
+
       if (action.payload.results) {
         adapter.setAll(state, action.payload.results);
       } else if (action.payload.result) {
@@ -89,11 +95,6 @@ export const charactersSlice = createSlice({
         });
         adapter.setAll(state, chars);
       }
-      state.totalCharacters = action.payload.total_records;
-      state.apiLoading = false;
-      state.firstTimeLoading = false;
-      state.errMsg = undefined;
-      state.error = false;
     });
     builder.addCase(fetchCharacters.rejected, (state, action) => {
       state.apiLoading = false;
@@ -103,4 +104,5 @@ export const charactersSlice = createSlice({
   },
 });
 
+export const { resetCurrentCharacterHomeWorld } = charactersSlice.actions;
 export default charactersSlice.reducer;

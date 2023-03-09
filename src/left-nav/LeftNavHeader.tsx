@@ -12,14 +12,16 @@ import { useTheme } from '@mui/material/styles';
 import { FCC } from 'src/shared/models/fc-children.model';
 import { LeftNavHeaderProps } from 'src/shared/models/nav-item.model';
 import { useState } from 'react';
-import { useLocation, useNavigation } from 'react-router-dom';
+import { Link, useLocation, useNavigation } from 'react-router-dom';
 import { getRandomArbitrary } from 'src/shared/utils/number.utils';
 import { yellow } from '@mui/material/colors';
+import { Stack } from '@mui/material';
+import { flexCenter } from 'src/shared/utils/css.utils';
 
 
 const LOGO_LIST = [falconLogo, vaderLogo, saberLogo, dstarLogo];
 
-const LeftNavHeader: FCC<LeftNavHeaderProps> = ({ closeDrawerHandler }: LeftNavHeaderProps) => {
+function LeftNavHeader({ closeDrawerHandler }: LeftNavHeaderProps) {
 
   const leftNavTitle = 'SWDB';
   const theme = useTheme();
@@ -33,17 +35,18 @@ const LeftNavHeader: FCC<LeftNavHeaderProps> = ({ closeDrawerHandler }: LeftNavH
   const [displayLogo, setDisplayLogo] = useState(falconLogo);
 
   useEffect(() => {
-    const selected: number = getRandomArbitrary(0, LOGO_LIST.length-1);
-    setDisplayLogo(LOGO_LIST[selected]);
+    setDisplayLogo(LOGO_LIST[getRandomArbitrary(0, LOGO_LIST.length-1)]);
   }, [location.pathname]);
 
   return (
     <DrawerHeader >
-      <Typography component='div' sx={ {display: 'flex', flexDirection:"row", alignItems:"center"} }>
-        <Typography component="img" src={ displayLogo } sx={ {height: '2rem', mr: '10px'} } alt="logo"></Typography>
-        <Typography variant='h6' color={ navigation.state === 'loading' ? yellow[800] : undefined }>{ leftNavTitle }</Typography>
+      <Link to={ "/" } style={ {color: '#000'} }>
+        <Stack direction="row" sx={ {...flexCenter} }>
+          <Typography component="img" src={ displayLogo } sx={ {height: '2rem', mr: '10px'} } alt="logo"></Typography>
+          <Typography variant='h6' color={ navigation.state === 'loading' ? yellow[800] : undefined }>{ leftNavTitle }</Typography>
+        </Stack>
+      </Link>
         
-      </Typography>
       <IconButton onClick={ handleDrawerClose }>
         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
       </IconButton>

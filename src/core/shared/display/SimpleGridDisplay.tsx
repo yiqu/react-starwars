@@ -20,7 +20,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med" }: SimpleGridDi
       {
         data.map((display: StarwarsContent) => {
           return (
-            <Grid xs={ 12 } sm={ 6 } md={ gutterSize === "med" ? 3 : 2 } key={ display.uid } sx={ { border: '1px solid #ccc', p: 2, m: 2, borderRadius: '10px'} }>
+            <Grid xs={ 12 } sm={ 6 } md={ gutterSize === "med" ? 3 : 2 } key={ display.uid } sx={ { border: '1px solid #ccc', m: 2, borderRadius: '10px'} }>
               <Link to={ `/${itemUrlPath}/${display.uid}` }>
                 <DisplayName name={ display.name } id={ display.uid } />
               </Link>
@@ -56,7 +56,7 @@ function DisplayName({ name, id }: {name: string; id: string}) {
   };
 
   return (
-    <Stack direction="row" sx={ {fontWeight:'500', ...flexCenter} } spacing={ 1 }>
+    <Stack direction="row" sx={ {fontWeight:'500', p: 1, ...flexCenter} } spacing={ 1 }>
       <Typography variant="h6"  sx={ {color: (theme) => theme.palette.mode === 'light' ? '#dcdcdc' : '#2b4052'} }>
         ({ id })
       </Typography>
