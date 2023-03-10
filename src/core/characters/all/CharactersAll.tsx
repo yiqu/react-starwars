@@ -28,6 +28,7 @@ const CharactersAll = () => {
 
   //const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
   const characters: StarwarsContent[] = useAppSelector(fromCharactersSelectors.selectAll);
+  const charactersGrouped: StarwarsContent[] = useAppSelector(fromCharactersSelectors.charactersGrouped);
   const firstTimeLoading: boolean = useAppSelector(fromCharactersSelectors.firstTimeLoading);
   const apiLoading: boolean = useAppSelector(fromCharactersSelectors.apiLoading);
   const currentFetchParams: HttpParams | undefined = useAppSelector(fromCharactersSelectors.extraParams);
@@ -74,7 +75,7 @@ const CharactersAll = () => {
         </Grid>
       </AppToolbar>
 
-      <SimpleGridDisplay data={ characters } itemUrlPath="characters" />
+      <SimpleGridDisplay data={ charactersGrouped } itemUrlPath="characters" />
 
     </Stack>
   );

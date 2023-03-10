@@ -10,7 +10,7 @@ export default function FilterInput({ count, filterChange, placeholderText, curr
 
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedTerm = useDebounce<string>(inputValue, 400);
-  const [placeholderTextt, setPlaceholderTextt] = useState<string>("");
+  const [placeholderTextt, setPlaceholderTextt] = useState<string>("Filter by name");
 
   useEffect(() => {
     if (!currentText) {

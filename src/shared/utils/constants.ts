@@ -10,5 +10,5 @@ export const TransformPageTitle: {[key: string]: string} = {
   about: 'About'
 };
 
-export const PAGE_LIMIT = 100;
+export const PAGE_LIMIT = 999;
 export const PAGE_COUNT = 1;

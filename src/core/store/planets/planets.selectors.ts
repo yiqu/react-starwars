@@ -2,51 +2,37 @@ import { createSelector, createDraftSafeSelector } from "@reduxjs/toolkit";
 import { HttpParams } from "src/shared/models/http.model";
 import { StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
-import { adapter } from "./characters.reducer";
+import { adapter } from "./planets.reducer";
 
-const allCharactersSlice = (state: RootState) => {
-  return state.characters;
+const planetsSlice = (state: RootState) => {
+  return state.planets;
 };
 
 export const { selectAll, selectById, selectEntities, selectIds, selectTotal } =
-  adapter.getSelectors((state: RootState) => state.characters);
-
-export const characterHomePlanetLoading = createDraftSafeSelector(
-  allCharactersSlice,
-  (state): boolean => {
-    return !!state.characterHomePlanetApiLoading;
-  }
-);
-
-export const characterHomePlanet = createDraftSafeSelector(
-  allCharactersSlice,
-  (state): StarwarsPlanet | undefined => {
-    return state.currentCharacterHomeWorld;
-  }
-);
+  adapter.getSelectors((state: RootState) => state.planets);
 
 export const firstTimeLoading = createDraftSafeSelector(
-  allCharactersSlice,
+  planetsSlice,
   (state): boolean => {
     return !!state.firstTimeLoading;
   }
 );
 
 export const apiLoading = createDraftSafeSelector(
-  allCharactersSlice,
+  planetsSlice,
   (state): boolean => {
     return !!state.apiLoading;
   }
 );
 
 export const extraParams = createDraftSafeSelector(
-  allCharactersSlice,
+  planetsSlice,
   (state): HttpParams | undefined => {
     return state.extraFetchParams;
   }
 );
 
-export const charactersGrouped = createDraftSafeSelector(
+export const planetsGrouped = createDraftSafeSelector(
   selectAll,
   (state: StarwarsContent[]) => {
     const result = [...state];

@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^1.9.2",
     "animate.css": "^4.1.1",
     "axios": "^0.27.2",
+    "axios-hooks": "^4.0.0",
     "firebase": "^9.10.0",
     "formik": "^2.2.9",
     "gh-pages": "^4.0.0",
