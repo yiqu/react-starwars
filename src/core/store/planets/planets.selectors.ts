@@ -37,7 +37,7 @@ export const planetsGrouped = createDraftSafeSelector(
   (state: StarwarsContent[]) => {
     const result = [...state];
     result.sort((a: StarwarsContent, b: StarwarsContent) => {
-      return a.name > b.name ? 1 : -1;
+      return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
     });
     const newArray: StarwarsContent[] = [];
 
@@ -45,9 +45,9 @@ export const planetsGrouped = createDraftSafeSelector(
       if (index === 0) {
         newArray.push({name: result[index].name.charAt(0), uid: result[index].name.charAt(0), url: ""});
       }
-      const firstLetter = name.charAt(0);
-      if ((result[index-1]) && firstLetter !== result[index-1].name.charAt(0)) {
-        newArray.push({name: result[index].name.charAt(0), uid: result[index].name.charAt(0), url: ""});
+      const firstLetter = name.charAt(0).toLowerCase();
+      if ((result[index-1]) && firstLetter !== result[index-1].name.charAt(0).toLowerCase()) {
+        newArray.push({name: result[index].name.charAt(0).toLowerCase(), uid: result[index].name.charAt(0).toLowerCase(), url: ""});
       }
       newArray.push(result[index]);
     });

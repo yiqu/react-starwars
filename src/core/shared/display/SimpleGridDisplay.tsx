@@ -31,7 +31,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med" }: SimpleGridDi
                 ) : (
                   <Stack direction="row" sx={ {...flexCenter} } spacing={ 2 }>
                     <Typography variant="h5" color="#000" fontFamily={ 'Poppins' }>
-                      {display.uid}
+                      { display.uid.toUpperCase() }
                     </Typography>
                     <Divider sx={ {width: "calc(100% - 2rem)"} } />
                   </Stack>

@@ -80,12 +80,12 @@ export default function FavoriteCard({ fav }: FavoriteCardProps) {
         </CardContent>
         <CardActions>
           <Button variant="text" startIcon={ (fav.apiWorking) ? <HourglassBottomIcon /> : <ClearIcon /> } 
-          onClick={ openUnfavoriteConfirm } 
-          title={ fav.isCurrentFavorite ? 'Unfavorite this film' : '' }
-          disabled={ fav.apiWorking }
-          fullWidth
-          color="error"
-        >
+            onClick={ openUnfavoriteConfirm } 
+            title={ fav.isCurrentFavorite ? 'Unfavorite this film' : '' }
+            disabled={ fav.apiWorking }
+            fullWidth
+            color="error"
+          >
             Remove
           </Button>
         </CardActions>

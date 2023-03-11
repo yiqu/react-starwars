@@ -18,7 +18,7 @@ const Favorite = loadable(() => import('../core/favorites/favorite/Favorite'));
 
 const PlanetsLayout = loadable(() => import('../core/planets/PlanetsLayout'));
 const PlanetsAll = loadable(() => import('../core/planets/all/PlanetsAll'));
-const Planet = loadable(() => import('../core/planets/planet/Planet'));
+const Planet = loadable(() => import('../core/planets/planet/PlanetLayout'));
 
 const CharactersLayout = loadable(() => import('../core/characters/CharactersLayout'));
 const CharactersAll = loadable(() => import('../core/characters/all/CharactersAll'));
@@ -95,7 +95,7 @@ const routeList: Router = createBrowserRouter([
             element: <PlanetsAll />,
           },
           {
-            path: ':characterId',
+            path: ':planetId',
             element: <Planet />,
           },
         ]
