@@ -21,12 +21,24 @@ import { CameraRoll, CameraRollOutlined } from "@mui/icons-material";
 import PublicIconOutlined from '@mui/icons-material/PublicOutlined';
 import PublicIcon from '@mui/icons-material/Public';
 
+import RocketIconOutlined from '@mui/icons-material/RocketOutlined';
+import RocketIcon from '@mui/icons-material/Rocket';
+
+import TwoWheelerIconOutlined from '@mui/icons-material/TwoWheelerOutlined';
+import TwoWheelerIcon from '@mui/icons-material/TwoWheelerOutlined';
+
+import GroupsIconOutlined from '@mui/icons-material/GroupsOutlined';
+import GroupsIcon from '@mui/icons-material/GroupsOutlined';
+
 export const GET_LEFT_NAV_ITEMS = () => {
   const LEFT_NAV_ITEMS = [
     new NavigationItem('Favorites', 'favorites', ['/', 'favorites'], <FavoriteBorderOutlinedIcon color='primary' />),
     new NavigationItem('All', 'movies', ['/', 'movies'], <MovieIconOutlined color='primary' />),
     new NavigationItem('Characters', 'characters', ['/', 'characters'], <Person4IconOutlined color='primary' />),
     new NavigationItem('Planets', 'planets', ['/', 'planets'], <PublicIconOutlined color='primary' />),
+    new NavigationItem('Vehicles', 'vehicles', ['/', 'core', '/vehicles'], <TwoWheelerIconOutlined color='primary' />),
+    new NavigationItem('Starships', 'starships', ['/', 'core','/starships'], <RocketIconOutlined color='primary' />),
+    new NavigationItem('Species', 'species', ['/', 'core','/species'], <GroupsIconOutlined color='primary' />),
     new NavigationItem('Mine', 'personal-films', ['/', 'personal-films'], <CameraRollOutlined color='primary' />),
     new NavigationItem('Add', 'create-new', ['/', 'create-new'], <AddAPhotoOutlinedIcon color='primary' />),
     new NavigationItem('About', 'about', ['/', 'about'], <InfoIconOutlined color='primary' />),
@@ -47,6 +59,15 @@ export const getFilledIcon = (pathName: string): JSX.Element => {
     }
     case 'planets': {
       return <PublicIcon color='primary' />;
+    }
+    case 'vehicles': {
+      return <TwoWheelerIcon color='primary' />;
+    }
+    case 'starships': {
+      return <RocketIcon color='primary' />;
+    }
+    case 'species': {
+      return <GroupsIcon color='primary' />;
     }
     case 'about': {
       return <InfoIcon color='primary' />;

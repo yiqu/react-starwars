@@ -8,6 +8,11 @@ import { loader as  characterLoader, loaderWithPlanets } from '../core/character
 
 
 // Lazy load components
+const CoreLayout = loadable(() => import('../core/core/CoreLayout'));
+const CoreEntityLayout = loadable(() => import('../core/core/entity/CoreEntityLayout'));
+const CoreEntityAll = loadable(() => import('../core/core/entity/all/CoreEntityAll'));
+const CoreEntityDetail = loadable(() => import('../core/core/entity/detail/CoreEntityDetail'));
+
 const MovieLayoutLazy = loadable(() => import('../core/movies/AllMoviesLayout'));
 const CoreMoviesLazy = loadable(() => import('../core/movies/movies/Movies'));
 const CoreMovieLazy = loadable(() => import('../core/movies/movies/movie/Movie'));
@@ -123,6 +128,28 @@ const routeList: Router = createBrowserRouter([
       {
         path: 'about',
         element: <AboutLazy />
+      },
+      {
+        path: 'core',
+        element: <CoreLayout />,
+        children: [
+          { index: true, element: <Navigate replace to="starships" /> },
+          {
+            path: ':coreEntityId',
+            element: <CoreEntityLayout />,
+            id: 'coreEntity',
+            children: [
+              {
+                index: true,
+                element: <CoreEntityAll />,
+              },
+              {
+                path: ':coreEntityDetailId',
+                element: <CoreEntityDetail />,
+              },
+            ]
+          },
+        ]
       }
     ]
   }

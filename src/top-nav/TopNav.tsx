@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { AppBar } from '../routes/Layouts/layout-components';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { capitalizeFirstLetter } from "src/shared/utils/text-transform";
@@ -63,9 +63,11 @@ export default function TopNav({ open, onNavOpen }: TopNavProps) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h5" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins'} }>
-                { startCase(TransformPageTitle[title+'']) }
-              </Typography>
+              <Link to={ `/${title}` }>
+                <Typography variant="h5" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins', color: "#fff"} }>
+                  { startCase(TransformPageTitle[title+'']) }
+                </Typography>
+              </Link>
             </Stack>
 
             <Tooltip title={ `Turn ${themeContext.currentTheme==='light'?'off':'on'} the lights` }>

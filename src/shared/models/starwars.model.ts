@@ -139,3 +139,13 @@ export interface StarwarsPlanet {
   name: string;
   url: string;
 }
+
+export interface ContentEntity {
+  contentId: string;
+  apiLoading: boolean;
+  firstTimeLoading?: boolean;
+  error: boolean;
+  errMsg?: string;
+  totalCount: number;
+  data: StarwarsContent[];
+}
