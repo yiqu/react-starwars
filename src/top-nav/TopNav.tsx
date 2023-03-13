@@ -27,12 +27,18 @@ export default function TopNav({ open, onNavOpen }: TopNavProps) {
 
   const location = useLocation();
   const [title, setTitle] = useState<string>();
+  const [titleUrlPath, setTitleUrlPath] = useState<string>('');
   const themeContext = useContext(ThemeContext);
   const [currentTheme, setLocalStorageTheme, remove] = useLocalStorage<PaletteMode>(LS_APP_THEME, 'light');
   
   useEffect(() => {
     const urlArray: string[] = location.pathname.split("/");
-    const pathTitle: string = urlArray[1];
+    let pathTitle: string = urlArray[1];
+    setTitleUrlPath(pathTitle);
+    if (pathTitle === 'core') {
+      pathTitle = urlArray[2];
+      setTitleUrlPath(`core/${pathTitle}`);
+    }
     setTitle(pathTitle);
   }, [location.pathname]);
 
@@ -63,7 +69,7 @@ export default function TopNav({ open, onNavOpen }: TopNavProps) {
               >
                 <MenuIcon />
               </IconButton>
-              <Link to={ `/${title}` }>
+              <Link to={ `/${titleUrlPath}` }>
                 <Typography variant="h5" noWrap sx={ {fontWeight: 400, fontFamily:'Poppins', color: "#fff"} }>
                   { startCase(TransformPageTitle[title+'']) }
                 </Typography>

@@ -1,12 +1,11 @@
 export interface HttpResponse<T> {
-  count?: number;
-  next: string;
-  previous: string;
   message: string;
   total_records: number;
   total_pages: number;
+  previous: string;
+  count?: number;
+  next: string;
   results: T[];
-
   //
   result?: ResultProperty<T>[];
 }
@@ -142,10 +141,10 @@ export interface StarwarsPlanet {
 
 export interface ContentEntity {
   contentId: string;
-  apiLoading: boolean;
+  apiLoading?: boolean;
   firstTimeLoading?: boolean;
-  error: boolean;
+  error?: boolean;
   errMsg?: string;
-  totalCount: number;
-  data: StarwarsContent[];
+  totalCount?: number;
+  data?: StarwarsContent[];
 }

@@ -1,1 +1,3 @@
-import React from 'react';
+import { fetchCoreEntityData } from "./core.thunks";
+
+export { fetchCoreEntityData };

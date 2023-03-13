@@ -1,4 +1,4 @@
-  import { Link, LoaderFunctionArgs, Outlet, useLoaderData, useRouteLoaderData } from "react-router-dom";
+  import { Link, LoaderFunctionArgs, Outlet, useLoaderData, useParams, useRouteLoaderData } from "react-router-dom";
   import { delay, firstValueFrom, map } from "rxjs";
   import { ajax, AjaxResponse } from 'rxjs/ajax';
   import { BASE_SW_API } from "src/shared/api/endpoints";
@@ -14,21 +14,29 @@
   import ProgressCircle from "src/shared/components/progress/CircleProgress";
   import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
   import { DataBlockDisplayMode } from "src/shared/models/general.model";
-  import { useCallback } from "react";
+  import { useCallback, useEffect } from "react";
   import Grid from '@mui/material/Unstable_Grid2';
   import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
   import { useAppDispatch, useAppSelector } from "src/store/appHook";
   import * as fromplanetsSelectors from '../../store/planets/planets.selectors';
   import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
   import { HttpParams } from "src/shared/models/http.model";
-  import { fetchPlanets } from "src/core/store/planets";
+import { fetchCoreEntityData } from "src/core/store/core-others/core.thunks";
   
   
   function CoreEntityLayout() {
   
     const { isMobile } = useScreenSize();
     const dispatch = useAppDispatch();
+    const { coreEntityId } = useParams<string>();
     
+    
+    useEffect(() => {
+      if (coreEntityId) {
+        dispatch(fetchCoreEntityData({entity: coreEntityId}));
+      }
+    }, [coreEntityId, dispatch]);
+
     const onFilterChangeHandler = useCallback((charName: string) => {
       if (charName && charName.trim() !== '') {
         //dispatch(fetchPlanets({name: charName}));
