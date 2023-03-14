@@ -4,7 +4,7 @@ export interface HttpParams {
 }
 
 export interface EntityHttpParams {
-  entity: string;
+  entity?: string;
   [key: string]: any;
 }
 

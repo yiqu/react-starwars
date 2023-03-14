@@ -96,6 +96,10 @@ export interface StarwarsContent {
   url: string;
 }
 
+export interface GenericStarwarsContent {
+  [id: string]: StarwarsContent[];
+}
+
 export interface StarwarFilmPersonal {
   title: string;
   canon: boolean;
