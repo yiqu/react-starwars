@@ -3,9 +3,19 @@ export interface HttpParams {
   [key: string]: any;
 }
 
+
+export interface Pagination {
+  limit?: number;
+  page: number;
+  total_pages?: number;
+  total_records?: number;
+  next?: string | null;
+  previous?: string | null;
+}
 export interface EntityHttpParams {
-  entity?: string;
-  [key: string]: any;
+  entity: string;
+  urlParams?: HttpParams;
+  pagination: Pagination;
 }
 
 export interface HttpParamsWithSearch {

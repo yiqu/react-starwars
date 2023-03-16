@@ -7,7 +7,7 @@ import urlcat from "urlcat";
 import { HttpResponse, StarwarsContent } from 'src/shared/models/starwars.model';
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { Stack, Tooltip, IconButton, Typography } from "@mui/material";
+import { Stack, Tooltip, IconButton, Typography, Button } from "@mui/material";
 import ErrorPage from "src/404/ErrorPage";
 import FilterInput from "src/core/movies/movies/filter/FilterInput";
 import MovieCard from "src/core/movies/movies/MovieCard";
@@ -20,8 +20,7 @@ import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromplanetsSelectors from '../../store/planets/planets.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { EntityHttpParams, HttpParams } from "src/shared/models/http.model";
-import { fetchCoreEntityData } from "src/core/store/core-others/core.thunks";
+import { EntityHttpParams, HttpParams, Pagination } from "src/shared/models/http.model";
 import { useFetchEntityByIdQuery } from "src/core/services/api";
 import { createApi, fetchBaseQuery, skipToken } from '@reduxjs/toolkit/query/react';
 
@@ -31,25 +30,17 @@ function CoreEntityLayout() {
   const dispatch = useAppDispatch();
   const { coreEntityId } = useParams<string>();
 
-  const { data, isLoading, error, isFetching } = useFetchEntityByIdQuery<EntityHttpParams>({
-    entity: coreEntityId,
-    owner: 'yqu'
-  } ?? skipToken, {skip: !coreEntityId});
-  console.log(data);
-  
-  // useEffect(() => {
-  //   if (coreEntityId) {
-  //     dispatch(fetchCoreEntityData({entity: coreEntityId}));
-  //   }
-  // }, [coreEntityId, dispatch]);
-
   const onFilterChangeHandler = useCallback((charName: string) => {
     if (charName && charName.trim() !== '') {
-      //dispatch(fetchPlanets({name: charName}));
     } else {
-      // dispatch(fetchPlanets());
     }
   }, []);
+
+  const onNextPageHandler = () => {
+  };
+
+  const onPrevPageHandler = () => {
+  };
 
   if (false) return (
     <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
@@ -82,7 +73,11 @@ function CoreEntityLayout() {
           </Grid>
         </Grid>
       </AppToolbar>
-
+      
+      <div>
+        <Button onClick={ onPrevPageHandler }>Previous</Button>
+        <Button onClick={ onNextPageHandler }>Next</Button>
+      </div>
       {/* <SimpleGridDisplay data={ [] } itemUrlPath="xxx" /> */}
 
       <Outlet />

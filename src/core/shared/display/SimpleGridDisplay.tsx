@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import { Link } from "react-router-dom";
 import { Box, Divider, Stack, Typography } from "@mui/material";
@@ -11,9 +11,10 @@ export interface SimpleGridDisplayProps {
   data: StarwarsContent[];
   itemUrlPath: string;
   gutterSize?: "full" | "med" | "skinny";
+  children?: ReactNode;
 }
 
-function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med" }: SimpleGridDisplayProps) {
+function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med", children }: SimpleGridDisplayProps) {
 
   return (
     <LayoutWithMedGutter size={ gutterSize }>
@@ -21,7 +22,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med" }: SimpleGridDi
         data.map((display: StarwarsContent) => {
           return (
             <Grid key={ display.uid } xs={ 12 } sm={ display.url ? 6 : 12 } md={ display.url ? (gutterSize === "med" ? 3 : 2): 12 }  
-              sx={ display.url ? { border: '1px solid #ddd', m: 2, borderRadius: '10px'} : {m: 2} } >
+              sx={ display.url ? { border: '1px solid #eee', borderRadius: '10px'} : {} } >
               {
                 display.url ? (
                   <Link to={ `/${itemUrlPath}/${display.uid}` }>
@@ -41,6 +42,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med" }: SimpleGridDi
           );
         })
       }
+      { children }
     </LayoutWithMedGutter>
   );
 };

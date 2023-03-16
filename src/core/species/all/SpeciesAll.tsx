@@ -22,13 +22,20 @@ import * as fromplanetsSelectors from '../../store/planets/planets.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import { HttpParams } from "src/shared/models/http.model";
 import { fetchPlanets } from "src/core/store/planets";
+import { useFetchVehiclesQuery } from "src/core/store/swapi/swapi";
+import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
+import Pagination from '@mui/material/Pagination';
+import { flexCenter } from "src/shared/utils/css.utils";
+import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
 
-
-function StarshipsAll() {
+function SpeciesAll() {
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
-  
+  const page: number = useAppSelector(selectPage);
+  const totalPages: number = useAppSelector(selectTotalPages);
+  const { data, isFetching, isLoading, error } = useFetchVehiclesQuery({ entity: 'species', pagination: { page } });
+
   const onFilterChangeHandler = useCallback((charName: string) => {
     if (charName && charName.trim() !== '') {
       //dispatch(fetchPlanets({name: charName}));
@@ -37,11 +44,19 @@ function StarshipsAll() {
     }
   }, []);
 
-  if (false) return (
+  const onPageHandler = (event: React.ChangeEvent<unknown>, page: number) => {
+    dispatch(dispatchPaging(page));
+  };
+
+  if (isLoading) return (
     <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
-      <LoadingLogo message="planets" />
+      <LoadingLogo message="species" />
     </Stack>
   );
+
+  if (!data) {
+    return <></>;
+  }
   
   return (
     <Stack direction="column" width="100%">
@@ -69,10 +84,14 @@ function StarshipsAll() {
         </Grid>
       </AppToolbar>
 
-      <SimpleGridDisplay data={ [] } itemUrlPath="xxx" />
+      <SimpleGridDisplay data={ data.results } itemUrlPath="xxx" >
+        <Stack spacing={ 2 } direction="row" sx={ {...flexCenter, mt: 2} } width="100%">
+          <Pagination count={ totalPages } shape="rounded" page={ page } showFirstButton showLastButton onChange={ onPageHandler }/>
+        </Stack>
+      </SimpleGridDisplay>
 
     </Stack>
   );
 };
 
-export default StarshipsAll;
+export default SpeciesAll;

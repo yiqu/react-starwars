@@ -13,7 +13,7 @@ export const starwarsContentApi = createApi({
     baseUrl: BASE_SW_API
   }),
   endpoints: (builder) => ({
-    fetchEntityById: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
+    fetchVehicles: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
       query: (params: EntityHttpParams) => {
         return {
           url: `${params.entity}`,
@@ -33,4 +33,4 @@ export const starwarsContentApi = createApi({
 });
 
 
-export const { useFetchEntityByIdQuery } = starwarsContentApi;
+export const { useFetchVehiclesQuery } = starwarsContentApi;

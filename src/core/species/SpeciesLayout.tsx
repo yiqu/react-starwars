@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 
-function Starships() {
+function Species() {
   return (
     <Outlet />
   );
 };
 
-export default Starships;
+export default Species;

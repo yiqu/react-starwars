@@ -29,7 +29,7 @@ function LayoutWithMedGutter({ size = "med", children }: LayoutGutterProps) {
   }, [size]);
 
   return (
-    <Grid container xs={ 12 } sm={ sizes.width } smOffset={ sizes.offset } >
+    <Grid container xs={ 12 } sm={ sizes.width } smOffset={ sizes.offset }>
       { children }
     </Grid>
   );

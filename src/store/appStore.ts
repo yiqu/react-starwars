@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { starwarsContentApi } from 'src/core/services/api';
 import { allFilmsSlice } from 'src/core/store/all-films/films.reducer';
 import charactersReducer from 'src/core/store/characters/characters.reducer';
-import coreEntitiesReducer from 'src/core/store/core-others/core.reducer';
 import { favoriteFilmslice } from 'src/core/store/favorites/favorites.reducer';
 import planetsReducer from 'src/core/store/planets/planets.reducer';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
+import swapiSliceReducer from 'src/core/store/swapi/swapi.reducer';
+import { starwarsContentApi } from 'src/core/store/swapi/swapi';
 
 export const appStore = configureStore({
   reducer: {
@@ -13,8 +13,8 @@ export const appStore = configureStore({
     favoriteFilms: favoriteFilmslice.reducer,
     characters: charactersReducer,
     planets: planetsReducer,
-    coreEntities: coreEntitiesReducer,
-    [starwarsContentApi.reducerPath]: starwarsContentApi.reducer
+    [starwarsContentApi.reducerPath]: starwarsContentApi.reducer,
+    swapiConfig: swapiSliceReducer
   },
 
   // Adding the api middleware enables caching, invalidation, polling,
@@ -25,7 +25,8 @@ export const appStore = configureStore({
   
   devTools: {
     trace: true,
-    name: 'Starwars DB - SWDB'
+    name: 'Starwars DB - SWDB',
+    actionsDenylist: ['__rtkq/focused', '__rtkq/unfocused']
   },
 });
 

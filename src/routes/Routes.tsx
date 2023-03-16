@@ -25,6 +25,18 @@ const PlanetsLayout = loadable(() => import('../core/planets/PlanetsLayout'));
 const PlanetsAll = loadable(() => import('../core/planets/all/PlanetsAll'));
 const Planet = loadable(() => import('../core/planets/planet/PlanetLayout'));
 
+const VehiclesLayout = loadable(() => import('../core/vehicles/VehiclesLayout'));
+const VehiclesAll = loadable(() => import('../core/vehicles/all/VehiclesAll'));
+const Vehicle = loadable(() => import('../core/vehicles/detail/Vehicle'));
+
+const StarshipsLayout = loadable(() => import('../core/starships/StarshipsLayout'));
+const StarshipsAll = loadable(() => import('../core/starships/all/StarshipsAll'));
+const Starship = loadable(() => import('../core/starships/detail/Starship'));
+
+const SpeciesLayout = loadable(() => import('../core/species/SpeciesLayout'));
+const SpeciesAll = loadable(() => import('../core/species/all/SpeciesAll'));
+const Specie = loadable(() => import('../core/species/detail/Specie'));
+
 const CharactersLayout = loadable(() => import('../core/characters/CharactersLayout'));
 const CharactersAll = loadable(() => import('../core/characters/all/CharactersAll'));
 const CharacterLayout = loadable(() => import('../core/characters/character/CharacterLayout'));
@@ -102,6 +114,51 @@ const routeList: Router = createBrowserRouter([
           {
             path: ':planetId',
             element: <Planet />,
+          },
+        ]
+      },
+      {
+        path: 'vehicles',
+        element: <VehiclesLayout />,
+        id: 'vehicles',
+        children: [
+          {
+            index: true,
+            element: <VehiclesAll />,
+          },
+          {
+            path: ':vehicleId',
+            element: <Vehicle />,
+          },
+        ]
+      },
+      {
+        path: 'starships',
+        element: <StarshipsLayout />,
+        id: 'starships',
+        children: [
+          {
+            index: true,
+            element: <StarshipsAll />,
+          },
+          {
+            path: ':starshipId',
+            element: <Starship />,
+          },
+        ]
+      },
+      {
+        path: 'species',
+        element: <SpeciesLayout />,
+        id: 'species',
+        children: [
+          {
+            index: true,
+            element: <SpeciesAll />,
+          },
+          {
+            path: ':specieId',
+            element: <Specie />,
           },
         ]
       },

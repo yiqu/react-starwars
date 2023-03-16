@@ -24,16 +24,14 @@ import { HttpParams } from "src/shared/models/http.model";
 import { fetchPlanets } from "src/core/store/planets";
 
 
-function StarshipsAll() {
+function VehiclesAll() {
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   
   const onFilterChangeHandler = useCallback((charName: string) => {
     if (charName && charName.trim() !== '') {
-      //dispatch(fetchPlanets({name: charName}));
     } else {
-     // dispatch(fetchPlanets());
     }
   }, []);
 
@@ -69,10 +67,10 @@ function StarshipsAll() {
         </Grid>
       </AppToolbar>
 
-      <SimpleGridDisplay data={ [] } itemUrlPath="xxx" />
+      <SimpleGridDisplay data={ [] } itemUrlPath="planets" />
 
     </Stack>
   );
 };
 
-export default StarshipsAll;
+export default VehiclesAll;
