@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[615],{22615:function(e,r,a){a.r(r);var s=a(80184);r.default=function(){return(0,s.jsx)(s.Fragment,{children:"Specie Detail"})}}}]);
+//# sourceMappingURL=615.37a7c7f1.chunk.js.map

@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[454],{46454:function(r,a,s){s.r(a);var t=s(80184);a.default=function(){return(0,t.jsx)(t.Fragment,{children:"Starship Detail"})}}}]);
+//# sourceMappingURL=454.82340ae8.chunk.js.map

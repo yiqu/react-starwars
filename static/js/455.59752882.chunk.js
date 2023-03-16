@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[455],{78455:function(r,a,e){e.r(a);var s=e(80184);a.default=function(){return(0,s.jsx)(s.Fragment,{children:"V Detail"})}}}]);
+//# sourceMappingURL=455.59752882.chunk.js.map

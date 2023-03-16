@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/615.37a7c7f1.chunk.js","mappings":"gIAOA,UAPA,WAEE,OACE,+CAEJ,C","sources":["core/species/detail/Specie.tsx"],"sourcesContent":["function Specie() {\n\n  return (\n    <>Specie Detail</>\n  );\n}\n\nexport default Specie;"],"names":[],"sourceRoot":""}
