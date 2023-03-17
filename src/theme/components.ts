@@ -45,5 +45,10 @@ export const MyComponents: Components<Omit<Theme, "components">> | undefined = {
     defaultProps: {
       size: 'small'
     }
+  },
+  MuiInput: {
+    defaultProps: {
+      spellCheck: false
+    }
   }
 };

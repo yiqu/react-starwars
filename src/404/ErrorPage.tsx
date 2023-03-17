@@ -8,7 +8,7 @@ export interface ErrorPageProp {
 export default function ErrorPage({ reason, debug }: ErrorPageProp) {
 
   return (
-    <Box marginY={ 5 }>
+    <Box marginY={ 5 } width="100%">
       <Stack direction="column" spacing={ 5 } justifyContent="center" alignItems="center">
         <Typography variant="h5" sx={ {textTransform:'uppercase'} }>
           An error has occurred!

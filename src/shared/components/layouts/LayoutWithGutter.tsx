@@ -7,7 +7,7 @@ export interface LayoutGutterProps {
   size?: "full" | "med" | "skinny"
 }
 
-function LayoutWithMedGutter({ size = "med", children }: LayoutGutterProps) {
+function LayoutWithGutter({ size = "med", children }: LayoutGutterProps) {
 
   const [sizes, setSizes] = useState({ width: 7, offset: 2.5 });
 
@@ -29,10 +29,10 @@ function LayoutWithMedGutter({ size = "med", children }: LayoutGutterProps) {
   }, [size]);
 
   return (
-    <Grid container xs={ 12 } sm={ sizes.width } smOffset={ sizes.offset }>
+    <Grid container spacing={ 0 } xs={ 12 } xsOffset={ 0 } sm={ sizes.width } smOffset={ sizes.offset }>
       { children }
     </Grid>
   );
 }
 
-export default LayoutWithMedGutter;
+export default LayoutWithGutter;

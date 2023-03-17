@@ -7,7 +7,7 @@ import Planet from "./Planet";
 import urlcat from "urlcat";
 import { BASE_SW_API } from "src/shared/api/endpoints";
 import { HttpResponse2, StarwarsPlanet } from "src/shared/models/starwars.model";
-import LayoutWithMedGutter from "src/shared/components/layouts/LayoutWithMedGutter";
+import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 
 function PlanetLayout() {
   const { planetId } = useParams<string>();
@@ -32,12 +32,12 @@ function PlanetLayout() {
 
   return (
     <Box sx={ {p: 2} } width="100%">
-      <LayoutWithMedGutter size={ "med" }>
+      <LayoutWithGutter size={ "med" }>
         <Typography variant='h4' sx={ {fontWeight: 500, mb: 4} }>
           { data?.result.properties.name }
         </Typography>
         <Planet planet={ data?.result.properties } />
-      </LayoutWithMedGutter>
+      </LayoutWithGutter>
     </Box>
   );
 }

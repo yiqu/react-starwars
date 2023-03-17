@@ -15,6 +15,11 @@ export interface HttpResponse2<T> {
   result: ResultProperty<T>;
 }
 
+export interface HttpSearchResponse<T> {
+  message: string;
+  result: ResultProperty<T>;
+}
+
 export interface HttpResponse2List<T> {
   message: string;
   result: ResultProperty<T>[];
@@ -137,6 +142,23 @@ export interface StarwarsPlanet {
   climate: string;
   terrain: string;
   surface_water: string;
+  created: string;
+  edited: string;
+  name: string;
+  url: string;
+}
+
+export interface StarwarsSpecie {
+  classification: string
+  designation: string;
+  average_height: number;
+  average_lifespan: number;
+  hair_colors:string;
+  skin_colors: string;
+  eye_colors: string;
+  homeworld: string;
+  language: string;
+  people: string[];
   created: string;
   edited: string;
   name: string;

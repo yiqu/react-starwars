@@ -22,6 +22,7 @@ import * as fromplanetsSelectors from '../../store/planets/planets.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import { HttpParams } from "src/shared/models/http.model";
 import { fetchPlanets } from "src/core/store/planets";
+import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 
 
 function VehiclesAll() {
@@ -66,8 +67,6 @@ function VehiclesAll() {
           </Grid>
         </Grid>
       </AppToolbar>
-
-      <SimpleGridDisplay data={ [] } itemUrlPath="planets" />
 
     </Stack>
   );

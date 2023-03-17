@@ -3,9 +3,9 @@ export function scrollToElementById(id: string, timeout?: number, position?: Scr
   let top = document.getElementById(id);
   if (top) {
     setTimeout(() => {
-      top?.scrollIntoView({block: position as any ?? "start"});
+      top?.scrollIntoView({block: position as any ?? "end"});
       top = null;
-    }, timeout ?? 5);
+    }, timeout ?? 0);
   }
 }
 
