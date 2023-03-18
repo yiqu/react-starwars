@@ -68,3 +68,9 @@ type RejectedWithValue = <ThunkArg, RejectedValue>(
   requestId: string,
   arg: ThunkArg
 ) => RejectedWithValueAction<ThunkArg, RejectedValue>
+
+
+export type RtkTag = {
+  type: string;
+  id?: string;
+} | string;

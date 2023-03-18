@@ -15,14 +15,11 @@ const swapiSlice = createSlice({
   initialState,
   reducers: {
     dispatchPaging: (state, action: PayloadAction<number>) => {
-      console.log("paging");
       state.pagination.page = action.payload;
     }
   },
   extraReducers: (builder) => {
-    builder.addMatcher(starwarsContentApi.endpoints.fetchVehicles.matchFulfilled, (state, action) => {
-      console.log("fulFILLED in reducer");
-      const args = action.meta.arg.originalArgs;
+    builder.addMatcher(starwarsContentApi.endpoints.fetchSpecies.matchFulfilled, (state, action) => {
       const payload = action.payload;
       state.pagination = {
         ...state.pagination,

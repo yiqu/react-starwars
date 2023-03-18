@@ -9,7 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import SimpleGridDisplay, { DisplayName } from "src/core/shared/display/SimpleGridDisplay";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { starwarsContentApi, useFetchVehiclesQuery } from "src/core/store/swapi/swapi";
+import { starwarsContentApi, useFetchSpeciesQuery } from "src/core/store/swapi/swapi";
 import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
 import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
 import { scrollToElementById } from "src/shared/utils/general.utils";
@@ -22,7 +22,7 @@ function SpeciesAll() {
   const page: number = useAppSelector(selectPage);
   const totalPages: number = useAppSelector(selectTotalPages);
   const [filterValue, setFilterValue] = useState<string | undefined>(undefined);
-  const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchVehiclesQuery({ 
+  const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchSpeciesQuery({ 
     entity: 'species', 
     pagination: { page },
     urlParams: filterValue ? { name: filterValue } : undefined
@@ -30,14 +30,9 @@ function SpeciesAll() {
 
   const onFilterChangeHandler = useCallback((charName: string) => {
     if (charName && charName.trim() !== '') {
-      setFilterValue(charName);
     } else {
-      setFilterValue(undefined);
     }
-    setTimeout(() => {
-      dispatch(starwarsContentApi.util.invalidateTags(['Vehicles']));
-    }, 100);
-  }, [dispatch]);
+  }, []);
   
   useEffect(() => {
     scrollToElementById('top-pagination', 300, "end");
