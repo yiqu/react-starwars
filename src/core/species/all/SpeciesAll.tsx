@@ -13,7 +13,11 @@ import { starwarsContentApi, useFetchSpeciesQuery } from "src/core/store/swapi/s
 import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
 import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
 import { scrollToElementById } from "src/shared/utils/general.utils";
+import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
+import { ResultProperty, StarwarsSearchable, StarwarsSpecie } from "src/shared/models/starwars.model";
+import { useNavigate } from "react-router-dom";
 
+const ENTITY_NAME = "species";
 
 function SpeciesAll() {
 
@@ -21,18 +25,11 @@ function SpeciesAll() {
   const dispatch = useAppDispatch();
   const page: number = useAppSelector(selectPage);
   const totalPages: number = useAppSelector(selectTotalPages);
-  const [filterValue, setFilterValue] = useState<string | undefined>(undefined);
   const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchSpeciesQuery({ 
-    entity: 'species', 
-    pagination: { page },
-    urlParams: filterValue ? { name: filterValue } : undefined
+    entity: ENTITY_NAME, 
+    pagination: { page }
   });
-
-  const onFilterChangeHandler = useCallback((charName: string) => {
-    if (charName && charName.trim() !== '') {
-    } else {
-    }
-  }, []);
+  const navigate = useNavigate();
   
   useEffect(() => {
     scrollToElementById('top-pagination', 300, "end");
@@ -40,6 +37,10 @@ function SpeciesAll() {
 
   const onPageHandler = (_: React.ChangeEvent<unknown>, page: number) => {
     dispatch(dispatchPaging(page));
+  };
+
+  const onResultSelectHandler = (selection: ResultProperty<StarwarsSearchable> | null) => {
+    navigate(`./${selection?.uid}`);
   };
 
   if (isLoading) return (
@@ -55,34 +56,23 @@ function SpeciesAll() {
   if (!data) {
     return <></>;
   }
-  
+
   return (
     <Stack direction="column" width="100%">
       <AppToolbar toolbarProps={ {
         position: "sticky",
         sx: {top: isMobile ? '56px':'64px'}
       } }>
-        <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+        <Grid container xs={ 12 }>
           <Grid xs={ 10 } sm={ 4 }>
             <Stack direction="row" justifyContent="start" alignItems="center">
-              <Grid container xs={ 12 }>
-                <Grid xs={ 8 }>
-                  <FilterInput filterChange={ onFilterChangeHandler } currentText={ filterValue } />
-                </Grid>
-                <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
-                  { isFetching && <ProgressCircle size={ 20 } /> }
-                </Grid>
-              </Grid>
-            </Stack>
-          </Grid>
-          <Grid xs={ 2 } sm={ 8 }>
-            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
             </Stack>
           </Grid>
         </Grid>
       </AppToolbar>
-      <Box mt={ 2 }>
-        <SimpleGridDisplay data={ data.results } itemUrlPath="species" totalPages={ totalPages } page={ page } onPaged={ onPageHandler }
+      <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
+        <SimpleGridDisplay data={ data.results } itemUrlPath={ ENTITY_NAME } totalPages={ totalPages } page={ page } onPaged={ onPageHandler }
           totalRecords={ data.total_records } isFetching={ isFetching }  />
       </Box>
     </Stack>

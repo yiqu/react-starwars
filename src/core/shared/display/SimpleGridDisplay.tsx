@@ -52,9 +52,12 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med", totalPages=0, 
               </Select>
             </FormControl>
           </Box>
-          <Typography color="text.secondary"> 
-            {((page-1) * PAGE_LIMIT_30)+1} - {(page===totalPages) ? totalRecords : page*PAGE_LIMIT_30} of { totalRecords } 
-          </Typography>
+          <Box>
+            <Typography color="text.secondary" sx={ {lineHeight: 1} }> 
+              {((page-1) * PAGE_LIMIT_30)+1} - {(page===totalPages) ? totalRecords : page*PAGE_LIMIT_30} of { totalRecords } 
+            </Typography>
+          </Box>
+          
         </Stack>
       </Grid> }
       {

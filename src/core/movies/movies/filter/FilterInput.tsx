@@ -9,7 +9,7 @@ import { isEmpty } from 'lodash';
 export default function FilterInput({ count, filterChange, placeholderText, currentText }: FilmFilterProp) {
 
   const [inputValue, setInputValue] = useState<string>('');
-  const debouncedTerm = useDebounce<string>(inputValue, 400);
+  const debouncedTerm = useDebounce<string>(inputValue, 200);
   const [placeholderTextt, setPlaceholderTextt] = useState<string>("Filter by name");
 
   useEffect(() => {

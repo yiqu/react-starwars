@@ -20,6 +20,11 @@ export interface HttpSearchResponse<T> {
   result: ResultProperty<T>;
 }
 
+export interface HttpSearchResponses<T> {
+  message: string;
+  result: ResultProperty<T>[];
+}
+
 export interface HttpResponse2List<T> {
   message: string;
   result: ResultProperty<T>[];
@@ -116,6 +121,11 @@ export interface StarwarFilmPersonal {
   species: StarwarsContent[];
   starships: StarwarsContent[];
   vehicles: StarwarsContent[];
+}
+
+export interface StarwarsSearchable {
+  name: string;
+  url: string;
 }
 
 export interface StarwarCharacter {
