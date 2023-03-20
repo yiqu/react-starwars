@@ -8,24 +8,27 @@ import { useAppDispatch } from "src/store/appHook";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams, useSearchParams } from "react-router-dom";
-import { speciesTag, starwarsContentApi, useFetchSpecieQuery } from "src/core/store/swapi/swapi";
+import { speciesTag, starwarsContentApi, useEditSpecieMutation, useFetchSpecieQuery } from "src/core/store/swapi/swapi";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import ErrorPage from "src/404/ErrorPage";
 import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import { flexCenter } from "src/shared/utils/css.utils";
-import { useEffect, useMemo } from "react";
-import { StarwarsSpecie } from "src/shared/models/starwars.model";
+import { useEffect, useMemo, useState } from "react";
+import { HttpSearchResponse, StarwarsSpecie } from "src/shared/models/starwars.model";
 import { QueryObj } from "src/shared/models/url";
 import { isArray, startCase } from 'lodash';
 import { isNumeric } from "src/shared/utils/number.utils";
+import EditDialog from "src/core/shared/edit-dialog/EditDialog";
 
 
 function Specie() {
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   const { specieId } = useParams();
+  const [ openEditDialog, setOpenEditDialog ] = useState<boolean>(false);
   const { data, isLoading, isFetching, error, isError, refetch } = useFetchSpecieQuery(specieId!);
+  const [ editSpecie, editResult ] = useEditSpecieMutation();
 
   const display = useMemo(() => {
     let list: QueryObj[] = [];
@@ -43,7 +46,18 @@ function Specie() {
   };
 
   const onEditHandler = () => {
-    dispatch(starwarsContentApi.util.invalidateTags([{type: speciesTag, id: specieId }]));
+    setOpenEditDialog(true);
+  };
+
+  const onDialogCloseHandler = (editedData?: StarwarsSpecie) => {
+    if (editedData) {
+      editSpecie({
+        entityId: specieId!,
+        editable: editedData
+      });
+    } else {
+      setOpenEditDialog(false);
+    }
   };
   
   if (isLoading) return (
@@ -116,6 +130,10 @@ function Specie() {
           </Grid>
         </LayoutWithGutter>
       </Box>
+
+      <EditDialog open={ openEditDialog }  title={ `Edit ${data.result.properties.name}` } 
+        editable={ data.result.properties } onDialogClose={ onDialogCloseHandler } apiLoading={ editResult.isLoading }
+        hasErrorMsg={ (editResult.error as any)?.error } />
     </Stack>
   );
 }

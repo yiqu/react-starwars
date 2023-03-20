@@ -5,9 +5,10 @@ import { RtkTag } from 'src/shared/models/redux.model';
 import { GenericStarwarsContent, HttpResponse, HttpSearchResponse, HttpSearchResponses, ResultProperty, StarwarsContent, StarwarsSpecie } from 'src/shared/models/starwars.model';
 import { PAGE_LIMIT, PAGE_COUNT, PAGE_LIMIT_30 } from 'src/shared/utils/constants';
 import urlcat, { query } from "urlcat";
-import { SearchContentQuery } from './swapi.state';
+import { SearchContentQuery, StarwarsSpecieEditable } from './swapi.state';
 
 export const speciesSubPath = "species";
+
 export const speciesTag = "Species";
 export const searchTag = 'SearchResults';
 
@@ -55,6 +56,21 @@ export const starwarsContentApi = createApi({
       }
     }),
 
+    editSpecie: builder.mutation<HttpSearchResponse<StarwarsSpecie>, StarwarsSpecieEditable<StarwarsSpecie>>({
+      query: (editable: StarwarsSpecieEditable<StarwarsSpecie>) => {
+        return {
+          url: `${speciesSubPath}/${editable.entityId}`,
+          method: 'PUT',
+          body: {
+            ...editable.editable
+          }
+        };
+      },
+      invalidatesTags: (result, error, args, meta) => {
+        return [{type: speciesTag, id: args.entityId}];
+      },
+    }),
+
 
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({
@@ -68,7 +84,7 @@ export const starwarsContentApi = createApi({
           method: 'GET'
         };
       },
-      providesTags: (result, error, args, meta) => {
+      providesTags: () => {
         return [searchTag];
       },
       transformResponse: (response: HttpSearchResponses<any>) => {
@@ -79,4 +95,4 @@ export const starwarsContentApi = createApi({
 });
 
 
-export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery } = starwarsContentApi;
+export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, useEditSpecieMutation } = starwarsContentApi;

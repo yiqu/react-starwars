@@ -8,3 +8,8 @@ export interface SearchContentQuery {
   entity: string;
   name: string;
 }
+
+export interface StarwarsSpecieEditable<T> {
+  entityId: string;
+  editable: T;
+}
