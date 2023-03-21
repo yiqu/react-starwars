@@ -2,8 +2,6 @@ import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import { Stack, Tooltip, IconButton, Typography, Divider, Box, Button } from "@mui/material";
 import ErrorPage from "src/404/ErrorPage";
-import FilterInput from "src/core/movies/movies/filter/FilterInput";
-import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import { useCallback, useEffect, useState } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import SimpleGridDisplay, { DisplayName } from "src/core/shared/display/SimpleGridDisplay";
@@ -23,8 +21,8 @@ function SpeciesAll() {
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
-  const page: number = useAppSelector(selectPage);
-  const totalPages: number = useAppSelector(selectTotalPages);
+  const page: number = useAppSelector(selectPage(ENTITY_NAME));
+  const totalPages: number = useAppSelector(selectTotalPages(ENTITY_NAME));
   const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchSpeciesQuery({ 
     entity: ENTITY_NAME, 
     pagination: { page }
@@ -36,7 +34,7 @@ function SpeciesAll() {
   }, [isSuccess]);
 
   const onPageHandler = (_: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(dispatchPaging(page));
+    dispatch(dispatchPaging({entityId: ENTITY_NAME, pagination: {page: page}}));
   };
 
   const onResultSelectHandler = (selection: ResultProperty<StarwarsSearchable> | null) => {
@@ -45,7 +43,7 @@ function SpeciesAll() {
 
   if (isLoading) return (
     <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
-      <LoadingLogo message="species" />
+      <LoadingLogo message={ ENTITY_NAME } />
     </Stack>
   );
 

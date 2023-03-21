@@ -1,15 +1,24 @@
 import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/query/react';
 import { BASE_SW_API } from 'src/shared/api/endpoints';
 import { EntityHttpParams, HttpParams } from 'src/shared/models/http.model';
-import { RtkTag } from 'src/shared/models/redux.model';
-import { GenericStarwarsContent, HttpResponse, HttpSearchResponse, HttpSearchResponses, ResultProperty, StarwarsContent, StarwarsSpecie } from 'src/shared/models/starwars.model';
+import { GenericStarwarsContent, HttpResponse, HttpSearchResponse, HttpSearchResponses, 
+  ResultProperty, StarwarsContent, StarwarsSpecie, StarwarsStarships } from 'src/shared/models/starwars.model';
 import { PAGE_LIMIT, PAGE_COUNT, PAGE_LIMIT_30 } from 'src/shared/utils/constants';
 import urlcat, { query } from "urlcat";
 import { SearchContentQuery, StarwarsSpecieEditable } from './swapi.state';
 
 export const speciesSubPath = "species";
+export const starshipsSubPath = "starships";
+export const vehiclesSubPath = "vehicles";
+export const planetsSubPath = "planets";
+export const peopleSubPath = "people";
 
 export const speciesTag = "Species";
+export const starshipsTag = "Starships";
+export const vehiclesTag = "Vehicles";
+export const planetsTag = "Planets";
+export const peopleTag = "People";
+
 export const searchTag = 'SearchResults';
 
 export const starwarsContentApi = createApi({
@@ -17,7 +26,7 @@ export const starwarsContentApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_SW_API
   }),
-  tagTypes: [speciesTag, searchTag],
+  tagTypes: [speciesTag, starshipsTag, vehiclesTag, planetsTag, peopleTag, searchTag],
   endpoints: (builder) => ({
     fetchSpecies: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
       query: (params: EntityHttpParams) => {
@@ -71,6 +80,42 @@ export const starwarsContentApi = createApi({
       },
     }),
 
+    fetchStarships: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
+      query: (params: EntityHttpParams) => {
+        return {
+          url: `${params.entity}`,
+          params: {
+            ...params.urlParams,
+            limit: PAGE_LIMIT_30,
+            page: params.pagination.page ?? 1 // SWAPI is 1 based
+          },
+          method: 'GET'
+        };
+      },
+      transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: EntityHttpParams) => {
+        return response;
+      },
+      providesTags: (result, error, args, meta) => {
+        const tags: TagDescription<"Starships">[] = [];
+        result?.results.forEach((res: StarwarsContent) => {
+          tags.push({type: starshipsTag, id: res.uid});
+        });
+        tags.push(starshipsTag);
+        return tags;
+      }
+    }),
+
+    fetchStarship: builder.query<HttpSearchResponse<StarwarsStarships>, string>({
+      query: (id: string) => {
+        return {
+          url: `${starshipsSubPath}/${id}`,
+          method: 'GET'
+        };
+      },
+      providesTags: (result, error, args, meta) => {
+        return [{type: starshipsTag, id: args}];
+      }
+    }),
 
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({
@@ -95,4 +140,5 @@ export const starwarsContentApi = createApi({
 });
 
 
-export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, useEditSpecieMutation } = starwarsContentApi;
+export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, 
+  useEditSpecieMutation, useFetchStarshipQuery, useFetchStarshipsQuery } = starwarsContentApi;

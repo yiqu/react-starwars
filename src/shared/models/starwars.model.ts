@@ -128,7 +128,14 @@ export interface StarwarsSearchable {
   url: string;
 }
 
-export interface StarwarCharacter {
+export interface StarwarContentGeneric {
+  created: string;
+  edited:  string;
+  name:  string;
+  url: string;
+}
+
+export interface StarwarCharacter extends StarwarContentGeneric {
   height: string;
   mass: string;
   hair_color: string;
@@ -136,14 +143,10 @@ export interface StarwarCharacter {
   eye_color: string;
   birth_year: string;
   gender: string;
-  created: string;
-  edited: string;
-  name: string;
   homeworld: string;
-  url: string;
 }
 
-export interface StarwarsPlanet {
+export interface StarwarsPlanet extends StarwarContentGeneric {
   diameter: string;
   rotation_period: string;
   orbital_period: string;
@@ -152,13 +155,9 @@ export interface StarwarsPlanet {
   climate: string;
   terrain: string;
   surface_water: string;
-  created: string;
-  edited: string;
-  name: string;
-  url: string;
 }
 
-export interface StarwarsSpecie {
+export interface StarwarsSpecie extends StarwarContentGeneric {
   classification: string
   designation: string;
   average_height: number;
@@ -169,10 +168,39 @@ export interface StarwarsSpecie {
   homeworld: string;
   language: string;
   people: string[];
-  created: string;
-  edited: string;
-  name: string;
-  url: string;
+}
+
+export interface StarwarsStarships extends StarwarContentGeneric {
+  model: string;
+  starship_class:  string;
+  manufacturer:  string;
+  cost_in_credits: string;
+  length: string;
+  crew: string;
+  passengers: string;
+  max_atmosphering_speed:  string;
+  hyperdrive_rating: string;
+  MGLT:  string;
+  cargo_capacity: string;
+  consumables:  string;
+  pilots: string[];
+}
+
+export interface StarwarsVehicles extends StarwarContentGeneric {
+  model: string;
+  vehicle_class: string;
+  manufacturer: string;
+  cost_in_credits: string;
+  length: string;
+  crew: string;
+  passengers: string;
+  max_atmosphering_speed: string;
+  cargo_capacity: string;
+  consumables: string;
+  films: string[
+  ];
+  pilots: string[
+  ];
 }
 
 export interface ContentEntity {
