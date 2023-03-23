@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Box, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { StarwarsContent } from "src/shared/models/starwars.model";
 import { filter, interval, take, tap } from "rxjs";
-import { flexCenter } from "src/shared/utils/css.utils";
+import { ellipsis, flexCenter } from "src/shared/utils/css.utils";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -63,7 +63,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med", totalPages=0, 
       {
         data.map((display: StarwarsContent) => {
           return (
-            <Grid key={ display.uid } xs={ 12 } sm={ 6 } md={ 3 } >
+            <Grid key={ display.uid } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 5 }>
               {
                 <Box sx={ {p: 1} }>
                   <Link to={ `/${itemUrlPath}/${display.uid}` }>
@@ -116,7 +116,7 @@ export function DisplayName({ name, id }: {name: string; id: string}) {
   return (
     <Stack direction="row" sx={ {fontWeight:'500', p: 1, ...flexCenter, border: '1px solid #ddd', borderRadius: '10px',} } title={ `#${id} ${name}` }
       className={ className } >
-      <Typography variant="h6">
+      <Typography variant="h6" sx={ {...ellipsis} }>
         { name } 
       </Typography>
     </Stack>

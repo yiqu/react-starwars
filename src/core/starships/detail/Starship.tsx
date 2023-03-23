@@ -86,7 +86,7 @@ function Starship() {
       <Box mt={ 2 } m={ isMobile ? 2 : 0 }>
         <LayoutWithGutter size={ 'med' }>
           <Grid xs={ 12 } sx={ {border: '1px solid #ddd', borderRadius: '10px', p: 2} }>
-            <Stack direction="row" justifyContent="start" alignItems="center">
+            <Stack direction={ isMobile ? "column" : "row" } justifyContent="start" alignItems="center">
               <Typography variant='h4' sx={ {fontWeight: 500} } mr={ 2 }>
                 { data.result.properties.name }
               </Typography>
@@ -100,11 +100,12 @@ function Starship() {
                 display.map((res) => {
                   return (
                     <Box key={ res.key } mb={ 1 }>
-                      <Stack direction="row" justifyContent="start" alignItems="center">
+                      <Stack direction={ isMobile ? "column" : "row" } justifyContent="start" 
+                        alignItems={ isMobile ? "start" : "center" }>
                         <Typography variant='h6' fontWeight={ 300 }>
                           { startCase(res.key) }
                         </Typography>
-                        <Typography mr={ 1.5 }>:</Typography>
+                        {!isMobile && <Typography mr={ 1.5 }>:</Typography>}
                         <Typography variant='h5'>
                           { isNumeric(res.value) ? ((+res.value).toLocaleString()) : res.value }
                         </Typography>
