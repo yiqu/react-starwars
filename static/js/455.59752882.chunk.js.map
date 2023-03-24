@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/455.59752882.chunk.js","mappings":"gIAOA,UAPA,WAEE,OACE,0CAEJ,C","sources":["core/vehicles/detail/Vehicle.tsx"],"sourcesContent":["function Vehicle() {\n\n  return (\n    <>V Detail</>\n  );\n}\n\nexport default Vehicle;"],"names":[],"sourceRoot":""}
