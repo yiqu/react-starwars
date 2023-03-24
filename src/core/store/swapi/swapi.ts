@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/quer
 import { BASE_SW_API } from 'src/shared/api/endpoints';
 import { EntityHttpParams, HttpParams } from 'src/shared/models/http.model';
 import { GenericStarwarsContent, HttpResponse, HttpSearchResponse, HttpSearchResponses, 
-  ResultProperty, StarwarsContent, StarwarsSpecie, StarwarsStarships } from 'src/shared/models/starwars.model';
+  ResultProperty, StarwarsContent, StarwarsPlanet, StarwarsSpecie, StarwarsStarships, StarwarsVehicles } from 'src/shared/models/starwars.model';
 import { PAGE_LIMIT, PAGE_COUNT, PAGE_LIMIT_30 } from 'src/shared/utils/constants';
 import urlcat, { query } from "urlcat";
 import { SearchContentQuery, StarwarsSpecieEditable } from './swapi.state';
@@ -117,6 +117,80 @@ export const starwarsContentApi = createApi({
       }
     }),
 
+    fetchVehicles: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
+      query: (params: EntityHttpParams) => {
+        return {
+          url: `${params.entity}`,
+          params: {
+            ...params.urlParams,
+            limit: PAGE_LIMIT_30,
+            page: params.pagination.page ?? 1 // SWAPI is 1 based
+          },
+          method: 'GET'
+        };
+      },
+      transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: EntityHttpParams) => {
+        return response;
+      },
+      providesTags: (result, error, args, meta) => {
+        const tags: TagDescription<"Vehicles">[] = [];
+        result?.results.forEach((res: StarwarsContent) => {
+          tags.push({type: vehiclesTag, id: res.uid});
+        });
+        tags.push(vehiclesTag);
+        return tags;
+      }
+    }),
+
+    fetchVehicle: builder.query<HttpSearchResponse<StarwarsVehicles>, string>({
+      query: (id: string) => {
+        return {
+          url: `${vehiclesSubPath}/${id}`,
+          method: 'GET'
+        };
+      },
+      providesTags: (result, error, args, meta) => {
+        return [{type: vehiclesTag, id: args}];
+      }
+    }),
+
+    fetchPlanets: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
+      query: (params: EntityHttpParams) => {
+        return {
+          url: `${params.entity}`,
+          params: {
+            ...params.urlParams,
+            limit: PAGE_LIMIT_30,
+            page: params.pagination.page ?? 1 // SWAPI is 1 based
+          },
+          method: 'GET'
+        };
+      },
+      transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: EntityHttpParams) => {
+        return response;
+      },
+      providesTags: (result, error, args, meta) => {
+        const tags: TagDescription<"Planets">[] = [];
+        result?.results.forEach((res: StarwarsContent) => {
+          tags.push({type: planetsTag, id: res.uid});
+        });
+        tags.push(planetsTag);
+        return tags;
+      }
+    }),
+
+    fetchPlanet: builder.query<HttpSearchResponse<StarwarsPlanet>, string>({
+      query: (id: string) => {
+        return {
+          url: `${planetsSubPath}/${id}`,
+          method: 'GET'
+        };
+      },
+      providesTags: (result, error, args, meta) => {
+        return [{type: planetsTag, id: args}];
+      }
+    }),
+
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({
       query: (args: SearchContentQuery) => {
@@ -141,4 +215,5 @@ export const starwarsContentApi = createApi({
 
 
 export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, 
-  useEditSpecieMutation, useFetchStarshipQuery, useFetchStarshipsQuery } = starwarsContentApi;
+  useEditSpecieMutation, useFetchStarshipQuery, useFetchStarshipsQuery, useFetchVehiclesQuery, useFetchVehicleQuery,
+  useFetchPlanetsQuery, useFetchPlanetQuery} = starwarsContentApi;

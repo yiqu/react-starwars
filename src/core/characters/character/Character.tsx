@@ -73,9 +73,9 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
             <Divider />
           </Stack>
 
-          { isHomePlanetLoading ? (<LoadingLogo message="home planet" />) : (
+          {/* { isHomePlanetLoading ? (<LoadingLogo message="home planet" />) : (
             homePlanet && <Planet planet={ homePlanet } />
-          )}
+          )} */}
 
         </Stack>
       </Grid>

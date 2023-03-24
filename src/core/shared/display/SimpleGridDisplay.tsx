@@ -63,7 +63,7 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med", totalPages=0, 
       {
         data.map((display: StarwarsContent) => {
           return (
-            <Grid key={ display.uid } xs={ 12 } sm={ 6 } md={ 4 } lg={ 4 } xl={ 5 }>
+            <Grid key={ display.uid } xs={ 12 } sm={ 6 } md={ 4 } xl={ 2.4 }>
               {
                 <Box sx={ {p: 1} }>
                   <Link to={ `/${itemUrlPath}/${display.uid}` }>

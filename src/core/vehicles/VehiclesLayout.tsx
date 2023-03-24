@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 
-function Planets() {
+function Vehicles() {
   
   return (
     <Outlet />
   );
 };
 
-export default Planets;
+export default Vehicles;

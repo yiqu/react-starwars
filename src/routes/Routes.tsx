@@ -23,7 +23,7 @@ const Favorite = loadable(() => import('../core/favorites/favorite/Favorite'));
 
 const PlanetsLayout = loadable(() => import('../core/planets/PlanetsLayout'));
 const PlanetsAll = loadable(() => import('../core/planets/all/PlanetsAll'));
-const Planet = loadable(() => import('../core/planets/planet/PlanetLayout'));
+const Planet = loadable(() => import('../core/planets/planet/Planet'));
 
 const VehiclesLayout = loadable(() => import('../core/vehicles/VehiclesLayout'));
 const VehiclesAll = loadable(() => import('../core/vehicles/all/VehiclesAll'));
