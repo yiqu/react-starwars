@@ -1,23 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
 import { Routes, Route, useParams, Params, useLoaderData, LoaderFunctionArgs } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
-import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
 import { HttpResponse2, StarwarFilmDetail } from "src/shared/models/starwars.model";
 import Typography from '@mui/material/Typography';
 import ErrorPage from 'src/404/ErrorPage';
-import useFetch from 'src/shared/hooks/useFetch';
-import { BASE_SW_API } from 'src/shared/api/endpoints';
 import { Box, Button, Divider, Stack } from '@mui/material';
 import MovieDetailCard from './MovieDetailCard';
 import useScreenSize from 'src/shared/hooks/useIsMobile';
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import urlcat from "urlcat";
-import { ajax } from 'rxjs/ajax';
-import { map, catchError, of, lastValueFrom } from 'rxjs';
 import MovieDetailEntityTable from './EntityTable';
 import SportsMartialArtsIcon from '@mui/icons-material/SportsMartialArts';
-import PublicIcon from '@mui/icons-material/Public';
 import { startCase } from 'lodash';
 
 const tables = ['characters', 'planets', 'species', 'starships', 'vehicles'];
@@ -79,16 +69,3 @@ const Movie = () => {
 
 export default Movie;
 
-/**
- * Route loader for fetching movie detail
- * @param props 
- * @returns Promise
- */
-export function loader(props: LoaderFunctionArgs): Promise<StarwarFilmDetail> {
-  const req = ajax.getJSON<HttpResponse2<StarwarFilmDetail>>(`${BASE_SW_API}films/${props.params.movieId}`).pipe(
-    map((res: HttpResponse2<StarwarFilmDetail>) => {
-      return res.result.properties;
-    })
-  );
-  return lastValueFrom(req);
-}

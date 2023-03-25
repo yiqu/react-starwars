@@ -1,10 +1,9 @@
 import loadable from '@loadable/component';
 import { Router } from '@remix-run/router';
-import React from 'react';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
-import { loader as movieDetailLoader } from '../core/movies/movies/movie/Movie';
-import { loader as  characterLoader, loaderWithPlanets } from '../core/characters/character/CharacterLayout';
+import { loader as movieDetailLoader } from 'src/core/movies/movies/movie/action-loaders/movie-loaders';
+import { loaderWithPlanets } from 'src/core/characters/character/action-loaders/loaders';
 
 
 // Lazy load components
