@@ -1,0 +1,1 @@
+import{r}from"./index-6f160e43.js";import{g as s,h as a}from"./index-071cd14f.js";function n({size:e=40,color:t="grey.500",styleProps:o}){return r.createElement(s,{sx:{color:t,...o},spacing:1,direction:"row"},r.createElement(a,{color:"inherit",size:e}))}export{n as P};
