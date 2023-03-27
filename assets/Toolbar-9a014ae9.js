@@ -1,1 +1,0 @@
-import{j as r,b as t,aD as e,aE as p}from"./index-e4a30620.js";import"./index-6b18801a.js";function s({toolbarProps:l,children:o}){return r(t.AppBar,{elevation:0,...l,children:r(e,{variant:"regular",sx:{bgcolor:a=>a.palette.mode==="light"?p[100]:null,color:a=>a.palette.mode==="light"?"#000":null,pr:0},children:o})})}export{s as A};
