@@ -1,1 +1,0 @@
-import{j as r}from"./index-2601b20a.js";import{g as e,h as c}from"./index-69b7d8e0.js";function n({size:o=40,color:i="grey.500",styleProps:s}){return r(e,{sx:{color:i,...s},spacing:1,direction:"row",children:r(c,{color:"inherit",size:o})})}export{n as P};
