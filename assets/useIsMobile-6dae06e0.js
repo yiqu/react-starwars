@@ -1,1 +1,0 @@
-import{aC as r,aD as s}from"./index-6f160e43.js";const a=()=>{const e=r.useTheme(),i=s(e.breakpoints.down("sm")),o=s(e.breakpoints.down("md")),n=s(e.breakpoints.down("lg")),t=s(e.breakpoints.down("xl"));return{isMobile:i,isMed:o,isLg:n,isXl:t}},S=a;export{S as u};
