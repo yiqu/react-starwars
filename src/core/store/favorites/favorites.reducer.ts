@@ -1,21 +1,15 @@
 import {
-  createAsyncThunk,
   createEntityAdapter,
   createSlice,
   EntityState,
   PayloadAction,
   Update,
 } from '@reduxjs/toolkit';
-import { lastValueFrom, map } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
-import { BASE_FIREBASE_URL } from 'src/shared/api/endpoints';
 import { FirebasePostPayload } from 'src/shared/models/firebase.model';
 import { HttpParams, HttpParamsWithSearch } from 'src/shared/models/http.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
 import { transformFirebaseData } from 'src/shared/utils/firebase';
-import urlcat from 'urlcat';
-import { FetchProp } from '../all-films/films.state';
-import { FulfilledAction, PendingAction, RejectedAction, ToggleFavoriteArg } from './favorites.state';
+import { FulfilledAction, PendingAction, ToggleFavoriteArg } from './favorites.state';
 import { addNewFavoriteExhaustThunk, fetchFavoritesThunk, 
   toggleFavoriteExhaustThunk, toggleFavoriteThunk } from './favorites.thunks';
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useReducer, useState, useContext, useMemo, Suspense } from 'react';
+import React from 'react';
 import classes from './LoadingLogo.module.scss';
 import logo from '../../../static/img/death-star.png';
 

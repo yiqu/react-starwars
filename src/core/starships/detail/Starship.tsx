@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
@@ -6,7 +6,7 @@ import useScreenSize from "src/shared/hooks/useIsMobile";
 import { useAppDispatch } from "src/store/appHook";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import EditIcon from '@mui/icons-material/Edit';
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useFetchStarshipQuery } from "src/core/store/swapi/swapi";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import ErrorPage from "src/404/ErrorPage";

@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax';
-import { map, catchError, of, lastValueFrom } from 'rxjs';
+import { map, lastValueFrom } from 'rxjs';
 import { LoaderFunctionArgs } from 'react-router-dom';
 import { BASE_SW_API } from 'src/shared/api/endpoints';
 import { StarwarFilmDetail, HttpResponse2 } from 'src/shared/models/starwars.model';

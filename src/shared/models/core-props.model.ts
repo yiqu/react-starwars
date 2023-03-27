@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useReducer, useState, useContext, useMemo } from 'react';
 import { HttpParams } from './http.model';
-import { FavoriteToSave, MoviesFilterInput, StarwarsFilm } from './starwars.model';
+import { FavoriteToSave } from './starwars.model';
 
 export interface FetchMovieHookProp {
   params?: HttpParams;

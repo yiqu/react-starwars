@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useDebounce } from 'src/shared/hooks/useDebounce';
-import { useDeepCompareEffect, useUpdateEffect } from 'react-use';
+import { useUpdateEffect } from 'react-use';
 import { FilmFilterProp } from 'src/shared/models/core-props.model';
-import { Close, Filter, Search } from '@mui/icons-material';
+import { Close, Search } from '@mui/icons-material';
 import { isEmpty } from 'lodash';
 
 export default function FilterInput({ count, filterChange, placeholderText, currentText }: FilmFilterProp) {

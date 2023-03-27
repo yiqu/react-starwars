@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { SwapiApiState } from './api.state';
 import { EntityHttpParams } from 'src/shared/models/http.model';
-import { starwarsContentApi } from './api';
 
 const initialState: SwapiApiState = {
   entityData: {}

@@ -1,4 +1,4 @@
-import { createSelector, createDraftSafeSelector } from "@reduxjs/toolkit";
+import { createDraftSafeSelector } from "@reduxjs/toolkit";
 import { HttpParams } from "src/shared/models/http.model";
 import { StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";

@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Alert, AlertTitle, Box, Checkbox, DialogContent, DialogTitle, Divider, IconButton, Stack } from '@mui/material';
+import { Alert, AlertTitle, Box, DialogContent, DialogTitle, Divider, IconButton, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React, { useEffect, useRef, useState } from 'react';
  import { Form, useFormikContext } from 'formik';
-import { StarwarsContent, StarwarsPeople } from 'src/shared/models/starwars.model';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { StarwarsContent } from 'src/shared/models/starwars.model';
 import { GenericFormFieldObject } from 'src/shared/models/form.model';
 import { CreateFormFields } from 'src/shared/form/FormFields';
 import useFetchSwEntity, { DEFAULT_MAX_PAGE_PARAMS } from '../hooks/useFetchEntity';

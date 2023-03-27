@@ -1,4 +1,4 @@
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import Moment from 'react-moment';
 import moment from 'moment';
 

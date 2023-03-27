@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Link,
   useLocation
 } from "react-router-dom";
 import { QueryObj, UrlQuery } from "../models/url";

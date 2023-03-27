@@ -9,19 +9,14 @@ import { Link } from "react-router-dom";
 import FavIcon from '@mui/icons-material/Favorite';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import IconButton from '@mui/material/IconButton';
-import { useEffect, useState } from 'react';
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
 import DateDisplay from "src/shared/components/date/DateDisplay";
 import { StarwarsFilm, FavoriteToSave } from "src/shared/models/starwars.model";
 import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
-import { axiosPost, axiosPut } from 'src/shared/rest/axios';
 import urlcat from "urlcat";
-import { AxiosResponse } from "axios";
 import { useAppDispatch } from 'src/store/appHook';
 import { addNewFavoriteExhaustThunk, fetchFavoritesThunk, toggleFavoriteExhaustThunk } from 'src/core/store/favorites/favorites.thunks';
-import { FulfilledAction } from 'src/shared/models/redux.model';
-import { ToggleFavoriteArg } from 'src/core/store/favorites/favorites.state';
 
 export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
@@ -81,7 +76,7 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
           component="img"
           alt="poster"
           height="440"
-          image={ `${process.env.PUBLIC_URL}/assets/poster-img/${film.episode_id}.png` }
+          image={ `/assets/poster-img/${film.episode_id}.png` }
           sx={ {backgroundColor: '#000', objectFit: 'contain'} }
         />
         <CardContent>

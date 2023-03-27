@@ -1,14 +1,11 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { HttpResponse, HttpResponse2, StarwarsContent, StarwarsPlanet } from 'src/shared/models/starwars.model';
 import { UrlThunkParam } from './characters.state';
 import { fetchCharacters, fetchHomeWorld } from './characters.thunks';
 import { FulfilledAction, PendingAction } from 'src/shared/models/redux.model';
 import {
-  createAsyncThunk,
   createEntityAdapter,
   EntityState,
-  PayloadAction,
-  Update,
 } from '@reduxjs/toolkit';
 import { HttpParams } from 'src/shared/models/http.model';
 

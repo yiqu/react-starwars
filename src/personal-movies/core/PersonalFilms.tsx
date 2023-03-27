@@ -4,19 +4,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import useFetchPersonalFilms from '../hooks/useFetchPersonalFilms';
 import LoadingSkeleton from "src/shared/components/skeleton/LoadingSkeleton";
 import { Stack, Tooltip, IconButton } from '@mui/material';
-import FilterInput from 'src/core/movies/movies/filter/FilterInput';
-import MovieCard from 'src/core/movies/movies/MovieCard';
 import ProgressCircle from 'src/shared/components/progress/CircleProgress';
 import AppToolbar from 'src/shared/components/toolbar/Toolbar';
 import { DataBlockDisplayMode } from 'src/shared/models/general.model';
 import useScreenSize from 'src/shared/hooks/useIsMobile';
-import { createSearchParams, Outlet, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import TableChartIcon from '@mui/icons-material/TableChart';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { StarwarFilmPersonal } from 'src/shared/models/starwars.model';
 import PersonalFilmCard from './PersonalFilmCard';
-
-
 
 export default function PersonalFilms() {
 

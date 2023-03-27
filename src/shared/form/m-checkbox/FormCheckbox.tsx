@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from 'react';
-import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
-import { FormikInputProps, FormInput2Props, FormInputProps } from 'src/shared/models/form.model';
-import { FormControl, FormControlLabel, FormHelperText, InputLabel } from '@mui/material';
+import React from 'react';
+import { Field, useFormikContext } from 'formik';
+import { FormInput2Props } from 'src/shared/models/form.model';
+import { FormControl, FormControlLabel } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import { upperFirst, startCase } from 'lodash';
+import { startCase } from 'lodash';
 
 const FormCheckbox = ({ label, name, props, disabled }: FormInput2Props) => {
   const formik = useFormikContext<any>();

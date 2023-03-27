@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import { ReactNode, useEffect, useState } from 'react';
-import { flexCenter } from 'src/shared/utils/css.utils';
 
 export interface LayoutGutterProps {
   children: ReactNode;

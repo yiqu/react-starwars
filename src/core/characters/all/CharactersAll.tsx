@@ -1,19 +1,15 @@
-import { Link, LoaderFunctionArgs, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import { LoaderFunctionArgs } from "react-router-dom";
 import { delay, firstValueFrom, map } from "rxjs";
-import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { ajax } from 'rxjs/ajax';
 import { BASE_SW_API } from "src/shared/api/endpoints";
 import { PAGE_COUNT, PAGE_LIMIT } from "src/shared/utils/constants";
 import urlcat from "urlcat";
-import { HttpResponse, StarwarsContent } from 'src/shared/models/starwars.model';
+import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent } from 'src/shared/models/starwars.model';
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { Stack, Tooltip, IconButton, Typography } from "@mui/material";
-import ErrorPage from "src/404/ErrorPage";
+import { Stack } from "@mui/material";
 import FilterInput from "src/core/movies/movies/filter/FilterInput";
-import MovieCard from "src/core/movies/movies/MovieCard";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
-import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
-import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useCallback } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
@@ -22,7 +18,7 @@ import { fetchCharacters } from "src/core/store/characters/characters.thunks";
 import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import { HttpParams } from "src/shared/models/http.model";
-
+import { defer } from "react-router-dom";
 
 const CharactersAll = () => {
 
@@ -83,16 +79,31 @@ const CharactersAll = () => {
 
 export default CharactersAll;
 
-export function loader({ params }: LoaderFunctionArgs): Promise<StarwarsContent[]> {
+export async function loaderWithPlanets({ params }: LoaderFunctionArgs) {
+  const planetsUrl: string = urlcat(
+    BASE_SW_API, `planets`, { limit: PAGE_LIMIT, page: PAGE_COUNT }
+  );
 
-  const restUrl: string = urlcat(BASE_SW_API, `people`, { limit: PAGE_LIMIT, page: PAGE_COUNT });
-  
-  const people$ = ajax<HttpResponse<StarwarsContent>>(restUrl).pipe(
+  const planets$ = ajax<HttpResponse<StarwarsContent[]>>(planetsUrl).pipe(
     delay(0),
     map((res) => {
       return res.response.results;
     })
   );
 
-  return firstValueFrom(people$);
-};
+  const restUrl: string = urlcat(
+    BASE_SW_API, `people/:id`, { id: params.characterId }
+  );
+
+  const people$ = ajax<HttpResponse2<StarwarCharacter>>(restUrl).pipe(
+    delay(0),
+    map((res) => {
+      return res.response.result.properties;
+    })
+  );
+
+  return defer({
+    character: await firstValueFrom(people$),
+    planets: firstValueFrom(planets$),
+  });
+}

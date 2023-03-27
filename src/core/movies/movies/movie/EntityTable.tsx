@@ -3,8 +3,6 @@ import React, { ReactNode, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
 import { upperFirst } from 'lodash';
 import usePopover from "src/shared/hooks/usePopover";
-import ClickAwayListener from '@mui/base/ClickAwayListener';
-import Popover from '@mui/material/Popover';
 import MoviePopoverContent from "./MoviePopoverContent";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 

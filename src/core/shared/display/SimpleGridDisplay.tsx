@@ -1,9 +1,9 @@
-import { FC, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import { Link } from "react-router-dom";
-import { Box, Divider, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Pagination, Stack, Typography } from "@mui/material";
 import { StarwarsContent } from "src/shared/models/starwars.model";
-import { filter, interval, take, tap } from "rxjs";
+import { interval, take } from "rxjs";
 import { ellipsis, flexCenter } from "src/shared/utils/css.utils";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import InputLabel from '@mui/material/InputLabel';

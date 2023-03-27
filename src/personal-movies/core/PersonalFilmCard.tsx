@@ -1,6 +1,5 @@
-import { Card, CardMedia, CardContent, Stack, Typography, CardActions, Button, IconButton } from "@mui/material";
+import { Card, CardMedia, CardContent, Stack, Typography, CardActions, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { getFilmFavoriteToggleTooltip } from "src/core/utils/films.utils";
 import DateDisplay from "src/shared/components/date/DateDisplay";
 import { StarwarFilmPersonal } from "src/shared/models/starwars.model";
 
@@ -15,7 +14,7 @@ export default function PersonalFilmCard({
   species,
   starships,
   vehicles }: StarwarFilmPersonal) {
-
+    
     return (
       <Card sx={ {display:'flex',
         flexDirection:'column', 
@@ -27,7 +26,7 @@ export default function PersonalFilmCard({
             component="img"
             alt="poster"
             height="440"
-            image={ `${process.env.PUBLIC_URL}/assets/film/sw-blk-logo.png` }
+            image={ `/assets/film/sw-blk-logo.png` }
             sx={ {backgroundColor: '#000', objectFit: 'contain'} }
           />
           <CardContent>

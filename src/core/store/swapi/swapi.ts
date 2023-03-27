@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/query/react';
 import { BASE_SW_API } from 'src/shared/api/endpoints';
-import { EntityHttpParams, HttpParams } from 'src/shared/models/http.model';
-import { GenericStarwarsContent, HttpResponse, HttpSearchResponse, HttpSearchResponses, 
+import { EntityHttpParams } from 'src/shared/models/http.model';
+import { HttpResponse, HttpSearchResponse, HttpSearchResponses, 
   ResultProperty, StarwarsContent, StarwarsPlanet, StarwarsSpecie, StarwarsStarships, StarwarsVehicles } from 'src/shared/models/starwars.model';
-import { PAGE_LIMIT, PAGE_COUNT, PAGE_LIMIT_30 } from 'src/shared/utils/constants';
-import urlcat, { query } from "urlcat";
+import { PAGE_LIMIT_30 } from 'src/shared/utils/constants';
+import urlcat from "urlcat";
 import { SearchContentQuery, StarwarsSpecieEditable } from './swapi.state';
 
 export const speciesSubPath = "species";

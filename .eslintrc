@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "react-app",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/prop-types": "warn",
+    "semi": [
+      1,
+      "always"
+    ],
+    "react/jsx-curly-spacing": [
+      1,
+      "always"
+    ],
+    "no-use-before-define": [
+      0,
+      {
+        "functions": false
+      }
+    ],
+    "react/jsx-indent": [
+      1,
+      2
+    ],
+    "space-in-parens": [
+      1,
+      "never"
+    ],
+    "no-const-assign": [
+      2
+    ],
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn"
+  },
+  "plugins": ["unused-imports"]
+}

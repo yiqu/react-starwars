@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from 'react';
-import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
+import React from 'react';
+import { ErrorMessage, Field, useFormikContext } from 'formik';
 import { FormSelectProps, NONE_SELECTED_VALUE } from 'src/shared/models/form.model';
 import { FormHelperText, MenuItem, Select, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';

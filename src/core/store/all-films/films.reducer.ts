@@ -3,10 +3,9 @@ import {
   createSlice,
   EntityState,
   PayloadAction,
-  Update,
 } from '@reduxjs/toolkit';
 import { HttpParams } from 'src/shared/models/http.model';
-import { HttpResponse2List, ResultProperty, StarwarsFilm } from 'src/shared/models/starwars.model';
+import { ResultProperty, StarwarsFilm } from 'src/shared/models/starwars.model';
 import { FetchProp } from './films.state';
 
 export interface AllFilmsEntityState extends EntityState<ResultProperty<StarwarsFilm>> {

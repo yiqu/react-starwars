@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteRenderInputParams, InputAdornment, TextField, Stack, Box } from "@mui/material";
+import { Autocomplete, AutocompleteRenderInputParams, TextField, Stack, Box } from "@mui/material";
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { useEffect, useState } from "react";
 import { useUpdateEffect } from "react-use";

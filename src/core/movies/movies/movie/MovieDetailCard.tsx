@@ -1,4 +1,4 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack, Divider } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, CardActions, Stack, Divider } from "@mui/material";
 import { StarwarFilmDetail } from "src/shared/models/starwars.model";
 import { isArray, startCase } from 'lodash';
 import styles from './MovieDetailCard.module.scss';
@@ -20,7 +20,7 @@ export default function MovieDetailCard({ movieDetail }: MovieDetailCardProps) {
         component="img"
         alt="poster"
         height="400"
-        image={ `${process.env.PUBLIC_URL}/assets/poster-img/${movieDetail.episode_id}.png` }
+        image={ `/assets/poster-img/${movieDetail.episode_id}.png` }
         title="Film poster"
       />
       <CardContent>

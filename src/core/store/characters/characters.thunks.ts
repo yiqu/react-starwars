@@ -1,13 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { lastValueFrom, map, switchMap } from "rxjs";
 import { ajax, AjaxResponse } from "rxjs/ajax";
-import { BASE_FIREBASE_URL, BASE_SW_API } from "src/shared/api/endpoints";
-import { HttpParams, HttpParamsWithSearch } from "src/shared/models/http.model";
-import { FavoriteMoviesObjList, FavoriteToSave, HttpResponse, StarwarsContent } from "src/shared/models/starwars.model";
-import { RootState } from "src/store/appStore";
+import { BASE_SW_API } from "src/shared/api/endpoints";
+import { HttpParams } from "src/shared/models/http.model";
+import { HttpResponse, StarwarsContent } from "src/shared/models/starwars.model";
 import urlcat from "urlcat";
 import { fromFetch } from 'rxjs/fetch';
-import { FirebasePostPayload } from "src/shared/models/firebase.model";
 import { UrlThunkParam } from "./characters.state";
 import { PAGE_COUNT, PAGE_LIMIT } from "src/shared/utils/constants";
 

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { EntityHttpParams } from 'src/shared/models/http.model';
 import { ContentPagination, SwapiState } from './swapi.state';
 import { planetsSubPath, speciesSubPath, starshipsSubPath, starwarsContentApi, vehiclesSubPath } from './swapi';
 

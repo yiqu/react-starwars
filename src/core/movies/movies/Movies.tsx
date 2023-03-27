@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext } from "react";
-import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
-import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
+import { ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import FilterInput from "./filter/FilterInput";
 import MovieCard from "./MovieCard";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";

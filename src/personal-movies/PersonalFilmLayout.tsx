@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Outlet, useSearchParams } from "react-router-dom";
-import Grid from '@mui/material/Unstable_Grid2';
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 
 export default function PersonalFilmLayout() {

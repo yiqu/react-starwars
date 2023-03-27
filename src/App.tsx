@@ -6,7 +6,7 @@ import ThemeContext, { ThemeContextProp } from './theme/ThemeContext';
 import { PaletteMode } from '@mui/material';
 import { LS_APP_THEME } from './shared/utils/constants';
 import Snackbar from '@mui/material/Snackbar';
-import Alert, { AlertProps } from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 import SnackbarContext, { SnackbarContextProp } from './shared/context/snackbar/SnackbarContext';
 
 function App() {

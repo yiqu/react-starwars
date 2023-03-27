@@ -9,7 +9,6 @@ import saberLogo from '../static/img/death-star.png';
 import dstarLogo from '../static/img/light-saber.png';
 import { DrawerHeader } from '../routes/Layouts/layout-components';
 import { useTheme } from '@mui/material/styles';
-import { FCC } from 'src/shared/models/fc-children.model';
 import { LeftNavHeaderProps } from 'src/shared/models/nav-item.model';
 import { useState } from 'react';
 import { Link, useLocation, useNavigation } from 'react-router-dom';

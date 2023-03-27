@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC, useContext } from "react";
+import React, { useContext } from "react";
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -8,10 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import { capitalizeFirstLetter } from "src/shared/utils/text-transform";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useTheme } from "@mui/material/styles";
 import { PaletteMode, Stack, Tooltip } from "@mui/material";
 import ThemeContext from "src/theme/ThemeContext";
 import { useLocalStorage } from 'react-use';

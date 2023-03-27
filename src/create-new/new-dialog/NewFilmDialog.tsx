@@ -1,19 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { DialogProps } from 'src/shared/models/dialog.model';
-import CloseIcon from '@mui/icons-material/Close';
-import { Alert, AlertTitle, Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import { Alert, AlertTitle, Box, Button } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
- import { Form, Formik, useFormikContext } from 'formik';
+ import { Formik } from 'formik';
 import NewFilmForm from './NewFilmForm';
 import { newFilmValidationSchema } from '../schemas/all-schemas';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { createNewFilm } from '../http/crud';
 
 export interface NewFilmData {

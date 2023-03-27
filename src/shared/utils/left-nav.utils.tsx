@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FC, useEffect, useState } from "react";
+import React from "react";
 
 import MovieIconOutlined from '@mui/icons-material/MovieOutlined';
 import MovieIcon from '@mui/icons-material/Movie';

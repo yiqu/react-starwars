@@ -1,8 +1,8 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { FC, Suspense } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
-import { Await, defer, Link, LoaderFunctionArgs, useLoaderData, useRouteLoaderData } from "react-router-dom";
-import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
+import { Await, useLoaderData } from "react-router-dom";
+import { StarwarCharacter, StarwarsContent } from "src/shared/models/starwars.model";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import Character from "./Character";
 import OtherPlanetsPanel from "./OtherPlanetsPanel";

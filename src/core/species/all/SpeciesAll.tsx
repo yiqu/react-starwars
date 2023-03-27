@@ -1,18 +1,18 @@
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { Stack, Tooltip, IconButton, Typography, Divider, Box, Button } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import ErrorPage from "src/404/ErrorPage";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
-import SimpleGridDisplay, { DisplayName } from "src/core/shared/display/SimpleGridDisplay";
+import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { starwarsContentApi, useFetchSpeciesQuery } from "src/core/store/swapi/swapi";
+import { useFetchSpeciesQuery } from "src/core/store/swapi/swapi";
 import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
 import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
 import { scrollToElementById } from "src/shared/utils/general.utils";
 import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
-import { ResultProperty, StarwarsSearchable, StarwarsSpecie } from "src/shared/models/starwars.model";
+import { ResultProperty, StarwarsSearchable } from "src/shared/models/starwars.model";
 import { useNavigate } from "react-router-dom";
 
 const ENTITY_NAME = "species";

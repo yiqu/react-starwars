@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import Popover, { PopoverOrigin } from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
+import React from 'react';
 import { Popper, PopperPlacementType } from '@mui/material';
 
 

@@ -1,5 +1,5 @@
 import { IconButton, Stack, Tooltip } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { Outlet } from "react-router-dom";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";

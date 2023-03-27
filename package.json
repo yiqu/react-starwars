@@ -31,14 +31,13 @@
     "react-moment": "^1.1.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1",
     "react-tooltip": "^5.9.1",
     "react-use": "^17.4.0",
     "rxjs": "^7.8.0",
     "sonner": "^0.1.5",
     "swr": "^2.0.0",
-    "typescript": "^4.8.4",
     "urlcat": "^3.0.0",
+    "vite-plugin-svgr": "^2.4.0",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
@@ -53,55 +52,24 @@
     "@types/object-hash": "^2.2.1",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
-    "eslint": "^8.30.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "eslint": "^8.36.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.31.11",
-    "sass": "^1.54.9"
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "sass": "^1.54.9",
+    "typescript": "^4.8.4",
+    "vite": "^4.2.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-tsconfig-paths": "^4.0.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "lint": "npx eslint --ext .js,.jsx ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:react/recommended"
-    ],
-    "rules": {
-      "react/react-in-jsx-scope": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "react/prop-types": "warn",
-      "semi": [
-        1,
-        "always"
-      ],
-      "react/jsx-curly-spacing": [
-        1,
-        "always"
-      ],
-      "no-use-before-define": [
-        0,
-        {
-          "functions": false
-        }
-      ],
-      "react/jsx-indent": [
-        1,
-        2
-      ],
-      "space-in-parens": [
-        1,
-        "never"
-      ],
-      "no-const-assign": [
-        2
-      ]
-    }
+    "lint": "npx eslint --ext=ts,tsx src"
   },
   "browserslist": {
     "production": [

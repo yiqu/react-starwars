@@ -1,5 +1,4 @@
-import { AppBar, Stack, Button, Tooltip, IconButton, AppBarTypeMap } from "@mui/material";
-import { DataBlockDisplayMode } from "src/shared/models/general.model";
+import { AppBar } from "@mui/material";
 import Toolbar from '@mui/material/Toolbar';
 import { GREY } from "src/theme/palette";
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HttpParams } from "../models/http.model";
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import urlcat from "urlcat";
 import { useDeepCompareEffect } from "react-use";
 import { AXIOS_ERROR_CODE } from "../models/axios.model";

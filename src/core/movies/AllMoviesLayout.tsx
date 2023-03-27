@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {  Outlet } from "react-router-dom";
-import Grid from '@mui/material/Unstable_Grid2';
 import useFetchMovies from "src/core/hooks/useFetchMovies";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromAllFilmsSelectors from '../store/all-films/films.selectors';
 import * as fromAllFilmsActions from '../store/all-films';
-import { HttpParams } from "src/shared/models/http.model";
 import { AXIOS_ERROR_CODE } from "src/shared/models/axios.model";
 
 export default function AllMovieLayout() {

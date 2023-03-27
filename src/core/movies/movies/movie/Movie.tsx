@@ -1,9 +1,9 @@
-import { Routes, Route, useParams, Params, useLoaderData, LoaderFunctionArgs } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
-import { HttpResponse2, StarwarFilmDetail } from "src/shared/models/starwars.model";
+import { StarwarFilmDetail } from "src/shared/models/starwars.model";
 import Typography from '@mui/material/Typography';
 import ErrorPage from 'src/404/ErrorPage';
-import { Box, Button, Divider, Stack } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 import MovieDetailCard from './MovieDetailCard';
 import useScreenSize from 'src/shared/hooks/useIsMobile';
 import MovieDetailEntityTable from './EntityTable';

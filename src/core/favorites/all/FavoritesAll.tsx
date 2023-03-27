@@ -1,10 +1,10 @@
 import { FavoriteToSave } from "src/shared/models/starwars.model";
-import { useAppDispatch, useAppSelector } from "src/store/appHook";
+import { useAppSelector } from "src/store/appHook";
 import * as fromFavSelectors from '../../store/favorites/favorites.selectors';
 import Grid from '@mui/material/Unstable_Grid2';
 import LoadingSkeleton from "src/shared/loading/LoadingSkeleton";
 import FavoriteCard from "./FavoriteCard";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 export default function FavoritesAll() {
 

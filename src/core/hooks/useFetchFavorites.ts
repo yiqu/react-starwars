@@ -2,7 +2,7 @@
 import useSWR from "swr";
 import { FetchFavoritesHookProp } from 'src/shared/models/core-props.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
 import urlcat from "urlcat";
 import { httpGet } from "src/shared/fetcber/axios";

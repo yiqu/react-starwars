@@ -3,7 +3,7 @@ import { Router } from '@remix-run/router';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import { loader as movieDetailLoader } from 'src/core/movies/movies/movie/action-loaders/movie-loaders';
-import { loaderWithPlanets } from 'src/core/characters/character/action-loaders/loaders';
+import { loaderWithPlanets } from 'src/core/characters/character/loaders/loaders';
 
 
 // Lazy load components

@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack, Divider } from "@mui/material";
-import { StarwarCharacter, StarwarFilmDetail } from "src/shared/models/starwars.model";
-import { isArray, upperFirst, startCase } from 'lodash';
-import styles from './MovieDetailCard.module.scss';
+import { Card, CardMedia, CardContent, Typography, CardActions, Stack, Divider } from "@mui/material";
+import { StarwarCharacter } from "src/shared/models/starwars.model";
+import { upperFirst, startCase } from 'lodash';
 import useScreenSize from "src/shared/hooks/useIsMobile";
 
 export interface CharacterDetailCardProps {
@@ -31,7 +30,7 @@ export default function CharacterDetailCard({ character }: CharacterDetailCardPr
         component="img"
         alt="poster"
         height="400"
-        image={ `${process.env.PUBLIC_URL}/assets/${'character-any'}.png` }
+        image={ `/assets/${'character-any'}.png` }
         title="Film poster"
         sx={ {objectFit: 'contain', p: 4} }
       />

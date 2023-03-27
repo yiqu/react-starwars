@@ -4,7 +4,6 @@ import { RootState } from "src/store/appStore";
 import * as fromFilmsReducer from './films.reducer';
 import { getSortedFilmsWithFavorited } from "src/core/utils/films.utils";
 import { HttpParams } from "src/shared/models/http.model";
-import produce from "immer";
 import { selectAllByEpId } from "../favorites/favorites.selectors";
 
 const allFilmsSlice = (state: RootState) => {

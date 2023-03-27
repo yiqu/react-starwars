@@ -1,9 +1,9 @@
-import { Card, CardContent, Typography, CardActions, Button, IconButton, Stack, Box, CardMedia, Divider } from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Button, Stack, Box, CardMedia } from "@mui/material";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import DateDisplay from "src/shared/components/date/DateDisplay";
-import { useAppDispatch, useAppSelector } from "src/store/appHook";
-import { toggleFavoriteExhaustThunk, toggleFavoriteThunk } from "src/core/store/favorites/favorites.thunks";
+import { useAppDispatch } from "src/store/appHook";
+import { toggleFavoriteThunk } from "src/core/store/favorites/favorites.thunks";
 import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
 import urlcat from "urlcat";
 import ClearIcon from '@mui/icons-material/Clear';
@@ -61,7 +61,7 @@ export default function FavoriteCard({ fav }: FavoriteCardProps) {
               component="img"
               alt="poster"
               height="100"
-              image={ `${process.env.PUBLIC_URL}/assets/poster-img/${fav.episodeId}.png` }
+              image={ `/assets/poster-img/${fav.episodeId}.png` }
               sx={ {backgroundColor: '#000', objectFit: 'contain', borderRadius: '20px'} }
             />
             </Box>

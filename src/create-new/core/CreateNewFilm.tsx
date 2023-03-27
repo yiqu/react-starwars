@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import { Button, Stack, Typography } from "@mui/material";
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';

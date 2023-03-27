@@ -1,5 +1,4 @@
 import { PaletteMode, ThemeOptions } from '@mui/material';
-import { createTheme, Theme } from '@mui/material/styles';
 import { MyComponents } from './components';
 import { MyPaletteOptions } from './palette';
 import { MyTypography } from './typography';

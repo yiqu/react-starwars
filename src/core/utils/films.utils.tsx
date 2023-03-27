@@ -1,4 +1,4 @@
-import { FavoriteMoviesObjList, FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
+import { FavoriteToSave, ResultProperty, StarwarsFilm } from "src/shared/models/starwars.model";
 import moment from 'moment';
 import produce from 'immer';
 import { Dictionary } from "@reduxjs/toolkit";

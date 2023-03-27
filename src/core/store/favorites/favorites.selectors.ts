@@ -1,4 +1,4 @@
-import { createSelector, createAction } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
 import produce from 'immer';
