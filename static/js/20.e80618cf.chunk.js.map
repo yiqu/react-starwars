@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/20.e80618cf.chunk.js","mappings":"yIAQA,UANA,WACE,OACE,SAAC,KAAM,GAEX,C","sources":["core/species/SpeciesLayout.tsx"],"sourcesContent":["import { Outlet } from \"react-router-dom\";\n\nfunction Species() {\n  return (\n    <Outlet />\n  );\n};\n\nexport default Species;"],"names":[],"sourceRoot":""}
