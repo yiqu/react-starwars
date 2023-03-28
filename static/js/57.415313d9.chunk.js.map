@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/57.415313d9.chunk.js","mappings":"0IASA,UAPA,WAEE,OACE,SAAC,KAAM,GAEX,C","sources":["core/core/CoreLayout.tsx"],"sourcesContent":["import { Outlet } from \"react-router-dom\";\n\nfunction CoreLayout() {\n  \n  return (\n    <Outlet />\n  );\n}\n\nexport default CoreLayout;"],"names":[],"sourceRoot":""}

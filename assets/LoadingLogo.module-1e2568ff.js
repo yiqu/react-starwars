@@ -1,1 +1,0 @@
-const o="_parentClass_1hlgm_1",a="_loadingLogo_1hlgm_8",l="_loadingParent_1hlgm_16",n="_ldsFacebook_1hlgm_33",_={parentClass:o,loadingLogo:a,loadingParent:l,"loading-container":"_loading-container_1hlgm_21","whole-page":"_whole-page_1hlgm_28",ldsFacebook:n,"lds-facebook":"_lds-facebook_1hlgm_1"};export{_ as c};
