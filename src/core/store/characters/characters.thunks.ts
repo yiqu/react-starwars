@@ -33,7 +33,7 @@ export const fetchHomeWorld = createAsyncThunk(
 );
 
 export const fetchCharacters = createAsyncThunk(
-  '[CHARACTERS / API] Get all characters',
+  '[Characters / API] Get all characters',
   async (thunkParams: HttpParams | undefined, thunkAPI) => {
 
     const restUrl: string = urlcat(BASE_SW_API, `people`, 

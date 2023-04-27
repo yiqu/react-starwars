@@ -53,11 +53,11 @@ const Layout = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchCharacters());
+    //dispatch(fetchCharacters());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchPlanets());
+   // dispatch(fetchPlanets());
   }, [dispatch]);
 
   return (

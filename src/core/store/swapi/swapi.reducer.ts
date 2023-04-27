@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { EntityHttpParams } from 'src/shared/models/http.model';
 import { ContentPagination, SwapiState } from './swapi.state';
-import { planetsSubPath, speciesSubPath, starshipsSubPath, starwarsContentApi, vehiclesSubPath } from './swapi';
+import { peopleSubPath, planetsSubPath, speciesSubPath, starshipsSubPath, starwarsContentApi, vehiclesSubPath } from './swapi';
 
 const initialState: SwapiState = {
   pagination: {}
@@ -86,6 +86,24 @@ const swapiSlice = createSlice({
           entityId: planetsSubPath,
           pagination: {
             ...state.pagination[planetsSubPath]?.pagination,
+            total_pages: payload.total_pages,
+            total_records: payload.total_records,
+            next: payload.next,
+            previous: payload.previous
+          }
+        }
+      };
+      
+    });
+
+    builder.addMatcher(starwarsContentApi.endpoints.fetchCharacters.matchFulfilled, (state, action) => {
+      const payload = action.payload;
+      state.pagination = {
+        ...state.pagination,
+        [peopleSubPath]: {
+          entityId: peopleSubPath,
+          pagination: {
+            ...state.pagination[peopleSubPath]?.pagination,
             total_pages: payload.total_pages,
             total_records: payload.total_records,
             next: payload.next,

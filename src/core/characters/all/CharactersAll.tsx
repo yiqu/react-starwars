@@ -1,82 +1,83 @@
-import { Link, LoaderFunctionArgs, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import { Link, LoaderFunctionArgs, useLoaderData, useNavigate, useRouteLoaderData } from "react-router-dom";
 import { delay, firstValueFrom, map } from "rxjs";
 import { ajax, AjaxResponse } from 'rxjs/ajax';
 import { BASE_SW_API } from "src/shared/api/endpoints";
 import { PAGE_COUNT, PAGE_LIMIT } from "src/shared/utils/constants";
 import urlcat from "urlcat";
-import { HttpResponse, StarwarsContent } from 'src/shared/models/starwars.model';
+import { HttpResponse, ResultProperty, StarwarsContent, StarwarsSearchable } from 'src/shared/models/starwars.model';
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { Stack, Tooltip, IconButton, Typography } from "@mui/material";
+import { Stack, Tooltip, IconButton, Typography, Box } from "@mui/material";
 import ErrorPage from "src/404/ErrorPage";
-import FilterInput from "src/core/movies/movies/filter/FilterInput";
-import MovieCard from "src/core/movies/movies/MovieCard";
-import ProgressCircle from "src/shared/components/progress/CircleProgress";
-import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
-import { DataBlockDisplayMode } from "src/shared/models/general.model";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
-import { fetchCharacters } from "src/core/store/characters/characters.thunks";
-import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { HttpParams } from "src/shared/models/http.model";
+import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
+import { useFetchCharactersQuery } from "src/core/store/swapi/swapi";
+import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
+import { scrollToElementById } from "src/shared/utils/general.utils";
+import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
 
+const ENTITY_NAME = "people";
 
 const CharactersAll = () => {
-
-  //const characters = useRouteLoaderData('swCharacters') as StarwarsContent[];
-  const characters: StarwarsContent[] = useAppSelector(fromCharactersSelectors.selectAll);
-  const charactersGrouped: StarwarsContent[] = useAppSelector(fromCharactersSelectors.charactersGrouped);
-  const firstTimeLoading: boolean = useAppSelector(fromCharactersSelectors.firstTimeLoading);
-  const apiLoading: boolean = useAppSelector(fromCharactersSelectors.apiLoading);
-  const currentFetchParams: HttpParams | undefined = useAppSelector(fromCharactersSelectors.extraParams);
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
-  
-  const onFilterChangeHandler = useCallback((charName: string) => {
-    if (charName && charName.trim() !== '') {
-      dispatch(fetchCharacters({name: charName}));
-    } else {
-      dispatch(fetchCharacters());
-    }
-  }, [dispatch]);
+  const page: number = useAppSelector(selectPage(ENTITY_NAME));
+  const totalPages: number = useAppSelector(selectTotalPages(ENTITY_NAME));
+  const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersQuery({ 
+    entity: ENTITY_NAME, 
+    pagination: { page }
+  });
+  const navigate = useNavigate();
 
-  if (firstTimeLoading) return (
+
+  useEffect(() => {
+    scrollToElementById('top-pagination', 300, "end");
+  }, [isSuccess]);
+
+  const onPageHandler = (_: React.ChangeEvent<unknown>, page: number) => {
+    dispatch(dispatchPaging({entityId: ENTITY_NAME, pagination: {page: page}}));
+  };
+
+  const onResultSelectHandler = (selection: ResultProperty<StarwarsSearchable> | null) => {
+    navigate(`./${selection?.uid}`);
+  };
+
+  if (isLoading) return (
     <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
-      <LoadingLogo message="characters" />
+      <LoadingLogo message={ ENTITY_NAME } />
     </Stack>
   );
+
+  if (isError) {
+    return <ErrorPage reason={ (error as any).status } debug={ (error as any).error } />;
+  }
+
+  if (!data) {
+    return <></>;
+  }
   
   return (
     <Stack direction="column" width="100%">
       <AppToolbar toolbarProps={ {
-        position:"sticky",
-        sx:{top: isMobile ? '56px':'64px'}
+        position: "sticky",
+        sx: {top: isMobile ? '56px':'64px'}
       } }>
-        <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+        <Grid container xs={ 12 }>
           <Grid xs={ 10 } sm={ 4 }>
             <Stack direction="row" justifyContent="start" alignItems="center">
-              <Grid container xs={ 12 }>
-                <Grid xs={ 8 }>
-                  <FilterInput filterChange={ onFilterChangeHandler } currentText={ currentFetchParams?.name } />
-                </Grid>
-                <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
-                  { apiLoading && <ProgressCircle size={ 20 } /> }
-                </Grid>
-              </Grid>
-            </Stack>
-          </Grid>
-          <Grid xs={ 2 } sm={ 8 }>
-            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
             </Stack>
           </Grid>
         </Grid>
       </AppToolbar>
-
-      <SimpleGridDisplay data={ charactersGrouped } itemUrlPath="characters" />
-
+      <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
+        <SimpleGridDisplay data={ data.results } itemUrlPath={ ENTITY_NAME } totalPages={ totalPages } page={ page } onPaged={ onPageHandler }
+          totalRecords={ data.total_records } isFetching={ isFetching }  />
+      </Box>
     </Stack>
   );
 };

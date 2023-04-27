@@ -191,10 +191,34 @@ export const starwarsContentApi = createApi({
       }
     }),
 
+    fetchCharacters: builder.query<HttpResponse<StarwarsContent>, EntityHttpParams>({
+      query: (params: EntityHttpParams) => {
+        return {
+          url: `${params.entity}`,
+          params: {
+            ...params.urlParams,
+            limit: PAGE_LIMIT_30,
+            page: params.pagination.page ?? 1 // SWAPI is 1 based
+          },
+          method: 'GET'
+        };
+      },
+      transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: EntityHttpParams) => {
+        return response;
+      },
+      providesTags: (result, error, args, meta) => {
+        const tags: TagDescription<"People">[] = [];
+        result?.results.forEach((res: StarwarsContent) => {
+          tags.push({type: peopleTag, id: res.uid});
+        });
+        tags.push(peopleTag);
+        return tags;
+      }
+    }),
+
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({
       query: (args: SearchContentQuery) => {
-        const u = urlcat(BASE_SW_API,args.entity, {name: args.name ?? `${' '}`});
         return {
           url: `${args.entity}`,
           params: {
@@ -216,4 +240,4 @@ export const starwarsContentApi = createApi({
 
 export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, 
   useEditSpecieMutation, useFetchStarshipQuery, useFetchStarshipsQuery, useFetchVehiclesQuery, useFetchVehicleQuery,
-  useFetchPlanetsQuery, useFetchPlanetQuery} = starwarsContentApi;
+  useFetchPlanetsQuery, useFetchPlanetQuery, useFetchCharactersQuery } = starwarsContentApi;
