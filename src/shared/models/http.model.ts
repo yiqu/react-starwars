@@ -11,6 +11,7 @@ export interface Pagination {
   total_records?: number;
   next?: string | null;
   previous?: string | null;
+  fetchUrl?: string | null;
 }
 export interface EntityHttpParams {
   entity: string;

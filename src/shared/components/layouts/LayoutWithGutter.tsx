@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import { ReactNode, useEffect, useState } from 'react';
-import { flexCenter } from 'src/shared/utils/css.utils';
+import { ReactNode } from 'react';
 
 export interface LayoutGutterProps {
   children: ReactNode;
@@ -9,27 +8,13 @@ export interface LayoutGutterProps {
 
 function LayoutWithGutter({ size = "med", children }: LayoutGutterProps) {
 
-  const [sizes, setSizes] = useState({ width: 7, offset: 2.5 });
-
-  useEffect(() => {
-    switch (size) {
-      case "full": {
-        setSizes({width: 12, offset: 0});
-        break;
-      }
-      case "med": {
-        setSizes({width: 7, offset: 2.5});
-        break;
-      }
-      case "skinny": {
-        setSizes({width: 4, offset: 4});
-        break;
-      }
-    }
-  }, [size]);
-
   return (
-    <Grid container spacing={ 0 } xs={ 12 } xsOffset={ 0 } sm={ sizes.width } smOffset={ sizes.offset }>
+    // <Grid container spacing={ 0 } xs={ 12 } xsOffset={ 0 } sm={ sizes.width } smOffset={ sizes.offset }>
+    //   { children }
+    // </Grid>
+    <Grid container spacing={ 0 } xs={ 12 } xsOffset={ 0 } 
+      sm={ size==='full' ? 12 : (size === 'med' ? 7 : (4)) } 
+      smOffset={ size==='full' ? 0 : (size === 'med' ? 2.5 : (4)) }>
       { children }
     </Grid>
   );

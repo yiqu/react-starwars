@@ -7,18 +7,23 @@ import urlcat from "urlcat";
 import { HttpResponse, ResultProperty, StarwarsContent, StarwarsSearchable } from 'src/shared/models/starwars.model';
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
-import { Stack, Tooltip, IconButton, Typography, Box } from "@mui/material";
+import { Stack, Tooltip, IconButton, Typography, Box, Button } from "@mui/material";
 import ErrorPage from "src/404/ErrorPage";
 import { useCallback, useEffect } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
-import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { selectPage, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
-import { useFetchCharactersQuery } from "src/core/store/swapi/swapi";
+import { selectFetchPageUrl, selectNextPageUrl, selectPage, selectPagination, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
+import { useFetchCharactersInfiniteQuery, useFetchCharactersQuery } from "src/core/store/swapi/swapi";
 import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
 import { scrollToElementById } from "src/shared/utils/general.utils";
 import { dispatchPaging } from "src/core/store/swapi/swapi.reducer";
+import { skipToken } from "@reduxjs/toolkit/dist/query/react";
+import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingSkeleton from "src/shared/components/loading/LoadingSkeleton";
+import { flexCenter } from "src/shared/utils/css.utils";
+
 
 const ENTITY_NAME = "people";
 
@@ -27,10 +32,14 @@ const CharactersAll = () => {
   const dispatch = useAppDispatch();
   const page: number = useAppSelector(selectPage(ENTITY_NAME));
   const totalPages: number = useAppSelector(selectTotalPages(ENTITY_NAME));
-  const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersQuery({ 
-    entity: ENTITY_NAME, 
-    pagination: { page }
-  });
+  const fetchUrl: string | undefined = useAppSelector(selectFetchPageUrl(ENTITY_NAME));
+  const nextPage: string | null | undefined = useAppSelector(selectNextPageUrl(ENTITY_NAME));
+  // const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersQuery({ 
+  //   entity: ENTITY_NAME, 
+  //   pagination: { page }
+  // });
+  const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersInfiniteQuery(fetchUrl ?? skipToken);
+  
   const navigate = useNavigate();
 
 
@@ -38,8 +47,8 @@ const CharactersAll = () => {
     scrollToElementById('top-pagination', 300, "end");
   }, [isSuccess]);
 
-  const onPageHandler = (_: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(dispatchPaging({entityId: ENTITY_NAME, pagination: {page: page}}));
+  const onPageHandler = () => {
+    dispatch(dispatchPaging({entityId: ENTITY_NAME, pagination: {page: -1, fetchUrl: nextPage}}));
   };
 
   const onResultSelectHandler = (selection: ResultProperty<StarwarsSearchable> | null) => {
@@ -75,8 +84,29 @@ const CharactersAll = () => {
         </Grid>
       </AppToolbar>
       <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
-        <SimpleGridDisplay data={ data.results } itemUrlPath={ ENTITY_NAME } totalPages={ totalPages } page={ page } onPaged={ onPageHandler }
-          totalRecords={ data.total_records } isFetching={ isFetching }  />
+        <LayoutWithGutter size="skinny">
+          <InfiniteScroll
+            dataLength={ data.results.length }
+            next={ onPageHandler }
+            hasMore={ !!nextPage }
+            loader={ <LoadingSkeleton count={ 3 } sxProps={ {height: '4rem'} }/> }
+            endMessage={ <></> }
+            className="scroller-parent">
+            {
+              data.results.map((display: StarwarsContent) => {
+                return (
+                  <Stack key={ display.uid } direction="column">
+                    {
+                      <Box sx={ { ...flexCenter, width: '100%' } }>
+                        <Button fullWidth component={ Link } to={ `./${display.uid}` } state={ {someData: 'some-cool-data' } } sx={ {height: '3rem'} }> { display.name } </Button>
+                      </Box>
+                    }
+                  </Stack>
+                );
+              })
+            }
+          </InfiniteScroll>
+        </LayoutWithGutter>
       </Box>
     </Stack>
   );

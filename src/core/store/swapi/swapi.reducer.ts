@@ -17,10 +17,10 @@ const swapiSlice = createSlice({
         ...state.pagination[action.payload.entityId],
         pagination: {
           ...state.pagination[action.payload.entityId].pagination,
-          page: action.payload.pagination.page
+          page: action.payload.pagination.page,
+          fetchUrl: action.payload.pagination.fetchUrl
         }
       };
-      
     }
   },
   extraReducers: (builder) => {
@@ -97,6 +97,24 @@ const swapiSlice = createSlice({
     });
 
     builder.addMatcher(starwarsContentApi.endpoints.fetchCharacters.matchFulfilled, (state, action) => {
+      const payload = action.payload;
+      state.pagination = {
+        ...state.pagination,
+        [peopleSubPath]: {
+          entityId: peopleSubPath,
+          pagination: {
+            ...state.pagination[peopleSubPath]?.pagination,
+            total_pages: payload.total_pages,
+            total_records: payload.total_records,
+            next: payload.next,
+            previous: payload.previous
+          }
+        }
+      };
+      
+    });
+
+    builder.addMatcher(starwarsContentApi.endpoints.fetchCharactersInfinite.matchFulfilled, (state, action) => {
       const payload = action.payload;
       state.pagination = {
         ...state.pagination,

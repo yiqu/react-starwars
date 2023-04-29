@@ -216,6 +216,35 @@ export const starwarsContentApi = createApi({
       }
     }),
 
+    fetchCharactersInfinite: builder.query<HttpResponse<StarwarsContent>, string>({
+      query: (fetchUrl: string) => {
+        return {
+          url: `${fetchUrl}`,
+          method: 'GET'
+        };
+      },
+      transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: string) => {
+        return response;
+      },
+       serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+       merge: (currentCache: HttpResponse<StarwarsContent>, newItems: HttpResponse<StarwarsContent>) => {
+        currentCache.results.push(...newItems.results);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      providesTags: (result, error, args, meta) => {
+        const tags: TagDescription<"People">[] = [];
+        result?.results.forEach((res: StarwarsContent) => {
+          tags.push({type: peopleTag, id: res.uid});
+        });
+        tags.push(peopleTag);
+        return tags;
+      }
+    }),
+
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({
       query: (args: SearchContentQuery) => {
@@ -240,4 +269,4 @@ export const starwarsContentApi = createApi({
 
 export const { useFetchSpeciesQuery, useFetchSpecieQuery, useSearchContentQuery, 
   useEditSpecieMutation, useFetchStarshipQuery, useFetchStarshipsQuery, useFetchVehiclesQuery, useFetchVehicleQuery,
-  useFetchPlanetsQuery, useFetchPlanetQuery, useFetchCharactersQuery } = starwarsContentApi;
+  useFetchPlanetsQuery, useFetchPlanetQuery, useFetchCharactersQuery, useFetchCharactersInfiniteQuery } = starwarsContentApi;
