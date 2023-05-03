@@ -43,7 +43,8 @@ function LeftNavHeader({ closeDrawerHandler }: LeftNavHeaderProps) {
       <Link to={ "/" } style={ {color: '#000'} }>
         <Stack direction="row" sx={ {...flexCenter} }>
           <Typography component="img" src={ displayLogo } sx={ {height: '2rem', mr: '10px'} } alt="logo"></Typography>
-          <Typography variant='h6' color={ navigation.state === 'loading' ? yellow[800] : undefined }>{ leftNavTitle }</Typography>
+          <Typography variant='h6'
+            sx={ {color: (theme) => theme.palette.mode === 'light' ? 'primary.main' : 'white'} }>{ leftNavTitle }</Typography>
         </Stack>
       </Link>
         

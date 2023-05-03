@@ -13,7 +13,7 @@ import { useCallback, useEffect } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { selectFetchPageUrl, selectNextPageUrl, selectPage, selectPagination, selectTotalPages } from "src/core/store/swapi/swapi.selectors";
+import { selectFetchPageUrl, selectNextPageUrl, selectPage, selectPagination, selectTotalPages, selectTotalRecords } from "src/core/store/swapi/swapi.selectors";
 import { useFetchCharactersInfiniteQuery, useFetchCharactersQuery } from "src/core/store/swapi/swapi";
 import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
 import { scrollToElementById } from "src/shared/utils/general.utils";
@@ -23,6 +23,7 @@ import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSkeleton from "src/shared/components/loading/LoadingSkeleton";
 import { flexCenter } from "src/shared/utils/css.utils";
+import SearchAndPaginationBarDisplay from "src/core/shared/display/SearchAndPaginationBar";
 
 
 const ENTITY_NAME = "people";
@@ -30,14 +31,9 @@ const ENTITY_NAME = "people";
 const CharactersAll = () => {
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
-  const page: number = useAppSelector(selectPage(ENTITY_NAME));
-  const totalPages: number = useAppSelector(selectTotalPages(ENTITY_NAME));
   const fetchUrl: string | undefined = useAppSelector(selectFetchPageUrl(ENTITY_NAME));
   const nextPage: string | null | undefined = useAppSelector(selectNextPageUrl(ENTITY_NAME));
-  // const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersQuery({ 
-  //   entity: ENTITY_NAME, 
-  //   pagination: { page }
-  // });
+  const totalRecords: number = useAppSelector(selectTotalRecords(ENTITY_NAME));
   const { data, isFetching, isLoading, error, isSuccess, isError, refetch } = useFetchCharactersInfiniteQuery(fetchUrl ?? skipToken);
   
   const navigate = useNavigate();
@@ -71,18 +67,16 @@ const CharactersAll = () => {
   
   return (
     <Stack direction="column" width="100%">
-      <AppToolbar toolbarProps={ {
-        position: "sticky",
-        sx: {top: isMobile ? '56px':'64px'}
-      } }>
-        <Grid container xs={ 12 }>
-          <Grid xs={ 10 } sm={ 4 }>
-            <Stack direction="row" justifyContent="start" alignItems="center">
-              <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
-            </Stack>
-          </Grid>
-        </Grid>
-      </AppToolbar>
+      <SearchAndPaginationBarDisplay>
+        <Box flexBasis="35%">
+          <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
+        </Box>
+        <Box flexBasis="15%" sx={ {display: 'flex'} } justifyContent="end" alignItems="center">
+          <Typography>
+            1 - { data.results.length } of { totalRecords }
+          </Typography>
+        </Box>
+      </SearchAndPaginationBarDisplay>
       <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
         <LayoutWithGutter size="skinny">
           <InfiniteScroll
