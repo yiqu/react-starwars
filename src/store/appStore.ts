@@ -5,7 +5,9 @@ import { favoriteFilmslice } from 'src/core/store/favorites/favorites.reducer';
 import planetsReducer from 'src/core/store/planets/planets.reducer';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 import swapiSliceReducer from 'src/core/store/swapi/swapi.reducer';
+import swapiFilmsReducer from 'src/core/store/swapi-films/swapi-films.reducer';
 import { starwarsContentApi } from 'src/core/store/swapi/swapi';
+import { starwarsFilmsApi } from 'src/core/store/swapi-films/swapi-films';
 
 export const appStore = configureStore({
   reducer: {
@@ -14,13 +16,15 @@ export const appStore = configureStore({
     characters: charactersReducer,
     planets: planetsReducer,
     [starwarsContentApi.reducerPath]: starwarsContentApi.reducer,
-    swapiConfig: swapiSliceReducer
+    [starwarsFilmsApi.reducerPath]: starwarsFilmsApi.reducer,
+    swapiConfig: swapiSliceReducer,
+    swapiFilmsConfig: swapiFilmsReducer
   },
 
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(starwarsContentApi.middleware);
+    return getDefaultMiddleware().concat(starwarsContentApi.middleware).concat(starwarsFilmsApi.middleware);
   },
   
   devTools: {

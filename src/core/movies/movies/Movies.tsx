@@ -20,6 +20,7 @@ import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
 import { setParams2 } from "src/core/store/all-films";
+import { useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
 
 
 const userId = 'yqu';
@@ -40,16 +41,12 @@ const Movies = () => {
   const favToggleLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsFavToggleLoading);
   const sortedFilms: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.getAllFilmsWithFavorites);
 
-
-  /**
-   * Error handling
-   */
-  // useEffect(() => {
-  //   if (allFilmsError && allFilmsError.code !== AXIOS_ERROR_CODE.ERR_CANCELED) {
-  //     showSnackbar("error", allFilmsError);
-  //   }
-  // }, [allFilmsError, showSnackbar]);
-
+  const { data, isLoading, isFetching, fulfilledTimeStamp, startedTimeStamp, refetch } = useFetchFilmsQuery();
+  console.log(data);
+  if (fulfilledTimeStamp && startedTimeStamp) {
+    console.log(fulfilledTimeStamp - startedTimeStamp);
+  }
+  
 
   /**
    * Clean up - close any snackbars
