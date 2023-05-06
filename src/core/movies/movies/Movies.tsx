@@ -10,7 +10,7 @@ import MovieCard from "./MovieCard";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import { DataBlockDisplayMode } from "src/shared/models/general.model";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import TableChartIcon from '@mui/icons-material/TableChart';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import LoadingBackdrop from "src/shared/loading-backdrop/LoadingBackdrop";
@@ -21,9 +21,15 @@ import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
 import { setParams2 } from "src/core/store/all-films";
 import { useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
+import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
+import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
+import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
+import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 
 
 const userId = 'yqu';
+const ENTITY_NAME = "films";
+
 
 const Movies = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +37,8 @@ const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
   const { isMobile } = useScreenSize();
-
+  const navigate = useNavigate();
+  
   const [filmPageDisplayMode, setFilmPageDisplayMode] = useState<string | null>(currentDisplayModeUrl);
 
   const isFilmsLoading: boolean | undefined = useAppSelector(fromAllFilmsSelectors.selectIsLoading);
@@ -41,11 +48,8 @@ const Movies = () => {
   const favToggleLoading: boolean | undefined = useAppSelector(fromFavoriteFilmsSelectors.selectIsFavToggleLoading);
   const sortedFilms: ResultProperty<StarwarsFilm>[] = useAppSelector(fromAllFilmsSelectors.getAllFilmsWithFavorites);
 
-  const { data, isLoading, isFetching, fulfilledTimeStamp, startedTimeStamp, refetch } = useFetchFilmsQuery();
-  console.log(data);
-  if (fulfilledTimeStamp && startedTimeStamp) {
-    console.log(fulfilledTimeStamp - startedTimeStamp);
-  }
+  const { data, isLoading, isFetching, fulfilledTimeStamp, startedTimeStamp, refetch, isError, error } = useFetchFilmsQuery();
+  const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
   
 
   /**
@@ -69,64 +73,115 @@ const Movies = () => {
     setSearchParams(nextDisplayMode);
   };
 
+  const onResultSelectHandler = (selection: ResultProperty<any> | null) => {
+    navigate(`./${selection?.uid}`);
+  };
+
+  if (isLoading) return (
+    <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
+      <LoadingLogo message={ ENTITY_NAME } />
+    </Stack>
+  );
+
+  if (isError) {
+    return <ErrorPage reason={ (error as any).status } debug={ (error as any).error } />;
+  }
+
+  if (!data) {
+    return <></>;
+  }
+
   return (
-    <>
+    <Stack direction="column" width="100%">
       <AppToolbar toolbarProps={ {
-        position:"sticky",
-        sx:{top: isMobile ? '56px':'64px'}
+        position: "sticky",
+        sx: {top: isMobile ? '56px':'64px'}
       } }>
-        <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+        <Grid container xs={ 12 }>
           <Grid xs={ 10 } sm={ 4 }>
             <Stack direction="row" justifyContent="start" alignItems="center">
-              <Grid container xs={ 12 }>
-                <Grid xs={ 8 }>
-                  <FilterInput filterChange={ onFilterChangeHandler } />
-                </Grid>
-                <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
-                  { isFilmsValidating && <ProgressCircle size={ 20 } /> }
-                </Grid>
-              </Grid>
-            </Stack>
-          </Grid>
-          <Grid xs={ 2 } sm={ 8 }>
-            <Stack direction="row" justifyContent="flex-end" alignItems="center">
-              <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
-                <IconButton onClick={ filmPageDisplayToggleHandler }>
-                  { filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />) }
-                </IconButton>
-              </Tooltip>
+              <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
             </Stack>
           </Grid>
         </Grid>
       </AppToolbar>
-
-      {
-        <LoadingBackdrop isLoading={ isFilmsLoading }>
-          {
-            fetchFilmsError ? <ErrorPage reason={ 'Failed loading all films.' } debug={ fetchFilmsError } /> :
-            (
-              <Stack direction="column" p={ 2 } width="100%">
-                <Grid container disableEqualOverflow rowSpacing={ 4 }>
-                  { sortedFilms?.map((film) => {
-                    return (
-                      <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
-                        <MovieCard 
-                          userId={ userId }
-                          film={ film.properties } 
-                          uid={ film.uid }
-                          allFavoritesLoading={ favoritesLoading }
-                          favToggleLoading={ favToggleLoading } />
-                      </Grid>
-                    );
-                  }) }
-                </Grid>
-              </Stack>
-            )
-          }
-        </LoadingBackdrop>
-      }
-    </>
+      <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
+        <LayoutWithGutter size={ 'med' }>
+          { data?.map((film) => {
+            return (
+              <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 8 } smOffset={ 2 } mb={ 3 }>
+                <MovieCard 
+                  userId={ userId }
+                  film={ film.properties } 
+                  uid={ film.uid }
+                  allFavoritesLoading={ favoritesLoading }
+                  favToggleLoading={ favToggleLoading } />
+              </Grid>
+            );
+          }) }
+        </LayoutWithGutter>
+      </Box>
+    </Stack>
   );
+
+  // return (
+  //   <>
+  //     <AppToolbar toolbarProps={ {
+  //       position:"sticky",
+  //       sx:{top: isMobile ? '56px':'64px'}
+  //     } }>
+  //       <Grid container xs={ 12 } flexDirection={ { xs: 'row', sm: 'row' } } justifyContent="space-between" alignItems="center">
+  //         <Grid xs={ 10 } sm={ 4 }>
+  //           <Stack direction="row" justifyContent="start" alignItems="center">
+  //             <Grid container xs={ 12 }>
+  //               <Grid xs={ 8 }>
+  //                 <FilterInput filterChange={ onFilterChangeHandler } />
+  //               </Grid>
+  //               <Grid xs={ 2 } sx={ {display:'flex'} } justifyContent="center" alignItems="center">
+  //                 { isFilmsValidating && <ProgressCircle size={ 20 } /> }
+  //               </Grid>
+  //             </Grid>
+  //           </Stack>
+  //         </Grid>
+  //         <Grid xs={ 2 } sm={ 8 }>
+  //           <Stack direction="row" justifyContent="flex-end" alignItems="center">
+  //             <Tooltip title={ `Switch to ${getNextDisplayState(filmPageDisplayMode)}` }>
+  //               <IconButton onClick={ filmPageDisplayToggleHandler }>
+  //                 { filmPageDisplayMode === DataBlockDisplayMode.CARD ? (<TableChartIcon />) : (<ViewModuleIcon  />) }
+  //               </IconButton>
+  //             </Tooltip>
+  //           </Stack>
+  //         </Grid>
+  //       </Grid>
+  //     </AppToolbar>
+
+  //     {
+  //       <LoadingBackdrop isLoading={ isFilmsLoading }>
+  //         {
+  //           fetchFilmsError ? <ErrorPage reason={ 'Failed loading all films.' } debug={ fetchFilmsError } /> :
+  //           (
+  //             <Stack direction="column" p={ 2 } width="100%">
+  //               <Grid container disableEqualOverflow rowSpacing={ 4 }>
+  //                 { sortedFilms?.map((film) => {
+  //                   return (
+  //                     <Grid key={ film.properties.episode_id } xs={ 12 } sm={ 4 } smOffset={ 4 }>
+  //                       <MovieCard 
+  //                         userId={ userId }
+  //                         film={ film.properties } 
+  //                         uid={ film.uid }
+  //                         allFavoritesLoading={ favoritesLoading }
+  //                         favToggleLoading={ favToggleLoading } />
+  //                     </Grid>
+  //                   );
+  //                 }) }
+  //               </Grid>
+  //             </Stack>
+  //           )
+  //         }
+  //       </LoadingBackdrop>
+  //     }
+  //   </>
+  // );
 };
 
 export default Movies;

@@ -15,7 +15,6 @@ const swapiFilmsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(starwarsFilmsApi.endpoints.fetchFilms.matchFulfilled, (state, action) => {
-      console.log("fulfulled");
     });
   }
 });

@@ -40,7 +40,6 @@ function SimpleGridDisplay({ data, itemUrlPath, gutterSize="med", totalPages=0, 
               <InputLabel id="page-selection">Page</InputLabel>
               <Select
                 labelId="page-selection"
-                id="demo-simple-select"
                 value={ `${page}` }
                 label="Age"
                 onChange={ pageSelectionHandler }>
