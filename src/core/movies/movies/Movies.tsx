@@ -20,12 +20,17 @@ import * as fromAllFilmsSelectors from '../../store/all-films/films.selectors';
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import * as fromFavoriteFilmsSelectors from '../../store/favorites/favorites.selectors';
 import { setParams2 } from "src/core/store/all-films";
-import { useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
+import { starwarsFilmsApi, useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
 import SimpleGridDisplay from "src/core/shared/display/SimpleGridDisplay";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
-
+import CircularProgress from '@mui/material/CircularProgress';
+import { RefreshOutlined } from "@mui/icons-material";
+import DurationDisplay from "src/shared/components/date/DurationDisplay";
+import DateToNow from "src/shared/components/date/DateToNow";
+import DateDisplay2 from "src/shared/components/date/DateDisplay2";
+import { Tooltip as Tooltip2 } from 'react-tooltip';
 
 const userId = 'yqu';
 const ENTITY_NAME = "films";
@@ -77,6 +82,16 @@ const Movies = () => {
     navigate(`./${selection?.uid}`);
   };
 
+  const handleRefreshFilms = () => {
+    dispatch(starwarsFilmsApi.util.invalidateTags([{type: "Films"}]));
+  };
+
+  const handleRefreshFilms2 = () => {
+    dispatch(starwarsFilmsApi.endpoints.fetchFilms.initiate(
+      {forceRefetch: true}
+    ));
+  };
+
   if (isLoading) return (
     <Stack direction="column" width="100%" justifyContent="center" alignItems="center" height="100vh">
       <LoadingLogo message={ ENTITY_NAME } />
@@ -98,9 +113,21 @@ const Movies = () => {
         sx: {top: isMobile ? '56px':'64px'}
       } }>
         <Grid container xs={ 12 }>
-          <Grid xs={ 10 } sm={ 4 }>
-            <Stack direction="row" justifyContent="start" alignItems="center">
+          <Grid xs={ 4 }>
+            <Stack direction="row" justifyContent="start" alignItems="center" width="100%">
               <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } />
+            </Stack>
+          </Grid>
+          <Grid xs={ 4 } xsOffset="auto" display="flex">
+            <Stack direction="row" justifyContent="end" alignItems="center" width="100%" spacing={ 2 } data-tooltip-id="fetch-information">
+              { isFetching && <CircularProgress size={ 20 } /> }
+              { !isFetching && <Typography fontSize={ 11 } component="div">
+                Last fetched <DateDisplay2 dateInMilli={ fulfilledTimeStamp } />, took: <DurationDisplay durationInMilli={ fetchTimeDuration } />
+              </Typography> }
+              
+              <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshFilms }>
+                Refresh
+              </Button>
             </Stack>
           </Grid>
         </Grid>
@@ -121,6 +148,13 @@ const Movies = () => {
           }) }
         </LayoutWithGutter>
       </Box>
+      <Tooltip2 id="fetch-information" place="bottom" offset={ 30 }>
+        <Stack direction="column" justifyContent="center" alignItems="center">
+          <Box>
+            Last fetched: <DateDisplay2 dateInMilli={ fulfilledTimeStamp } /> ( <DateToNow dateInMilli={ fulfilledTimeStamp } /> ago ).
+          </Box>
+        </Stack>
+      </Tooltip2>
     </Stack>
   );
 

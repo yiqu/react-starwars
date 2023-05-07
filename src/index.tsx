@@ -4,6 +4,7 @@ import './index.css';
 import 'animate.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'react-tooltip/dist/react-tooltip.css';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
