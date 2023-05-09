@@ -25,13 +25,14 @@ import { ToggleFavoriteArg } from 'src/core/store/favorites/favorites.state';
 
 export interface StarwarsFilmCardProps {
   film: StarwarsFilm;
+  favoriteData?: FavoriteToSave;
   uid: string;
   userId: string;
   allFavoritesLoading?: boolean;
   favToggleLoading?: boolean;
 }
 
-export default function MovieCard({ film, uid, userId, allFavoritesLoading, favToggleLoading }: StarwarsFilmCardProps) {
+export default function MovieCard({ film, favoriteData, uid, userId, allFavoritesLoading, favToggleLoading }: StarwarsFilmCardProps) {
   const dispatch = useAppDispatch();
 
   const favoriteToggleHandler = () => {
@@ -130,9 +131,9 @@ export default function MovieCard({ film, uid, userId, allFavoritesLoading, favT
           <IconButton 
             aria-label="favorite" 
             onClick={ favoriteToggleHandler } 
-            title={ getFilmFavoriteToggleTooltip(film.favorite) }
+            title={ getFilmFavoriteToggleTooltip(favoriteData) }
             disabled={ !!(allFavoritesLoading) } >
-            { (allFavoritesLoading) ? <HourglassBottomIcon /> : <FavIcon color={ film.favorite?.isCurrentFavorite ? 'error' : 'disabled' } />}
+            { (allFavoritesLoading) ? <HourglassBottomIcon /> : <FavIcon color={ favoriteData?.isCurrentFavorite ? 'error' : 'disabled' } />}
           </IconButton>
         </div>
       </CardActions>

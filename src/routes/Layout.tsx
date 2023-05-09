@@ -46,10 +46,10 @@ const Layout = () => {
   }, [isMobileScreenSize]);
 
   useEffect(() => {
-    const promise = dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}}));
-    return (() => {
-      promise.abort();
-    });
+    // const promise = dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}}));
+    // return (() => {
+    //   promise.abort();
+    // });
   }, [dispatch]);
 
   useEffect(() => {

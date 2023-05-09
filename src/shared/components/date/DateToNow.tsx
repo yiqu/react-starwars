@@ -1,13 +1,13 @@
 import { formatDistanceToNow } from 'date-fns';
 
 export interface DateDisplay2Props {
-  dateInMilli: number;
+  dateInMilli: number | undefined;
 }
 
 function DateToNow({ dateInMilli }: DateDisplay2Props) {
   return (
     <>
-      { formatDistanceToNow(dateInMilli, { includeSeconds: true }) }
+      { (dateInMilli !== undefined) && formatDistanceToNow(dateInMilli, { includeSeconds: true }) }
     </>
   );
 };

@@ -125,6 +125,7 @@ export interface StarwarFilmPersonal {
 
 export interface StarwarsSearchable {
   name: string;
+  title?: string;
   url: string;
 }
 

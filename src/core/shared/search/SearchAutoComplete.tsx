@@ -26,7 +26,7 @@ function SearchAutoComplete({ entity, onResultSelect }: SearchAutoCompleteProps)
     entity,
     name: debouncedInputValue
   } : skipToken);
-
+  
   useEffect(() => {
     setOptions(data ?? []);
   }, [data]);
@@ -68,7 +68,7 @@ function SearchAutoComplete({ entity, onResultSelect }: SearchAutoCompleteProps)
         filterOptions={ (x) => x }
         value={ value }
         getOptionLabel={ (option) => {
-          return option.properties.name;
+          return option.properties.name ?? option.properties.title;
         } }
         noOptionsText = { `Search for ${entity}` }
         loading= { isFetching }

@@ -251,7 +251,7 @@ export const starwarsContentApi = createApi({
         return {
           url: `${args.entity}`,
           params: {
-            name: args.name ?? `${''}`
+            [args.entity === 'films' ? 'title' : 'name']: args.name ?? `${''}`
           },
           method: 'GET'
         };
