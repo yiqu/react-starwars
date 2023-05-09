@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkstarwars=self.webpackChunkstarwars||[]).push([[155],{4471:function(s,r,a){a.r(r);var t=a(57689),u=a(80184);r.default=function(){return(0,u.jsx)(t.j3,{})}}}]);
+//# sourceMappingURL=155.bdd46fd1.chunk.js.map
