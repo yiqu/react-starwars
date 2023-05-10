@@ -40,9 +40,7 @@ export const starwarsFavoritesApi = createApi({
       },
       providesTags: (result, error, args, meta) => {
         const tags: TagDescription<"Favorites">[] = [];
-        result?.forEach((res: FavoriteToSave) => {
-          tags.push({type: favoritesTag, id: res.fireId});
-        });
+        tags.push({type: favoritesTag, id: 'ALL'});
         return tags;
       }
     }),
@@ -62,10 +60,23 @@ export const starwarsFavoritesApi = createApi({
       }
     }),
 
-    
+    updateFavorite: builder.mutation<FavoriteToSave, FavoriteToSave>({
+      query: (editable: FavoriteToSave) => {
+        return {
+          url: `yqu/${favoritesPath}/${editable.fireId}.json`,
+          method: 'PUT',
+          body: {
+            ...editable
+          }
+        };
+      },
+      invalidatesTags: (result: FavoriteToSave | undefined, error, args: FavoriteToSave , meta) => {
+        return [{type: favoritesTag, id: args.fireId}, {type: favoritesTag, id: 'ALL'}];
+      },
+    })
 
   })
 });
 
 
-export const { useFetchFavoriteQuery, useFetchFavoritesQuery } = starwarsFavoritesApi;
+export const { useFetchFavoriteQuery, useFetchFavoritesQuery, useUpdateFavoriteMutation } = starwarsFavoritesApi;
