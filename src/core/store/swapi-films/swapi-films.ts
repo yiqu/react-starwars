@@ -3,8 +3,6 @@ import { BASE_SW_API } from 'src/shared/api/endpoints';
 import { EntityHttpParams, HttpParams } from 'src/shared/models/http.model';
 import { GenericStarwarsContent, HttpResponse, HttpResponse2List, HttpSearchResponse, HttpSearchResponses, 
   ResultProperty, StarwarFilmDetail, StarwarsContent, StarwarsFilm, StarwarsPlanet, StarwarsSpecie, StarwarsStarships, StarwarsVehicles } from 'src/shared/models/starwars.model';
-import { PAGE_LIMIT, PAGE_COUNT, PAGE_LIMIT_30 } from 'src/shared/utils/constants';
-import urlcat, { query } from "urlcat";
 
 export const filmsPath = "films";
 

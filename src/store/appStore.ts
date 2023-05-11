@@ -9,6 +9,7 @@ import swapiFilmsReducer from 'src/core/store/swapi-films/swapi-films.reducer';
 import { starwarsContentApi } from 'src/core/store/swapi/swapi';
 import { starwarsFilmsApi } from 'src/core/store/swapi-films/swapi-films';
 import { starwarsFavoritesApi } from 'src/core/store/favorites/favorites.api';
+import favoritesConfigReducer from 'src/core/store/favorites/favorites-config.reducer';
 
 export const appStore = configureStore({
   reducer: {
@@ -20,7 +21,8 @@ export const appStore = configureStore({
     [starwarsFilmsApi.reducerPath]: starwarsFilmsApi.reducer,
     swapiConfig: swapiSliceReducer,
     swapiFilmsConfig: swapiFilmsReducer,
-    [starwarsFavoritesApi.reducerPath]: starwarsFavoritesApi.reducer
+    [starwarsFavoritesApi.reducerPath]: starwarsFavoritesApi.reducer,
+    favoritesConfig: favoritesConfigReducer
   },
 
   // Adding the api middleware enables caching, invalidation, polling,

@@ -8,7 +8,6 @@ import AppToolbar from "src/shared/components/toolbar/Toolbar";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import SnackbarContext from "src/shared/context/snackbar/SnackbarContext";
 import ErrorPage from "src/404/ErrorPage";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { starwarsFilmsApi, useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
@@ -29,7 +28,6 @@ const ENTITY_NAME = "films";
 
 const Movies = () => {
   const dispatch = useAppDispatch();
-  const { showSnackbar } = useContext(SnackbarContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentDisplayModeUrl = searchParams.get("moviePageDisplayMode");
   const { isMobile } = useScreenSize();
@@ -58,14 +56,6 @@ const Movies = () => {
   
   const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
   
-  /**
-   * Clean up - close any snackbars
-   */
-  useEffect(() => {
-    return (() => {
-      showSnackbar('info', undefined);
-    });
-  }, [showSnackbar]);
 
   const filmPageDisplayToggleHandler = () => {
     const nextDisplayMode = {

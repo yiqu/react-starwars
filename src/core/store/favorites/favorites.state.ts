@@ -1,5 +1,16 @@
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 
+export interface ToggleFavoriteArg {
+  fav: FavoriteToSave;
+  favStatus: boolean;
+  url: string;
+}
+
+export interface FavoritesConfigState {
+  mutatingFavorites: {[favId: string]: boolean};
+  lastFavToggled?: FavoriteToSave;
+}
+
 export interface  FetchProp {
   url: string;
 }
@@ -73,9 +84,3 @@ type RejectedWithValue = <ThunkArg, RejectedValue>(
   arg: ThunkArg
 ) => RejectedWithValueAction<ThunkArg, RejectedValue>
 
-
-export interface ToggleFavoriteArg {
-  fav: FavoriteToSave;
-  favStatus: boolean;
-  url: string;
-}

@@ -19,6 +19,9 @@ import { useAppDispatch } from 'src/store/appHook';
 import { fetchFavoritesThunk } from 'src/core/store/favorites/favorites.thunks';
 import { fetchCharacters } from "src/core/store/characters/characters.thunks";
 import { fetchPlanets } from 'src/core/store/planets';
+import { Toaster } from 'react-hot-toast';
+import { Tooltip } from 'react-tooltip';
+
 
 const Layout = () => {
   
@@ -85,7 +88,22 @@ const Layout = () => {
 
           </Grid>
         </Box>
-
+        <Toaster
+          position="top-center"
+          containerClassName="swdb-toast-container"
+          containerStyle={ {} }
+          toastOptions={ {
+            className: 'swdb-toast',
+            duration: 5000,
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 10000
+            }
+          } }
+        />
+        <Tooltip id="tooltip" />
       </Box>
     </ThemeProvider>
     

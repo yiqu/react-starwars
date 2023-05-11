@@ -35,7 +35,9 @@ export const starwarsFavoritesApi = createApi({
             fireId: key
           });
         });
-
+        result.sort((x, y) => {
+          return x.episodeId > y.episodeId ? 1 : -1;
+        });
         return result;
       },
       providesTags: (result, error, args, meta) => {

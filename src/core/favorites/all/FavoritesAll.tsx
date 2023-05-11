@@ -10,20 +10,19 @@ import DurationDisplay from "src/shared/components/date/DurationDisplay";
 import { Delete, DeleteOutline, FavoriteOutlined, RefreshOutlined } from "@mui/icons-material";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
-import DateToNow from "src/shared/components/date/DateToNow";
 import React from "react";
-import { Link } from "react-router-dom";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { cloneDeep } from "lodash";
+import toast from "react-hot-toast";
+import { selectMutatingFavorites } from "src/core/store/favorites/favorites.selectors";
+import FavoriteItem from "./FavoriteCard";
 
 export default function FavoritesAll() {
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   const [updateFavorite, result] = useUpdateFavoriteMutation();
-  const { data, onlyFavorites, isLoading, isFetching, isError, error, fulfilledTimeStamp, startedTimeStamp } = useFetchFavoritesQuery(undefined, {
+  const { data, onlyFavorites, isLoading, isFetching, isError, error, fulfilledTimeStamp, startedTimeStamp, refetch } = useFetchFavoritesQuery(undefined, {
     selectFromResult: (data) => {
       return {
         ...data,
@@ -34,18 +33,25 @@ export default function FavoritesAll() {
     }
   });
   const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
+  const mutatingFavorites = useAppSelector(selectMutatingFavorites);
 
-  const handleUnFavorite = (fav: FavoriteToSave) => () => {
+  const handleToggleFavorite = (fav: FavoriteToSave) => {
     const toUpdate = cloneDeep(fav);
     if (toUpdate) {
       toUpdate.isCurrentFavorite = !toUpdate.isCurrentFavorite;
       toUpdate.lastUpdated = new Date().getTime();
-      updateFavorite(toUpdate);
+      const update$ = updateFavorite(toUpdate);
+      update$.then((res) => toast.success(`${toUpdate.isCurrentFavorite ? 'Added' : 'Removed'} Ep. ${toUpdate.episodeId}`));
     }
   };
 
   const handleRefreshFavorites = () => {
-    dispatch(starwarsFavoritesApi.util.invalidateTags([{type: favoritesTag, id: 'ALL'}]));
+    const refresh$ = refetch();
+    toast.promise(refresh$, {
+      loading: 'Getting latest...',
+      success: 'Successfully refreshed all favorites!',
+      error: 'Error refreshing favorites'
+    });
   };
 
 
@@ -89,31 +95,14 @@ export default function FavoritesAll() {
       </AppToolbar>
       <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
         <LayoutWithGutter size={ 'skinny' }>
+          <Divider sx={ {width: '100%', alignItems: 'flex-start', mb: 4} }>Current Favorites</Divider>
+          
           <List dense={ false } sx={ {width: '100%'} }>
             { onlyFavorites.map((fav) => {
+              const apiWorking = mutatingFavorites[fav.fireId!];
               return (
                 <React.Fragment key={ fav.fireId }>
-                  <ListItem key={ fav.fireId } secondaryAction={
-                    <Tooltip title="Remove from favorites">
-                      <IconButton edge="end" aria-label="delete" onClick={ handleUnFavorite(fav) }>
-                        <Delete />
-                      </IconButton>
-                    </Tooltip>
-                  }>
-                    <ListItemAvatar sx={ {mr: 2} }>
-                      <Avatar src={ `${process.env.PUBLIC_URL}/assets/poster-img/${fav.episodeId}.png` }
-                      sx={ { width: 80, height: 80 } }>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={ <Link to={ `./${fav.fireId}` }>
-                        <Stack direction="row" justifyContent="start" alignItems="center">
-                          {`Ep. ${fav.episodeId}`} { fav.isCurrentFavorite && <FavoriteIcon fontSize="small" color="error" sx={ {ml: 1} } /> }
-                        </Stack>
-                      </Link> }
-                      secondary={ <>Favorited: <DateToNow dateInMilli={ fav.lastUpdated } /> ago </> }
-                    />
-                  </ListItem>
+                  <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
                   <Divider variant="inset" component="li" />
                 </React.Fragment>
               );
@@ -124,29 +113,10 @@ export default function FavoritesAll() {
 
           <List dense={ false } sx={ {width: '100%'} }>
             { data.map((fav) => {
+              const apiWorking = mutatingFavorites[fav.fireId!];
               return (
                 <React.Fragment key={ fav.fireId }>
-                  <ListItem key={ fav.fireId } secondaryAction={
-                    <Tooltip title="Toggle favorite">
-                      <IconButton edge="end" aria-label="delete" onClick={ handleUnFavorite(fav) }>
-                        <FavoriteBorderIcon />
-                      </IconButton>
-                    </Tooltip>
-                  }>
-                    <ListItemAvatar sx={ {mr: 2} }>
-                      <Avatar src={ `${process.env.PUBLIC_URL}/assets/poster-img/${fav.episodeId}.png` }
-                      sx={ { width: 80, height: 80 } }>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={ <Link to={ `./${fav.fireId}` }>
-                        <Stack direction="row" justifyContent="start" alignItems="center">
-                          {`Ep. ${fav.episodeId}`} { fav.isCurrentFavorite && <FavoriteIcon fontSize="small" color="error" sx={ {ml: 1} } /> }
-                        </Stack>
-                      </Link> }
-                      secondary={ <>Favorited: <DateToNow dateInMilli={ fav.lastUpdated } /> ago </> }
-                    />
-                  </ListItem>
+                  <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
                   <Divider variant="inset" component="li" />
                 </React.Fragment>
               );

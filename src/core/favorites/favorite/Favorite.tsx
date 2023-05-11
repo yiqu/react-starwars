@@ -14,7 +14,7 @@ import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import { startCase, keys, cloneDeep } from 'lodash';
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import DateToNow from "src/shared/components/date/DateToNow";
-
+import toast from 'react-hot-toast';
 
 
 export default function Favorites() {
@@ -25,7 +25,12 @@ export default function Favorites() {
   const { isMobile } = useScreenSize();
 
   const onRefreshHandler = () => {
-    refetch();
+    const refresh$ = refetch();
+    toast.promise(refresh$, {
+      loading: 'Refreshing...',
+      success: 'Successfully refreshed!',
+      error: 'Error refreshing favorites'
+    });
   };
 
   const onEditHandler = () => {

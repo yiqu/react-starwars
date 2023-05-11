@@ -50,3 +50,7 @@ pre, code{
 .infinite-scroll-component__outerdiv {
   width: 100%;
 }
+
+.opacity-3 {
+  opacity: 0.3;
+}

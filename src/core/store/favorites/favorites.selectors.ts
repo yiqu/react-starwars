@@ -1,4 +1,4 @@
-import { createSelector, createAction } from "@reduxjs/toolkit";
+import { createSelector, createAction, createDraftSafeSelector } from "@reduxjs/toolkit";
 import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwars.model";
 import { RootState } from "src/store/appStore";
 import produce from 'immer';
@@ -9,8 +9,19 @@ const favoriteFilmsSlice = (state: RootState) => {
   return state.favoriteFilms;
 };
 
+const favoritesConfigSlice = (state: RootState) => {
+  return state.favoritesConfig;
+};
+
 export const { selectAll, selectById, selectEntities, selectIds, selectTotal } =
   adapter.getSelectors((state: RootState) => state.favoriteFilms);
+
+export const selectMutatingFavorites = createDraftSafeSelector(
+  favoritesConfigSlice,
+  (state)=> {
+    return state.mutatingFavorites;
+  }
+);
 
 export const selectIsLoading = (state: RootState) => {
   return favoriteFilmsSlice(state).loading;
