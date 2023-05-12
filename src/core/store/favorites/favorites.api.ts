@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/query/react';
+import { assign, unset } from 'lodash';
 import { BASE_FIREBASE_SW_URL, BASE_SW_API } from 'src/shared/api/endpoints';
 import { EntityHttpParams, HttpParams } from 'src/shared/models/http.model';
 import { FavoriteMoviesObjList, FavoriteToSave } from 'src/shared/models/starwars.model';
@@ -72,8 +73,30 @@ export const starwarsFavoritesApi = createApi({
           }
         };
       },
-      invalidatesTags: (result: FavoriteToSave | undefined, error, args: FavoriteToSave , meta) => {
-        return [{type: favoritesTag, id: args.fireId}, {type: favoritesTag, id: 'ALL'}];
+      //Optimistic Updates
+      async onQueryStarted(patchArgs: FavoriteToSave, apiActions) {
+        const patchResult = apiActions.dispatch(
+          starwarsFavoritesApi.util.updateQueryData('fetchFavorite', patchArgs.fireId!, (draft) => {
+            draft.isCurrentFavorite = patchArgs.isCurrentFavorite;
+            draft.filmId = "Updating";
+          })
+        );
+        try {
+          const updatedFavorite = await apiActions.queryFulfilled;
+          apiActions.dispatch(
+            starwarsFavoritesApi.util.updateQueryData('fetchFavorite', patchArgs.fireId!, (draft) => {
+              assign(draft, updatedFavorite.data);
+            })
+          );
+        } catch {
+          patchResult.undo();
+          /**
+           * Alternatively, on failure you can invalidate the corresponding cache tags
+           * to trigger a re-fetch:
+           * dispatch(api.util.invalidateTags(['fetchFavorites']))
+           */
+          apiActions.dispatch(starwarsFavoritesApi.util.invalidateTags(['Favorites']));
+        }
       },
     })
 

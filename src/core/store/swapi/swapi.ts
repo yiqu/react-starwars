@@ -48,7 +48,7 @@ export const starwarsContentApi = createApi({
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({type: speciesTag, id: res.uid});
         });
-        tags.push(speciesTag);
+        tags.push({type: speciesTag, id: 'PARTIAL-LIST'});
         return tags;
       }
     }),
@@ -100,7 +100,7 @@ export const starwarsContentApi = createApi({
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({type: starshipsTag, id: res.uid});
         });
-        tags.push(starshipsTag);
+        tags.push({type: starshipsTag, id: 'PARTIAL-LIST'});
         return tags;
       }
     }),
@@ -137,7 +137,7 @@ export const starwarsContentApi = createApi({
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({type: vehiclesTag, id: res.uid});
         });
-        tags.push(vehiclesTag);
+        tags.push({type: vehiclesTag, id: 'PARTIAL-LIST'});
         return tags;
       }
     }),
@@ -174,7 +174,7 @@ export const starwarsContentApi = createApi({
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({type: planetsTag, id: res.uid});
         });
-        tags.push(planetsTag);
+        tags.push({type: planetsTag, id: `PARTIAL-LIST`});
         return tags;
       }
     }),
@@ -211,7 +211,7 @@ export const starwarsContentApi = createApi({
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({type: peopleTag, id: res.uid});
         });
-        tags.push(peopleTag);
+        tags.push({type: peopleTag, id: 'PARTIAL-LIST'});
         return tags;
       }
     }),

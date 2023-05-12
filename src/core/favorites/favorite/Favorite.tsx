@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useFetchFavoriteQuery, useUpdateFavoriteMutation } from "src/core/store/favorites/favorites.api";
 import { skipToken } from "@reduxjs/toolkit/query/react";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import ErrorPage from "src/404/ErrorPage";
 import AppToolbar from "src/shared/components/toolbar/Toolbar";
@@ -90,6 +90,9 @@ export default function Favorites() {
               <Typography variant='body1'>
                 Last updated: <DateToNow dateInMilli={ data.lastUpdated } /> ago
               </Typography>
+              <Box ml={ 2 }>
+                { data.filmId === 'Updating' ? <Chip label="working..." color="warning" size="small" /> : null }
+              </Box>
             </Stack>
             <Divider sx={ {my: 2} } />
             <Stack direction="column" >
