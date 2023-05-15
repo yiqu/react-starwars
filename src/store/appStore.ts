@@ -17,7 +17,7 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 // Persisted reducer config
 const persistConfig = {
-  key: "favoritesConfig",
+  key: "favoritesConfig", // key name in the localStorage 'key'
   storage,
   stateReconciler: autoMergeLevel2
 };
