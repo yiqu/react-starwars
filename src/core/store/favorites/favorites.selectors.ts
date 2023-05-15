@@ -16,10 +16,17 @@ const favoritesConfigSlice = (state: RootState) => {
 export const { selectAll, selectById, selectEntities, selectIds, selectTotal } =
   adapter.getSelectors((state: RootState) => state.favoriteFilms);
 
-export const selectMutatingFavorites = createDraftSafeSelector(
+export const selectMutatingFavorites = createSelector(
   favoritesConfigSlice,
   (state)=> {
     return state.mutatingFavorites;
+  }
+);
+
+export const selectShowCurrentFavoriteList = createSelector(
+  favoritesConfigSlice,
+  (state): boolean=> {
+    return !!state.showCurrentFavsList;
   }
 );
 

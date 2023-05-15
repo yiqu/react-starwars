@@ -17,8 +17,8 @@ import '@fontsource/poppins/600.css';
 import '@fontsource/poppins/700.css';
 import { ThemeContextProvider } from './theme/ThemeContext';
 import { Provider } from 'react-redux';
-import { appStore } from './store/appStore';
-
+import { appStore, persistor } from './store/appStore';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -28,9 +28,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={ appStore }>
-      <ThemeContextProvider>
-        <App />
-      </ThemeContextProvider>
+      <PersistGate loading={ null } persistor={ persistor }>
+        <ThemeContextProvider>
+          <App />
+        </ThemeContextProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
   

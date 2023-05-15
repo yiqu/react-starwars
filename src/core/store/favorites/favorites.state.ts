@@ -9,6 +9,7 @@ export interface ToggleFavoriteArg {
 export interface FavoritesConfigState {
   mutatingFavorites: {[favId: string]: boolean};
   lastFavToggled?: FavoriteToSave;
+  showCurrentFavsList?: boolean;
 }
 
 export interface  FetchProp {

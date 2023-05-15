@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import Grid from '@mui/material/Unstable_Grid2';
-import { Avatar, Box, Button, CircularProgress, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, Divider, FormControlLabel, FormGroup, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, Switch, Tooltip, Typography } from "@mui/material";
 import { favoritesTag, starwarsFavoritesApi, useFetchFavoritesQuery, useUpdateFavoriteMutation } from "src/core/store/favorites/favorites.api";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import ErrorPage from "src/404/ErrorPage";
@@ -10,12 +10,13 @@ import DurationDisplay from "src/shared/components/date/DurationDisplay";
 import { Delete, DeleteOutline, FavoriteOutlined, RefreshOutlined } from "@mui/icons-material";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
-import React from "react";
+import React, { useState } from "react";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import { cloneDeep } from "lodash";
 import toast from "react-hot-toast";
-import { selectMutatingFavorites } from "src/core/store/favorites/favorites.selectors";
+import { selectMutatingFavorites, selectShowCurrentFavoriteList } from "src/core/store/favorites/favorites.selectors";
 import FavoriteItem from "./FavoriteCard";
+import { toggleShowCurrentFavList } from "src/core/store/favorites/favorites-config.reducer";
 
 export default function FavoritesAll() {
 
@@ -34,6 +35,7 @@ export default function FavoritesAll() {
   });
   const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
   const mutatingFavorites = useAppSelector(selectMutatingFavorites);
+  const showCurrentFavList: boolean = useAppSelector(selectShowCurrentFavoriteList);
 
   const handleToggleFavorite = (fav: FavoriteToSave) => {
     const toUpdate = cloneDeep(fav);
@@ -52,6 +54,10 @@ export default function FavoritesAll() {
       success: 'Successfully refreshed all favorites!',
       error: 'Error refreshing favorites'
     });
+  };
+
+  const handleShowCurrentFavToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(toggleShowCurrentFavList(event.target.checked));
   };
 
 
@@ -81,33 +87,47 @@ export default function FavoritesAll() {
             </Stack>
           </Grid>
           <Grid xs={ 8 } xsOffset="auto" display="flex">
-            <Stack direction="row" justifyContent="end" alignItems="center" width="100%" spacing={ 2 } data-tooltip-id="fetch-information">
+            <Stack direction="row" justifyContent="end" alignItems="center" width="100%" spacing={ 2 } data-tooltip-id="general-tooltip"
+              data-tooltip-content={ `Refresh` }>
               { isFetching && <CircularProgress size={ 20 } /> }
               { !isFetching && <Typography fontSize={ 11 } component="div">
                 Last fetched <DateDisplay2 dateInMilli={ fulfilledTimeStamp ?? 0 } />, took: <DurationDisplay durationInMilli={ fetchTimeDuration } />
               </Typography> }
-              <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshFavorites }>
-                Refresh Favorites
-              </Button>
+              <Divider orientation="vertical" flexItem={ true } variant="middle" />
+              <Stack direction="row" justifyContent="end" alignItems="center">
+                <FormGroup>
+                  <FormControlLabel control={ <Switch checked={ showCurrentFavList } onChange={ handleShowCurrentFavToggle } /> } label="Show Current Favorites" />
+                </FormGroup>
+                <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshFavorites }>
+                  Refresh Favorites
+                </Button>
+              </Stack>
             </Stack>
           </Grid>
         </Grid>
       </AppToolbar>
       <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
         <LayoutWithGutter size={ 'skinny' }>
-          <Divider sx={ {width: '100%', alignItems: 'flex-start', mb: 4} }>Current Favorites</Divider>
+          {
+            showCurrentFavList && (
+              <>
+                <Divider sx={ {width: '100%', alignItems: 'flex-start', mb: 4} }>Current Favorites</Divider>
           
-          <List dense={ false } sx={ {width: '100%'} }>
-            { onlyFavorites.map((fav) => {
-              const apiWorking = mutatingFavorites[fav.fireId!];
-              return (
-                <React.Fragment key={ fav.fireId }>
-                  <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
-                  <Divider variant="inset" component="li" />
-                </React.Fragment>
-              );
-            }) }
-          </List>
+                <List dense={ false } sx={ {width: '100%'} }>
+                  {
+                    onlyFavorites.map((fav) => {
+                      const apiWorking = mutatingFavorites[fav.fireId!];
+                      return (
+                        <React.Fragment key={ fav.fireId }>
+                          <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
+                          <Divider variant="inset" component="li" />
+                        </React.Fragment>
+                      );})
+                  }
+                </List>
+              </>
+            )
+          }
 
           <Divider sx={ {width: '100%', alignItems: 'flex-start', my: 4} }>All</Divider>
 
