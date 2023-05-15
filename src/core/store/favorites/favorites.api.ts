@@ -43,6 +43,11 @@ export const starwarsFavoritesApi = createApi({
       },
       providesTags: (result, error, args, meta) => {
         const tags: TagDescription<"Favorites">[] = [];
+        result?.forEach((fav) => {
+          tags.push({
+            type: favoritesTag, id: fav.fireId
+          });
+        });
         tags.push({type: favoritesTag, id: 'ALL'});
         return tags;
       }
@@ -73,6 +78,9 @@ export const starwarsFavoritesApi = createApi({
           }
         };
       },
+      invalidatesTags: (result, error, arg: FavoriteToSave, meta) => {
+        return [{type: favoritesTag, id: 'ALL'}];
+      },
       //Optimistic Updates
       async onQueryStarted(patchArgs: FavoriteToSave, apiActions) {
         const patchResult = apiActions.dispatch(
@@ -90,12 +98,7 @@ export const starwarsFavoritesApi = createApi({
           );
         } catch {
           patchResult.undo();
-          /**
-           * Alternatively, on failure you can invalidate the corresponding cache tags
-           * to trigger a re-fetch:
-           * dispatch(api.util.invalidateTags(['fetchFavorites']))
-           */
-          apiActions.dispatch(starwarsFavoritesApi.util.invalidateTags(['Favorites']));
+          apiActions.dispatch(starwarsFavoritesApi.util.invalidateTags([{type: favoritesTag, id: patchArgs.fireId}]));
         }
       },
     })

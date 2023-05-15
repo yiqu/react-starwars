@@ -41,7 +41,7 @@ export default function FavoritesAll() {
       toUpdate.isCurrentFavorite = !toUpdate.isCurrentFavorite;
       toUpdate.lastUpdated = new Date().getTime();
       const update$ = updateFavorite(toUpdate);
-      update$.then((res) => toast.success(`${toUpdate.isCurrentFavorite ? 'Added' : 'Removed'} Ep. ${toUpdate.episodeId}`));
+      update$.then((res) => toast.success(`${toUpdate.isCurrentFavorite ? 'Added' : 'Removed'} Ep. ${toUpdate.episodeId} as favorites`));
     }
   };
 
