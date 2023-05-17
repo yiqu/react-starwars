@@ -8,8 +8,8 @@ const initialState: SwapiState = {
   pagination: {}
 };
 
-const swapiSlice = createSlice({
-  name: 'swapiConfig',
+export const swEntitiesConfigSlice = createSlice({
+  name: 'sw-entities-config',
   initialState,
   reducers: {
     dispatchPaging: (state, action: PayloadAction<ContentPagination>) => {
@@ -134,5 +134,5 @@ const swapiSlice = createSlice({
   }
 });
 
-export const { dispatchPaging } = swapiSlice.actions;
-export default swapiSlice.reducer;
+export const { dispatchPaging } = swEntitiesConfigSlice.actions;
+export default swEntitiesConfigSlice.reducer;

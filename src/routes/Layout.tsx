@@ -16,9 +16,6 @@ import ThemeContext from 'src/theme/ThemeContext';
 import Grid from '@mui/material/Unstable_Grid2';
 import { GREY } from 'src/theme/palette';
 import { useAppDispatch } from 'src/store/appHook';
-import { fetchFavoritesThunk } from 'src/core/store/favorites/favorites.thunks';
-import { fetchCharacters } from "src/core/store/characters/characters.thunks";
-import { fetchPlanets } from 'src/core/store/planets';
 import { Toaster } from 'react-hot-toast';
 import { Tooltip } from 'react-tooltip';
 
@@ -32,7 +29,6 @@ const Layout = () => {
   const theme: Theme = useMemo(() => {
     return createTheme(getMyTheme(themeContext.currentTheme));
   }, [themeContext.currentTheme]);
-  const dispatch = useAppDispatch();
 
   const handleDrawerOpen = (openState: boolean) => {
     setOpen(openState);
@@ -48,20 +44,6 @@ const Layout = () => {
     }
   }, [isMobileScreenSize]);
 
-  useEffect(() => {
-    // const promise = dispatch(fetchFavoritesThunk({httpParams: {user: 'yqu'}}));
-    // return (() => {
-    //   promise.abort();
-    // });
-  }, [dispatch]);
-
-  useEffect(() => {
-    //dispatch(fetchCharacters());
-  }, [dispatch]);
-
-  useEffect(() => {
-   // dispatch(fetchPlanets());
-  }, [dispatch]);
 
   return (
     <ThemeProvider theme={ theme }>

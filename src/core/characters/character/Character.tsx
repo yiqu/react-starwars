@@ -1,18 +1,11 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { FC, Suspense, useEffect } from "react";
 import Grid from '@mui/material/Unstable_Grid2';
-import { Await, defer, Link, LoaderFunctionArgs, useLoaderData, useRouteLoaderData } from "react-router-dom";
-import urlcat from "urlcat";
 import { HttpResponse, HttpResponse2, StarwarCharacter, StarwarsContent, StarwarsPlanet } from "src/shared/models/starwars.model";
 import CharacterDetailCard from "./CharacterCard";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { fetchHomeWorld } from "src/core/store/characters/characters.thunks";
-import * as fromCharactersSelectors from '../../store/characters/characters.selectors';
-import ProgressCircle from "src/shared/components/progress/CircleProgress";
-import Planet from "src/core/planets/planet/Planet";
-import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
-import { resetCurrentCharacterHomeWorld } from "src/core/store/characters";
 
 export interface CharacterProps {
   loadedCharacter: StarwarCharacter;
@@ -22,18 +15,10 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
-  const isHomePlanetLoading: boolean = useAppSelector(fromCharactersSelectors.characterHomePlanetLoading); 
-  const homePlanet: StarwarsPlanet | undefined = useAppSelector(fromCharactersSelectors.characterHomePlanet); 
 
   useEffect(() => {
     dispatch(fetchHomeWorld({url: loadedCharacter.homeworld}));
   }, [dispatch, loadedCharacter.homeworld]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetCurrentCharacterHomeWorld());
-    };
-  }, [dispatch]);
 
   return (
     <Grid xs={ 12 } container 
@@ -68,7 +53,6 @@ export const Character: FC<CharacterProps> = ({ loadedCharacter }: CharacterProp
               <Typography variant='h5' >
                 Home Planet Properties
               </Typography>
-              { isHomePlanetLoading && <ProgressCircle size={ 15 } styleProps={ {justifyContent: 'center', alignItems: 'center'} } color="#092250"  />}
             </Stack>            
             <Divider />
           </Stack>

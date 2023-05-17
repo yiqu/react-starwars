@@ -22,7 +22,7 @@ export const peopleTag = "People";
 export const searchTag = 'SearchResults';
 
 export const starwarsContentApi = createApi({
-  reducerPath: 'swapi',
+  reducerPath: 'sw-entities',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_SW_API
   }),

@@ -1,15 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { allFilmsSlice } from 'src/core/store/all-films/films.reducer';
-import charactersReducer from 'src/core/store/characters/characters.reducer';
-import { favoriteFilmslice } from 'src/core/store/favorites/favorites.reducer';
-import planetsReducer from 'src/core/store/planets/planets.reducer';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
-import swapiSliceReducer from 'src/core/store/swapi/swapi.reducer';
-import swapiFilmsReducer from 'src/core/store/swapi-films/swapi-films.reducer';
+import swEntitiesConfigSliceReducer, { swEntitiesConfigSlice } from 'src/core/store/swapi/swapi.reducer';
+import swFilmsConfigSliceReducer, { swFilmsConfigSlice } from 'src/core/store/swapi-films/swapi-films.reducer';
 import { starwarsContentApi } from 'src/core/store/swapi/swapi';
 import { starwarsFilmsApi } from 'src/core/store/swapi-films/swapi-films';
 import { starwarsFavoritesApi } from 'src/core/store/favorites/favorites.api';
-import favoritesConfigReducer from 'src/core/store/favorites/favorites-config.reducer';
+import favoritesConfigReducer, { favoritesConfigSlice } from 'src/core/store/favorites/favorites-config.reducer';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER} from 'redux-persist';
@@ -27,16 +23,12 @@ const persistedFavoritesReducer = persistReducer<ReturnType<typeof favoritesConf
 
 export const appStore = configureStore({
   reducer: {
-    allFilms: allFilmsSlice.reducer,
-    favoriteFilms: favoriteFilmslice.reducer,
-    characters: charactersReducer,
-    planets: planetsReducer,
     [starwarsContentApi.reducerPath]: starwarsContentApi.reducer,
     [starwarsFilmsApi.reducerPath]: starwarsFilmsApi.reducer,
-    swapiConfig: swapiSliceReducer,
-    swapiFilmsConfig: swapiFilmsReducer,
+    [swEntitiesConfigSlice.name]: swEntitiesConfigSliceReducer,
+    [swFilmsConfigSlice.name]: swFilmsConfigSliceReducer,
     [starwarsFavoritesApi.reducerPath]: starwarsFavoritesApi.reducer,
-    favoritesConfig: persistedFavoritesReducer
+    [favoritesConfigSlice.name]: persistedFavoritesReducer
   },
 
   // Adding the api middleware enables caching, invalidation, polling, and other useful features of `rtk-query`.

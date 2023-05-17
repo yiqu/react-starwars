@@ -8,8 +8,8 @@ const initialState: SwapiFilmsState = {
   filmsLastFetched: undefined
 };
 
-const swapiFilmsSlice = createSlice({
-  name: 'swapiFilmsConfig',
+export const swFilmsConfigSlice = createSlice({
+  name: 'sw-films-config',
   initialState,
   reducers: {
   },
@@ -20,4 +20,4 @@ const swapiFilmsSlice = createSlice({
 });
 
 //export const {  } = swapiFilmsSlice.actions;
-export default swapiFilmsSlice.reducer;
+export default swFilmsConfigSlice.reducer;

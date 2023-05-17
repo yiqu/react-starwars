@@ -11,7 +11,7 @@ export const filmsTag = "Films";
 
 
 export const starwarsFilmsApi = createApi({
-  reducerPath: 'swapi-films',
+  reducerPath: 'sw-films',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_SW_API
   }),

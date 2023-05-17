@@ -11,7 +11,7 @@ const initialState: FavoritesConfigState = {
   showCurrentFavsList: false
 };
 
-const favoritesConfigSlice = createSlice({
+export const favoritesConfigSlice = createSlice({
   name: 'favoritesConfig',
   initialState,
   reducers: {

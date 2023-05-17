@@ -4,7 +4,6 @@ import { ajax, AjaxResponse } from "rxjs/ajax";
 import { BASE_FIREBASE_URL } from "src/shared/api/endpoints";
 import { HttpParams, HttpParamsWithSearch } from "src/shared/models/http.model";
 import { FavoriteMoviesObjList, FavoriteToSave } from "src/shared/models/starwars.model";
-import { RootState } from "src/store/appStore";
 import urlcat from "urlcat";
 import { fromFetch } from 'rxjs/fetch';
 import { ToggleFavoriteArg } from "./favorites.state";
@@ -19,11 +18,8 @@ import { FirebasePostPayload } from "src/shared/models/firebase.model";
 export const fetchFavoritesThunk = createAsyncThunk(
   '[FAVORITE FILMS / API / Switch] Get all favorites with params',
   async (thunkParams: HttpParamsWithSearch | undefined, thunkAPI) => {
-    const extraFetchParams: HttpParams | undefined = {...(thunkAPI.getState() as RootState).favoriteFilms.extraFetchParams};
 
-    const cleanedParams = removeFalseyValueFromObject(extraFetchParams);
-
-    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams, ...cleanedParams });
+    let restUrl = urlcat(BASE_FIREBASE_URL, '/swdb/:user/favorites.json', { ...thunkParams?.httpParams });
     
     const obs$ = fromFetch(restUrl, {
       signal: thunkAPI.signal,
@@ -62,7 +58,7 @@ export const toggleFavoriteExhaustThunk = createAsyncThunk(
   },
   {
     condition: (args: HttpParams, thunkAPI) => {
-      const isLoading = (thunkAPI.getState() as RootState).favoriteFilms.loading;
+      const isLoading = true; // check if it is loading
       return !isLoading;
     },
   }
@@ -119,7 +115,7 @@ export const addNewFavoriteExhaustThunk = createAsyncThunk(
   },
   {
     condition: (args: HttpParams, thunkAPI) => {
-      const isLoading = (thunkAPI.getState() as RootState).favoriteFilms.loading;
+      const isLoading = true; // check if it is loading
       return !isLoading;
     },
   }
