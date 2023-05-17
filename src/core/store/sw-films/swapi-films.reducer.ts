@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { EntityHttpParams } from 'src/shared/models/http.model';
 import { SwapiFilmsState } from './swapi-films.state';
-import { starwarsFilmsApi } from './swapi-films';
+import { starwarsFilmsApi } from './swapi-films.api';
 
 const initialState: SwapiFilmsState = {
   filmsLastFetched: undefined

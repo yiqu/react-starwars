@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
-import swEntitiesConfigSliceReducer, { swEntitiesConfigSlice } from 'src/core/store/swapi/swapi.reducer';
-import swFilmsConfigSliceReducer, { swFilmsConfigSlice } from 'src/core/store/swapi-films/swapi-films.reducer';
-import { starwarsContentApi } from 'src/core/store/swapi/swapi';
-import { starwarsFilmsApi } from 'src/core/store/swapi-films/swapi-films';
+import swEntitiesConfigSliceReducer, { swEntitiesConfigSlice } from 'src/core/store/sw-entities-config/swapi.reducer';
+import swFilmsConfigSliceReducer, { swFilmsConfigSlice } from 'src/core/store/sw-films/swapi-films.reducer';
+import { starwarsContentApi } from 'src/core/store/sw-entities-config/swapi';
+import { starwarsFilmsApi } from 'src/core/store/sw-films/swapi-films.api';
 import { starwarsFavoritesApi } from 'src/core/store/favorites/favorites.api';
 import favoritesConfigReducer, { favoritesConfigSlice } from 'src/core/store/favorites/favorites-config.reducer';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -15,7 +15,8 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 const persistConfig = {
   key: "favoritesConfig", // key name in the localStorage 'key'
   storage,
-  stateReconciler: autoMergeLevel2
+  stateReconciler: autoMergeLevel2,
+  whitelist: ['showCurrentFavsList']
 };
 
 // Reducers to persist in storage

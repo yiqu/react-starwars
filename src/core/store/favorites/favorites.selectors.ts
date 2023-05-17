@@ -5,17 +5,16 @@ const favoritesConfigSlice = (state: RootState) => {
   return state.favoritesConfig;
 };
 
-
-export const selectMutatingFavorites = createSelector(
-  favoritesConfigSlice,
-  (state)=> {
-    return state.mutatingFavorites;
-  }
-);
-
 export const selectShowCurrentFavoriteList = createSelector(
   favoritesConfigSlice,
   (state): boolean=> {
     return !!state.showCurrentFavsList;
+  }
+);
+
+export const selectParams = createSelector(
+  favoritesConfigSlice,
+  (state) => {
+    return state.filterParams;
   }
 );

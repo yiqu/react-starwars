@@ -7,7 +7,7 @@ import { useAppDispatch } from "src/store/appHook";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams, useSearchParams } from "react-router-dom";
-import { useFetchStarshipQuery, useFetchVehicleQuery } from "src/core/store/swapi/swapi";
+import { useFetchStarshipQuery, useFetchVehicleQuery } from "src/core/store/sw-entities-config/swapi";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import ErrorPage from "src/404/ErrorPage";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";

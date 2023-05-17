@@ -9,12 +9,12 @@ import useScreenSize from "src/shared/hooks/useIsMobile";
 import Grid from '@mui/material/Unstable_Grid2';
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import EditIcon from '@mui/icons-material/Edit';
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
 import { startCase, keys, cloneDeep } from 'lodash';
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import DateToNow from "src/shared/components/date/DateToNow";
 import toast from 'react-hot-toast';
+import { Add, Remove } from "@mui/icons-material";
 
 
 export default function Favorites() {
@@ -69,7 +69,9 @@ export default function Favorites() {
             <Stack direction="row" justifyContent="start" alignItems="center">
               <Button startIcon={ <RefreshIcon /> } variant="text" onClick={ onRefreshHandler }>Refresh</Button>
               <Divider orientation="vertical" variant="middle" flexItem sx={ {mr: 1, ml: 1} } />
-              <Button startIcon={ <EditIcon /> } variant="text" onClick={ onEditHandler }>Edit</Button>
+              <Button startIcon={ data.isCurrentFavorite ? <Remove /> : <Add /> } variant="text" onClick={ onEditHandler }> 
+                { data.isCurrentFavorite ? 'Remove from Favorite' : 'Add to Favorite' }
+              </Button>
             </Stack>
           </Grid>
           <Grid xs={ 2 } sm={ 8 }>

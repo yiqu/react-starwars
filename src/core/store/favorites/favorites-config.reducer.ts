@@ -6,9 +6,9 @@ import { starwarsFavoritesApi } from './favorites.api';
 import { unset } from 'lodash';
 
 const initialState: FavoritesConfigState = {
-  mutatingFavorites: {},
   lastFavToggled: undefined,
-  showCurrentFavsList: false
+  showCurrentFavsList: false,
+  filterParams: {param1: 'param1'}
 };
 
 export const favoritesConfigSlice = createSlice({
@@ -17,24 +17,21 @@ export const favoritesConfigSlice = createSlice({
   reducers: {
     toggleShowCurrentFavList: (state, action: PayloadAction<boolean>) => {
       state.showCurrentFavsList = action.payload;
-    }
+    },
+    updateParams: (state, action: PayloadAction<{[key: string]: string}>) => {
+      state.filterParams = {...action.payload};
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(starwarsFavoritesApi.endpoints.updateFavorite.matchPending, (state, action) => {
-      const favId = action.meta.arg.originalArgs.fireId ?? '';
-      state.mutatingFavorites[favId] = true;
     });
     builder.addMatcher(starwarsFavoritesApi.endpoints.updateFavorite.matchFulfilled, (state, action) => {
-      const favId = action.meta.arg.originalArgs.fireId ?? '';
-      unset(state.mutatingFavorites, favId);
       state.lastFavToggled = action.payload;
     });
     builder.addMatcher(starwarsFavoritesApi.endpoints.updateFavorite.matchRejected, (state, action) => {
-      const favId = action.meta.arg.originalArgs.fireId ?? '';
-      unset(state.mutatingFavorites, favId);
     });
   }
 });
 
-export const { toggleShowCurrentFavList } = favoritesConfigSlice.actions;
+export const { toggleShowCurrentFavList, updateParams } = favoritesConfigSlice.actions;
 export default favoritesConfigSlice.reducer;

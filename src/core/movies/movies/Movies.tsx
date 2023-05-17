@@ -10,7 +10,7 @@ import { DataBlockDisplayMode } from "src/shared/models/general.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ErrorPage from "src/404/ErrorPage";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
-import { starwarsFilmsApi, useFetchFilmsQuery } from "src/core/store/swapi-films/swapi-films";
+import { starwarsFilmsApi, useFetchFilmsQuery } from "src/core/store/sw-films/swapi-films.api";
 import LoadingLogo from "src/shared/loading/full-logo/LoadingLogo";
 import SearchAutoComplete from "src/core/shared/search/SearchAutoComplete";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";

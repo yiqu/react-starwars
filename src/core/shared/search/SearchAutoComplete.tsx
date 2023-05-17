@@ -2,7 +2,7 @@ import { Autocomplete, AutocompleteRenderInputParams, InputAdornment, TextField,
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { useEffect, useState } from "react";
 import { useUpdateEffect } from "react-use";
-import { useSearchContentQuery } from "src/core/store/swapi/swapi";
+import { useSearchContentQuery } from "src/core/store/sw-entities-config/swapi";
 import ProgressCircle from "src/shared/components/progress/CircleProgress";
 import { useDebounce } from "src/shared/hooks/useDebounce";
 import { ResultProperty, StarwarsSearchable } from "src/shared/models/starwars.model";

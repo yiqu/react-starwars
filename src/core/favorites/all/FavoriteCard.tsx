@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, CardActions, Button, IconButton, Stack, Box, CardMedia, Divider, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Button, IconButton, Stack, Box, CardMedia, Divider, ListItem, ListItemAvatar, Avatar, ListItemText, CircularProgress } from "@mui/material";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import { Link } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -14,8 +14,8 @@ export interface FavoriteItemProps {
 export default function FavoriteItem({ favorite, isWorking, toggle }: FavoriteItemProps) {
 
   return (
-    <ListItem key={ favorite.fireId } sx={ {opacity: isWorking ? 0.3 : 1} } secondaryAction={
-      <IconButton edge="end" aria-label="delete" onClick={ () => toggle(favorite) } disabled={ isWorking } data-tooltip-id="tooltip" 
+    <ListItem key={ favorite.fireId } secondaryAction={
+      <IconButton edge="end" aria-label="delete" onClick={ () => toggle(favorite) } data-tooltip-id="tooltip" 
         data-tooltip-content="Toggle favorite" >
         <FavoriteIcon color={ favorite.isCurrentFavorite ? 'error' : 'disabled' } />
       </IconButton>
@@ -29,7 +29,7 @@ export default function FavoriteItem({ favorite, isWorking, toggle }: FavoriteIt
         primary={ <Link to={ `./${favorite.fireId}` }>
           <Stack direction="row" justifyContent="start" alignItems="center">
             <Typography variant="h5">
-              {`Ep. ${favorite.episodeId}`}
+              {`Ep. ${favorite.episodeId}`} { isWorking ? <CircularProgress size={ 12 } color="info" /> : '' }
             </Typography>
           </Stack>
         </Link> }

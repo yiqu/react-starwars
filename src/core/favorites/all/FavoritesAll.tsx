@@ -14,16 +14,17 @@ import React, { useState } from "react";
 import { FavoriteToSave } from "src/shared/models/starwars.model";
 import { cloneDeep } from "lodash";
 import toast from "react-hot-toast";
-import { selectMutatingFavorites, selectShowCurrentFavoriteList } from "src/core/store/favorites/favorites.selectors";
+import { selectParams, selectShowCurrentFavoriteList } from "src/core/store/favorites/favorites.selectors";
 import FavoriteItem from "./FavoriteCard";
-import { toggleShowCurrentFavList } from "src/core/store/favorites/favorites-config.reducer";
+import { toggleShowCurrentFavList, updateParams } from "src/core/store/favorites/favorites-config.reducer";
 
 export default function FavoritesAll() {
 
   const { isMobile } = useScreenSize();
   const dispatch = useAppDispatch();
   const [updateFavorite, result] = useUpdateFavoriteMutation();
-  const { data, onlyFavorites, isLoading, isFetching, isError, error, fulfilledTimeStamp, startedTimeStamp, refetch } = useFetchFavoritesQuery(undefined, {
+  const favParams = useAppSelector(selectParams);
+  const { data, onlyFavorites, isLoading, isFetching, isError, error, fulfilledTimeStamp, startedTimeStamp, refetch } = useFetchFavoritesQuery(favParams, {
     selectFromResult: (data) => {
       return {
         ...data,
@@ -34,7 +35,6 @@ export default function FavoritesAll() {
     }
   });
   const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
-  const mutatingFavorites = useAppSelector(selectMutatingFavorites);
   const showCurrentFavList: boolean = useAppSelector(selectShowCurrentFavoriteList);
 
   const handleToggleFavorite = (fav: FavoriteToSave) => {
@@ -54,6 +54,10 @@ export default function FavoritesAll() {
       success: 'Successfully refreshed all favorites!',
       error: 'Error refreshing favorites'
     });
+  };
+
+  const handleRefreshWithParams = () => {
+    dispatch(updateParams({time: `${new Date().getTime()}`}));
   };
 
   const handleShowCurrentFavToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,8 +102,11 @@ export default function FavoritesAll() {
                 <FormGroup>
                   <FormControlLabel control={ <Switch checked={ showCurrentFavList } onChange={ handleShowCurrentFavToggle } /> } label="Show Current Favorites" />
                 </FormGroup>
-                <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshFavorites }>
-                  Refresh Favorites
+                <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshFavorites } sx={ {mr: 2} }>
+                  Refresh
+                </Button>
+                <Button variant="outlined" startIcon={ <RefreshOutlined /> } onClick={ handleRefreshWithParams }>
+                  Refresh with random params
                 </Button>
               </Stack>
             </Stack>
@@ -116,10 +123,9 @@ export default function FavoritesAll() {
                 <List dense={ false } sx={ {width: '100%'} }>
                   {
                     onlyFavorites.map((fav) => {
-                      const apiWorking = mutatingFavorites[fav.fireId!];
                       return (
                         <React.Fragment key={ fav.fireId }>
-                          <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
+                          <FavoriteItem isWorking={ !!fav.apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
                           <Divider variant="inset" component="li" />
                         </React.Fragment>
                       );})
@@ -133,10 +139,9 @@ export default function FavoritesAll() {
 
           <List dense={ false } sx={ {width: '100%'} }>
             { data.map((fav) => {
-              const apiWorking = mutatingFavorites[fav.fireId!];
               return (
                 <React.Fragment key={ fav.fireId }>
-                  <FavoriteItem isWorking={ apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
+                  <FavoriteItem isWorking={ !!fav.apiWorking } favorite={ fav } toggle={ handleToggleFavorite } />
                   <Divider variant="inset" component="li" />
                 </React.Fragment>
               );
