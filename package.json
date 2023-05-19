@@ -1,11 +1,12 @@
 {
   "name": "starwars",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "private": false,
   "homepage": "https://swdb.web.app",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@faker-js/faker": "^8.0.1",
     "@fontsource/poppins": "^4.5.10",
     "@fontsource/roboto": "^4.5.8",
     "@loadable/component": "^5.15.2",
