@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/49.14b302d4.chunk.js","mappings":"gLAEe,SAASA,IAEtB,OACE,SAAC,KAAM,GAEX,C","sources":["personal-movies/PersonalFilmLayout.tsx"],"sourcesContent":["import { Outlet } from \"react-router-dom\";\n\nexport default function PersonalFilmLayout() {\n  \n  return (\n    <Outlet />\n  );\n};"],"names":["PersonalFilmLayout"],"sourceRoot":""}
