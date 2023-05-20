@@ -12,17 +12,21 @@ const useScreenSize = () => {
 
   const isMobileScreenSize = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const isMediumSize = useMediaQuery(theme.breakpoints.down('md'));
+  const isMediumSize = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const isLargeSize = useMediaQuery(theme.breakpoints.down('lg'));
+  const isLargeSize = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
-  const isXlSize = useMediaQuery(theme.breakpoints.down('xl'));
+  const isXlSize = useMediaQuery(theme.breakpoints.between('lg', 'xl'));
+
+  const isAboveXlSize = useMediaQuery(theme.breakpoints.up('xl'));
+
 
   return {
     isMobile: isMobileScreenSize,
     isMed: isMediumSize,
     isLg: isLargeSize,
-    isXl: isXlSize
+    isXl: isXlSize,
+    isAboveXl: isAboveXlSize
   };
 
 };

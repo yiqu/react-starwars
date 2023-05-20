@@ -85,7 +85,7 @@ const Layout = () => {
             }
           } }
         />
-        <Tooltip id="tooltip" />
+        <Tooltip id="tooltip" place="bottom" />
       </Box>
     </ThemeProvider>
     
