@@ -1,5 +1,5 @@
-import { Box, Pagination, Paper, Stack, TableSortLabel, TextField, styled } from "@mui/material";
-import { PersonalFilm } from "../store/personal-films.state";
+import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Pagination, Paper, Stack, TableSortLabel, TextField, Typography, styled } from "@mui/material";
+import { PersonalFilm, PersonalFilmActions, PersonalFilmTableHeaderActions } from "../store/personal-films.state";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,14 +10,35 @@ import { GREY } from "src/theme/palette";
 import { startCase } from "lodash";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import DensityLargeIcon from '@mui/icons-material/DensityLarge';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from "react";
+import TuneIcon from '@mui/icons-material/Tune';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Delete, Edit } from "@mui/icons-material";
+import { TABLE_COLUMNS, ellipsis, smallHeaderIds, transformColumnName } from "./table.utils";
+
 
 export interface PersonalFilmsTableProps {
   films: PersonalFilm[];
 }
 
+// FALSE: table will auto adjust width to screen, no scrollbar
+const showScrollButMoreWidthForTable: boolean = true;
+
 function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
 
   const { isAboveXl } = useScreenSize();
+  const tableFix = true; // leave this on to prevent overall horizontal scrollbar
+  const setTableHardWidth = showScrollButMoreWidthForTable ? '80rem' : false;
+
+  const handleCellMenuAction = (film: PersonalFilm) => (actionId: PersonalFilmActions) => {
+    console.log(film, actionId);
+  };
+
+  const handleHeaderMenuClick = (colId: string) => (actionId: PersonalFilmTableHeaderActions) => {
+    console.log(colId, actionId); 
+  };
+
 
   return (
     <Box width="100%">
@@ -31,7 +52,7 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
         <Pagination count={ 10 } showFirstButton showLastButton size="small" />
       </Stack>
       <TableContainer component={ Paper } elevation={ 0 } sx={ { overflowX: 'hidden', '&:hover': {overflowX: 'auto'}} }>
-        <Table size="medium" aria-label="table" stickyHeader  style={ { width: isAboveXl ? '100%' : '80rem', tableLayout: (isAboveXl ? 'auto' : 'fixed') } }>
+        <Table size="medium" aria-label="table" stickyHeader  style={ { width: setTableHardWidth ? setTableHardWidth : '100%', tableLayout: (tableFix ? 'fixed' : 'auto') } }>
           <TableHead>
             <TableRow>
               {
@@ -41,9 +62,14 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
                       key={ col } 
                       style={ col === 'title' ? {...stickyHeaderClass as any} : (smallHeaderIds.includes(col) ? {...smallHeaderCell} : {...mediumHeaderCell}) }
                     >
-                      <TableSortLabel active={ false } direction="asc">
-                        { transformColumnName(col) }
-                      </TableSortLabel>
+                      <Stack direction="row" justifyContent="space-between" alignItems="center" overflow="hidden">
+                        <TableSortLabel active={ false } direction="asc" style={ { width: 'calc(100% - 30px)'} }>
+                          <Box style={ {...ellipsis} }  title={ `${transformColumnName(col)}` } >
+                            { transformColumnName(col) }
+                          </Box>
+                        </TableSortLabel>
+                        <TableHeaderMenu onMenuActionClick={ handleHeaderMenuClick(col) } />
+                      </Stack>
                     </StyledHeaderCell>
                   );
                 })
@@ -61,15 +87,12 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
                   {
                     TABLE_COLUMNS.map((col, index) => {
                       return (
-                        // <TableCell align={ index === 0 ? 'left' : 'left' } key={ col }>
-                        //   { transformTableData(film, col) }
-                        // </TableCell>
                         <StyledDataCell key={ `${film.fireKey}${index}` }
                           data-tooltip-id="tooltip"
                           data-tooltip-content={ `${film[col]}` }
                           style={ col === 'title' ? {...stickyDataCellClass as any} : {} }
                         >
-                          { transformTableData(film, col) }
+                          { transformTableData(film, col, handleCellMenuAction(film)) }
                         </StyledDataCell>
                       );
                     })
@@ -87,64 +110,64 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
 
 export default PersonalFilmsTable;
 
-const smallHeaderIds = ['canon'];
-const largeHeaderIds = ['openingCrawl'];
 
-const StyledHeaderCell = styled(TableCell)(() => ({
-  paddingTop: '3px',
-  paddingBottom: '3px',
-  lineHeight: '2rem',
-  fontSize: '15px',
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  backgroundColor: GREY[200],
-  borderRight: '1px solid',
-  borderColor: GREY[400]
-}));
+export function TableHeaderMenu({ onMenuActionClick }: { onMenuActionClick: (actionId: PersonalFilmTableHeaderActions) => void }) {
 
-const StyledDataCell = styled(TableCell)(() => ({
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  borderRight: `1px solid ${GREY[300]}`,
-  borderBottom: "none",
-  maxWidth: '22rem', // the max width data cells can have
-  lineHeight: 1,
-  fontSize: '14px'
-}));
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
-const stickyHeaderClass = {
-  position: 'sticky',
-  left: 0,
-  zIndex: 3,
-  width: '15rem'
-};
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-const stickyDataCellClass = {
-  position: 'sticky',
-  left: 0,
-  minWidth: '15rem',
-  maxWidth: '15rem',
-  backgroundColor: '#fff'
-};
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-const largeHeaderCell = {
-  width: '16rem'
-};
+  const handleMenuActionClick = (actionId: PersonalFilmTableHeaderActions) => (e: any) => {
+    onMenuActionClick(actionId);
+    handleClose();
+  };
+  
 
-const mediumHeaderCell = {
-  width: '10rem'
-};
-
-const smallHeaderCell = {
-  width: '5rem'
-};
+  return (
+    <div data-tooltip-id="tooltip" data-tooltip-content={ `Options` } data-tooltip-offset={ 20 }>
+      <IconButton aria-label="delete" size="small" onClick={ handleMenuClick }>
+        <MoreVertIcon fontSize="small" />
+      </IconButton>
+      <Menu
+        id="menu"
+        anchorEl={ anchorEl }
+        open={ open }
+        onClose={ handleClose }
+        MenuListProps={ {
+          'aria-labelledby': 'basic-button',
+        } }
+      >
+        <MenuItem onClick={ handleMenuActionClick('adjust-width') } dense >
+          <ListItemIcon>
+            <TuneIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Adjust Width</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={ handleMenuActionClick('hide') } dense>
+          <ListItemIcon>
+            <VisibilityOffIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Hide</ListItemText>
+        </MenuItem>
+      </Menu>
+    </div>
+    
+  );
+}
 
 
-const TABLE_COLUMNS = ['title',  'openingCrawl', 'director', 'canon', 'planets', 'species', 'starships', 'vehicles'] as const;
-
-function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[number]) {
+function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[number], onMenuClick: (actionId: PersonalFilmActions) => void) {
+  
+  const handleTitleCellMenuAction = (actionId: PersonalFilmActions) => {
+    onMenuClick(actionId);
+  };
 
   switch (columnId) {
     case 'canon': {
@@ -171,8 +194,9 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
       return <></>;
     }
     case 'title': {
-      
-      return <span> { film.title } </span>;
+      return (
+        <TableTitleCell title={ film.title } onMenuActionClick={ handleTitleCellMenuAction } />
+      );
     }
     case 'vehicles': {
       
@@ -184,16 +208,102 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
   }
 }
 
-export const transformColumnName = (colId: string) => {
-  let result = colId;
-  switch (colId) {
-    case "openingCrawl": {
-      result = 'Opening Crawl';
-      break;
-    }
-    default: {
-      result = startCase(colId);
-    }
-  }
-  return result;
+export function TableTitleCell({ title, onMenuActionClick }: { title: string; onMenuActionClick: (actionId: PersonalFilmActions) => void }) {
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleTitleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuActionClick = (actionId: PersonalFilmActions) => (e: any) => {
+    onMenuActionClick(actionId);
+    handleClose();
+  };
+
+  return (
+    <Stack direction="row" justifyContent="space-between" alignItems="center"> 
+      <Typography style={ {...ellipsis} }>
+        { title }
+      </Typography>
+      <IconButton aria-label="delete" size="small" onClick={ handleTitleMenuClick } >
+        <MoreVertIcon fontSize="small" />
+      </IconButton>
+      <Menu
+        id="menu"
+        anchorEl={ anchorEl }
+        open={ open }
+        onClose={ handleClose }
+      >
+        <MenuItem onClick={ handleMenuActionClick('edit') } dense >
+          <ListItemIcon>
+            <Edit fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Edit</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={ handleMenuActionClick('delete') } dense>
+          <ListItemIcon>
+            <Delete fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Delete</ListItemText>
+        </MenuItem>
+      </Menu>
+    </Stack>
+  );
+}
+
+
+const StyledHeaderCell = styled(TableCell)(() => ({
+  ...ellipsis,
+  paddingTop: '10px',
+  paddingBottom: '10px',
+  fontSize: '15px',
+  borderRight: `1px solid ${GREY[400]}`,
+  borderColor: GREY[400],
+  backgroundColor: GREY[200],
+}));
+
+const StyledDataCell = styled(TableCell)(() => ({
+  ...ellipsis,
+  paddingTop: '10px',
+  paddingBottom: '10px',
+  fontSize: '14px',
+  borderRight: `1px solid ${GREY[300]}`,
+  borderBottom: "none",
+  maxWidth: '22rem', // the max width data cells can have
+}));
+
+const stickyHeaderClass = {
+  position: 'sticky',
+  left: 0,
+  zIndex: 3,
+  width: showScrollButMoreWidthForTable ? '18rem' : 'initial' // initial for no table scrollbar
 };
+
+const stickyDataCellClass = {
+  position: 'sticky',
+  left: 0, 
+  minWidth: showScrollButMoreWidthForTable ? '18rem' : 'initial', // initial for no table scrollbar
+  maxWidth: '18rem',
+  backgroundColor: '#fff'
+};
+
+
+const largeHeaderCell = {
+  width: showScrollButMoreWidthForTable ? '16rem' : 'initial' // initial for no table scrollbar
+};
+
+const mediumHeaderCell = {
+  width: showScrollButMoreWidthForTable ? '10rem' : 'initial' // initial for no table scrollbar
+};
+
+const smallHeaderCell = {
+  width: showScrollButMoreWidthForTable ? '8rem' : 'initial' // initial for no table scrollbar
+};
+
+

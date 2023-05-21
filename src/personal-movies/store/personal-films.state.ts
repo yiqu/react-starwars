@@ -18,3 +18,6 @@ export interface XhrFirebaseResult<T> {
 export interface PersonalFilmConfig {
   
 }
+
+export type PersonalFilmActions = 'edit' | 'delete';
+export type PersonalFilmTableHeaderActions = 'adjust-width' | 'hide';

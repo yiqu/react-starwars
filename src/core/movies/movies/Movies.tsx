@@ -67,7 +67,7 @@ const Movies = () => {
   const onResultSelectHandler = (selection: ResultProperty<any> | null) => {
     navigate(`./${selection?.uid}`);
   };
-
+  
   const handleRefreshFilms = () => {
     dispatch(starwarsFilmsApi.util.invalidateTags([{type: "Films"}]));
   };
