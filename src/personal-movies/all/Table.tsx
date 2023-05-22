@@ -15,7 +15,8 @@ import { useState } from "react";
 import TuneIcon from '@mui/icons-material/Tune';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Delete, Edit } from "@mui/icons-material";
-import { TABLE_COLUMNS, ellipsis, smallHeaderIds, transformColumnName } from "./table.utils";
+import { TABLE_COLUMNS, ellipsis, smallHeaderIds, transformColumnName } from "../utils/table.utils";
+import EditDialog from "../edit-dialog/EditDialog";
 
 
 export interface PersonalFilmsTableProps {
@@ -31,8 +32,24 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
   const tableFix = true; // leave this on to prevent overall horizontal scrollbar
   const setTableHardWidth = showScrollButMoreWidthForTable ? '80rem' : false;
 
+  const [openEdit, setOpenEdit] = useState<{open: boolean, film?: PersonalFilm}>({open: false, film: undefined});
+
+  const handleOpenEditDialog = (toEdit: PersonalFilm) => {
+    setOpenEdit({open: true, film: toEdit});
+  };
+
+  const handleDialogClose = (editedFilm?: PersonalFilm) => {
+    setOpenEdit({open: false, film: undefined});
+  };
+
   const handleCellMenuAction = (film: PersonalFilm) => (actionId: PersonalFilmActions) => {
     console.log(film, actionId);
+    switch (actionId) {
+      case 'edit': {
+        handleOpenEditDialog(film);
+        break;
+      }
+    }
   };
 
   const handleHeaderMenuClick = (colId: string) => (actionId: PersonalFilmTableHeaderActions) => {
@@ -104,6 +121,11 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
 
         </Table>
       </TableContainer>
+
+      {
+        <EditDialog open={ openEdit.open } film={ openEdit.film } onDialogClose={ handleDialogClose } />
+      }
+      
     </Box>
   );
 }
