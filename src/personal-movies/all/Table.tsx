@@ -11,12 +11,15 @@ import { startCase } from "lodash";
 import useScreenSize from "src/shared/hooks/useIsMobile";
 import DensityLargeIcon from '@mui/icons-material/DensityLarge';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import TuneIcon from '@mui/icons-material/Tune';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Delete, Edit } from "@mui/icons-material";
 import { TABLE_COLUMNS, ellipsis, smallHeaderIds, transformColumnName } from "../utils/table.utils";
 import EditDialog from "../edit-dialog/EditDialog";
+import TableFilter, { QueryFilter } from "./TableFilter";
+import { useAppDispatch } from "src/store/appHook";
+import { updateFilters } from "../store/personal-films.reducer";
 
 
 export interface PersonalFilmsTableProps {
@@ -29,6 +32,7 @@ const showScrollButMoreWidthForTable: boolean = true;
 function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
 
   const { isAboveXl } = useScreenSize();
+  const dispatch = useAppDispatch();
   const tableFix = true; // leave this on to prevent overall horizontal scrollbar
   const setTableHardWidth = showScrollButMoreWidthForTable ? '80rem' : false;
 
@@ -56,16 +60,20 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
     console.log(colId, actionId); 
   };
 
+  const handleFilterChange = useCallback((filters: QueryFilter[]) => {
+    dispatch(updateFilters(filters));
+  }, [dispatch]);
+
 
   return (
     <Box width="100%">
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={ 2 }>
         <Box flexBasis="30%">
           <Stack direction="row" justifyContent="start" alignItems="center">
-            <TextField label="Filter" variant="standard" fullWidth />
-            { isAboveXl && <DensityLargeIcon fontSize="small" titleAccess="Above large size screen" /> }
+            <TableFilter onFilterChange={ handleFilterChange } />
           </Stack>
         </Box>
+        { isAboveXl && <DensityLargeIcon fontSize="small" titleAccess="Above large size screen" /> }
         <Pagination count={ 10 } showFirstButton showLastButton size="small" />
       </Stack>
       <TableContainer component={ Paper } elevation={ 0 } sx={ { overflowX: 'hidden', '&:hover': {overflowX: 'auto'}} }>

@@ -1,3 +1,5 @@
+import { QueryFilter } from "../all/TableFilter";
+
 export interface PersonalFilm {
   title: string;
   director: string;
@@ -16,7 +18,7 @@ export interface XhrFirebaseResult<T> {
 }
 
 export interface PersonalFilmConfig {
-  
+  queryFilters: QueryFilter[];
 }
 
 export type PersonalFilmActions = 'edit' | 'delete';

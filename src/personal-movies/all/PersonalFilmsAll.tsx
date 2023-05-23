@@ -21,6 +21,8 @@ import PersonalFilmsTable from "./Table";
 import DateDisplay2 from "src/shared/components/date/DateDisplay2";
 import DurationDisplay from "src/shared/components/date/DurationDisplay";
 import { RefreshOutlined } from "@mui/icons-material";
+import { selectPersonalFilmsFilters } from '../store/personal-films.selectors';
+
 
 const ENTITY_NAME = "My Films";
 
@@ -30,8 +32,10 @@ function PersonalMoviesAll() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { data, isFetching, isLoading, error, isSuccess, isError, refetch, fulfilledTimeStamp, startedTimeStamp } = useFetchPersonalFilmsQuery();
-
+  const filters = useAppSelector(selectPersonalFilmsFilters);
+  const { data, isFetching, isLoading, error, isSuccess, isError, refetch, fulfilledTimeStamp, startedTimeStamp } = useFetchPersonalFilmsQuery(filters, {
+    refetchOnMountOrArgChange: 60 // time for args change or unmount
+  });
   const fetchTimeDuration = (fulfilledTimeStamp ?? 0) - (startedTimeStamp ?? 0);
 
   useEffect(() => {

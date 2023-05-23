@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/quer
 import { BASE_FIREBASE_SW_URL } from 'src/shared/api/endpoints';
 import { HttpParams } from 'src/shared/models/http.model';
 import { PersonalFilm, XhrFirebaseResult } from './personal-films.state';
+import { QueryFilter } from '../all/TableFilter';
 
 export const subPath = "yqu/added-films";
 
@@ -12,17 +13,14 @@ export const personalFilmsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_FIREBASE_SW_URL
   }),
-  keepUnusedDataFor: 30, // time to keep data not on screen (no subscriber)
+  keepUnusedDataFor: 60, // time to keep data not on screen (no subscriber)
   tagTypes: [personaFilmsTag],
   endpoints: (builder) => ({
-
-    fetchPersonalFilms: builder.query<PersonalFilm[], HttpParams | void>({
-      query: (params: HttpParams | void) => {
+    fetchPersonalFilms: builder.query<PersonalFilm[], QueryFilter[]>({
+      query: (params: QueryFilter[]) => {
         return {
           url: `${subPath}.json`,
-          params: params ? {
-            ...params
-          } : undefined,
+          params: params.length > 0 ? {filters: JSON.stringify(params)} : undefined,
           method: 'GET'
         };
       },
