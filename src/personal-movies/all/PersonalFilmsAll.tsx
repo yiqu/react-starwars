@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { personalFilmsApi, useFetchPersonalFilmsQuery } from "../store/personal-films.api";
 import { PersonalFilm } from "../store/personal-films.state";
 import LayoutWithGutter from "src/shared/components/layouts/LayoutWithGutter";
-import PersonalFilmsTable from "./Table";
+import PersonalFilmsTable from "./PersonalFilmsTable";
 import DateDisplay2 from "src/shared/components/date/DateDisplay2";
 import DurationDisplay from "src/shared/components/date/DurationDisplay";
 import { RefreshOutlined } from "@mui/icons-material";
@@ -96,7 +96,7 @@ function PersonalMoviesAll() {
       </AppToolbar>
       <Box mt={ 2 } mx={ isMobile ? 2 : 0 }>
         <LayoutWithGutter size={ 'med' }>
-          <PersonalFilmsTable films={ data } />
+          <PersonalFilmsTable films={ data } loading={ isFetching } />
         </LayoutWithGutter>
       </Box>
     </Stack>

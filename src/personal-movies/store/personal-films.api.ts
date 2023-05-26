@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery, TagDescription } from '@reduxjs/toolkit/quer
 import { BASE_FIREBASE_SW_URL } from 'src/shared/api/endpoints';
 import { HttpParams } from 'src/shared/models/http.model';
 import { PersonalFilm, XhrFirebaseResult } from './personal-films.state';
-import { QueryFilter } from '../all/TableFilter';
+import { QueryFilter } from '../all/PersonalFilmsTableFilter';
 
 export const subPath = "yqu/added-films";
 

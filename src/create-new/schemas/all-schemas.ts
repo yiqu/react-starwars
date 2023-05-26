@@ -10,3 +10,9 @@ export const newFilmValidationSchema = Yup.object({
   species: Yup.array().min(1,  "At least one species is required"),
   vehicles: Yup.array().min(1,  "At least one vehicle is required"),
 });
+
+
+export const editFilmValidationSchema = Yup.object().shape({
+  title: Yup.string().trim().min(2).required(),
+  director: Yup.string().trim().min(2).required(),
+});

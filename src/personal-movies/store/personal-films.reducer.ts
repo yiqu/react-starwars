@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { PersonalFilmConfig } from './personal-films.state';
-import { QueryFilter } from '../all/TableFilter';
+import { QueryFilter } from '../all/PersonalFilmsTableFilter';
 
 const initialState: PersonalFilmConfig = {
   queryFilters: []

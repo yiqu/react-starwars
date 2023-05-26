@@ -1,4 +1,4 @@
-import { Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Pagination, Paper, Stack, TableSortLabel, TextField, Typography, styled } from "@mui/material";
+import { Box, Chip, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, Pagination, Paper, Stack, TableSortLabel, TextField, Typography, styled } from "@mui/material";
 import { PersonalFilm, PersonalFilmActions, PersonalFilmTableHeaderActions } from "../store/personal-films.state";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,39 +15,43 @@ import { useCallback, useState } from "react";
 import TuneIcon from '@mui/icons-material/Tune';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Delete, Edit } from "@mui/icons-material";
-import { TABLE_COLUMNS, ellipsis, smallHeaderIds, transformColumnName } from "../utils/table.utils";
+import { TABLE_COLUMNS, ellipsis, largeHeaderIds, smallHeaderIds, transformColumnName } from "../utils/table.utils";
 import EditDialog from "../edit-dialog/EditDialog";
-import TableFilter, { QueryFilter } from "./TableFilter";
-import { useAppDispatch } from "src/store/appHook";
+import TableFilter, { QueryFilter } from "./PersonalFilmsTableFilter";
+import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { updateFilters } from "../store/personal-films.reducer";
+import { selectPersonalFilmsFilters } from "../store/personal-films.selectors";
 
 
 export interface PersonalFilmsTableProps {
   films: PersonalFilm[];
+  loading?: boolean;
 }
 
-// FALSE: table will auto adjust width to screen, no scrollbar
-const showScrollButMoreWidthForTable: boolean = true;
+// FASLE: fit to screen
+const tableFitToScreen: boolean = true;
 
-function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
+function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
 
   const { isAboveXl } = useScreenSize();
   const dispatch = useAppDispatch();
-  const tableFix = true; // leave this on to prevent overall horizontal scrollbar
-  const setTableHardWidth = showScrollButMoreWidthForTable ? '80rem' : false;
-
   const [openEdit, setOpenEdit] = useState<{open: boolean, film?: PersonalFilm}>({open: false, film: undefined});
+  const filters = useAppSelector(selectPersonalFilmsFilters);
 
   const handleOpenEditDialog = (toEdit: PersonalFilm) => {
     setOpenEdit({open: true, film: toEdit});
   };
 
   const handleDialogClose = (editedFilm?: PersonalFilm) => {
-    setOpenEdit({open: false, film: undefined});
+    setOpenEdit((current) => {
+      return {
+        ...current,
+        open: false
+      };
+    });
   };
 
   const handleCellMenuAction = (film: PersonalFilm) => (actionId: PersonalFilmActions) => {
-    console.log(film, actionId);
     switch (actionId) {
       case 'edit': {
         handleOpenEditDialog(film);
@@ -76,8 +80,20 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
         { isAboveXl && <DensityLargeIcon fontSize="small" titleAccess="Above large size screen" /> }
         <Pagination count={ 10 } showFirstButton showLastButton size="small" />
       </Stack>
+      <Stack direction="row" justifyContent="start" alignItems="center" mb={ 2 }>
+        {
+          filters.map((fil) => {
+            return (
+              <Chip key={ fil.criteria+fil.value } label={ `${fil.property}: ${fil.value}` } color="warning" />
+            );
+          })
+        }
+      </Stack>
+      <Box height="5px">
+        { loading && <LinearProgress color="success" /> }
+      </Box>
       <TableContainer component={ Paper } elevation={ 0 } sx={ { overflowX: 'hidden', '&:hover': {overflowX: 'auto'}} }>
-        <Table size="medium" aria-label="table" stickyHeader  style={ { width: setTableHardWidth ? setTableHardWidth : '100%', tableLayout: (tableFix ? 'fixed' : 'auto') } }>
+        <Table size="medium" aria-label="table" stickyHeader  style={ { width: '100%', tableLayout: 'fixed' } }>
           <TableHead>
             <TableRow>
               {
@@ -85,7 +101,7 @@ function PersonalFilmsTable({ films }: PersonalFilmsTableProps) {
                   return (
                     <StyledHeaderCell 
                       key={ col } 
-                      style={ col === 'title' ? {...stickyHeaderClass as any} : (smallHeaderIds.includes(col) ? {...smallHeaderCell} : {...mediumHeaderCell}) }
+                      style={ col === 'title' ? {...stickyHeaderClass as any} : (smallHeaderIds.includes(col) ? {...smallHeaderCell} : (largeHeaderIds.includes(col) ? {...crawlHeaderCell} : {...regularHeaderCell})) }
                     >
                       <Stack direction="row" justifyContent="space-between" alignItems="center" overflow="hidden">
                         <TableSortLabel active={ false } direction="asc" style={ { width: 'calc(100% - 30px)'} }>
@@ -212,16 +228,15 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
       return <span> { film.openingCrawl } </span>;
     }
     case 'planets': {
-      
-      return <></>;
+      return <span> { film.planets.name } </span>;
     }
     case 'species': {
       
-      return <></>;
+      return <span> { film.species.length } </span>;
     }
     case 'starships': {
       
-      return <></>;
+      return <span> { film.starships.length } </span>;
     }
     case 'title': {
       return (
@@ -230,10 +245,10 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
     }
     case 'vehicles': {
       
-      return <></>;
+      return <span> { film.vehicles.length } </span>;
     }
     default: {
-      return <></>;
+      return <span> TBD </span>;
     }
   }
 }
@@ -312,28 +327,29 @@ const stickyHeaderClass = {
   position: 'sticky',
   left: 0,
   zIndex: 3,
-  width: showScrollButMoreWidthForTable ? '18rem' : 'initial' // initial for no table scrollbar
+  width:'18rem' // initial for no table scrollbar
 };
 
 const stickyDataCellClass = {
   position: 'sticky',
   left: 0, 
-  minWidth: showScrollButMoreWidthForTable ? '18rem' : 'initial', // initial for no table scrollbar
+  minWidth: '18rem', // initial for no table scrollbar
   maxWidth: '18rem',
   backgroundColor: '#fff'
 };
 
-
-const largeHeaderCell = {
-  width: showScrollButMoreWidthForTable ? '16rem' : 'initial' // initial for no table scrollbar
+// rest
+const regularHeaderCell = {
+  width: tableFitToScreen ? 'initial' : '16rem'  // initial for no table scrollbar
 };
 
-const mediumHeaderCell = {
-  width: showScrollButMoreWidthForTable ? '10rem' : 'initial' // initial for no table scrollbar
+const crawlHeaderCell = {
+  width: tableFitToScreen ? 'initial': '20rem'  // initial for no table scrollbar
 };
 
+// canon
 const smallHeaderCell = {
-  width: showScrollButMoreWidthForTable ? '8rem' : 'initial' // initial for no table scrollbar
+  width: tableFitToScreen ? 'initial' : '9rem' // initial for no table scrollbar
 };
 
 

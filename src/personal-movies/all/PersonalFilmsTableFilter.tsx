@@ -10,7 +10,6 @@ export interface TableFilterProp {
 function TableFilter({ onFilterChange }: TableFilterProp) {
 
   const [localFilter, setLocalFilter] = useState<FilterValue>(getDefaultFilter);
-
   const debouncedFilter = useDebounce<FilterValue>(localFilter, 500);
 
   useEffect(() => {

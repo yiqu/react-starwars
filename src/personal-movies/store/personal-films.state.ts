@@ -1,14 +1,15 @@
-import { QueryFilter } from "../all/TableFilter";
+import { StarwarsContent } from "src/shared/models/starwars.model";
+import { QueryFilter } from "../all/PersonalFilmsTableFilter";
 
 export interface PersonalFilm {
   title: string;
   director: string;
-  characters: string[];
-  starships: string[];
+  characters: StarwarsContent[];
+  starships: StarwarsContent[];
   openingCrawl: string;
-  planets: string;
-  species: string[];
-  vehicles: string[];
+  planets: StarwarsContent;
+  species: StarwarsContent[];
+  vehicles: StarwarsContent[];
   canon: boolean;
   fireKey?: string;
 }
