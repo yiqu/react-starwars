@@ -5,17 +5,18 @@ import FormInput from "src/shared/form/m-input/FormInput";
 import { editFilmValidationSchema } from "src/create-new/schemas/all-schemas";
 import { Check, Clear, Remove } from "@mui/icons-material";
 import EditRoadIcon from '@mui/icons-material/EditRoad';
-
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export interface EditDialogProps {
   open: boolean;
   film?: PersonalFilm;
-  onDialogClose: (update?: PersonalFilm) => void;
+  onDialogClose: (update?: Partial<PersonalFilm>) => void;
 }
 
 function EditDialog({ open, film, onDialogClose }: EditDialogProps) {
 
   const handleClose = (event: object, reason: 'escapeKeyDown' | 'backdropClick') => {
+    onDialogClose();
   };
 
   const handleCancel = () => {
@@ -23,8 +24,11 @@ function EditDialog({ open, film, onDialogClose }: EditDialogProps) {
   };
   
 
-  const handleOnSubmit = (values: FilmEdit, helper: FormikHelpers<FilmEdit>) => {
-    console.log(values);
+  const handleOnSubmit = (values: Partial<PersonalFilm>, helper: FormikHelpers<FilmEdit>) => {
+    onDialogClose({
+      fireKey: film?.fireKey,
+      ...values
+    });
   };
 
   return (
@@ -32,6 +36,7 @@ function EditDialog({ open, film, onDialogClose }: EditDialogProps) {
       disableEscapeKeyDown
       open={ open }
       maxWidth="lg"
+      onClose={ handleClose }
     >
       <Formik initialValues={ {
           title: film?.title ?? '',
@@ -57,21 +62,21 @@ export interface EditFormProps {
 function EditForm({ cancel, film }: EditFormProps) {
 
   const { values, submitForm, dirty, errors, isValid } = useFormikContext();
-  console.log(isValid);
+
   const handleCancelAction = () => {
     cancel();
   };
 
   return (
     <Form>
-      <DialogTitle minWidth={ '30rem' }>
+      <DialogTitle minWidth={ '30rem' } sx={ {backgroundColor: 'primary.main', color: '#fff'} }>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack>
             <Typography variant="body2">Edit { film?.title } { dirty && '*' }</Typography>
             <Typography variant="caption">By: {film?.director} </Typography>
           </Stack>
           <Stack direction="row" justifyContent="end" alignItems="center">
-            { dirty ? (isValid ? <Check color="success" /> : <Clear color="error" />) : <Remove color="disabled" /> }
+            { dirty ? (isValid ? <Check color="success" /> : <ErrorOutlineIcon color="error" />) : '' }
           </Stack>
         </Stack>
       </DialogTitle>

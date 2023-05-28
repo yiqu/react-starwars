@@ -12,6 +12,12 @@ export interface PersonalFilm {
   vehicles: StarwarsContent[];
   canon: boolean;
   fireKey?: string;
+  isWorking?: boolean;
+}
+
+export interface PersonalFilmUpdate {
+  fireKey: string;
+  data: Partial<PersonalFilm>;
 }
 
 export interface XhrFirebaseResult<T> {

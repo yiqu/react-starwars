@@ -1,4 +1,4 @@
-import { Box, Chip, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, Pagination, Paper, Stack, TableSortLabel, TextField, Typography, styled } from "@mui/material";
+import { Box, Chip, CircularProgress, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, Pagination, Paper, Stack, TableSortLabel, TextField, Typography, styled } from "@mui/material";
 import { PersonalFilm, PersonalFilmActions, PersonalFilmTableHeaderActions } from "../store/personal-films.state";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,11 +16,12 @@ import TuneIcon from '@mui/icons-material/Tune';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Delete, Edit } from "@mui/icons-material";
 import { TABLE_COLUMNS, ellipsis, largeHeaderIds, smallHeaderIds, transformColumnName } from "../utils/table.utils";
-import EditDialog from "../edit-dialog/EditDialog";
+import EditDialog, { FilmEdit } from "../edit-dialog/EditDialog";
 import TableFilter, { QueryFilter } from "./PersonalFilmsTableFilter";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { updateFilters } from "../store/personal-films.reducer";
 import { selectPersonalFilmsFilters } from "../store/personal-films.selectors";
+import { useUpdatePersonalFilmMutation } from "../store/personal-films.api";
 
 
 export interface PersonalFilmsTableProps {
@@ -37,18 +38,26 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
   const dispatch = useAppDispatch();
   const [openEdit, setOpenEdit] = useState<{open: boolean, film?: PersonalFilm}>({open: false, film: undefined});
   const filters = useAppSelector(selectPersonalFilmsFilters);
+  const [updatePersonalFilm, resultPersonalFilm] = useUpdatePersonalFilmMutation();
 
   const handleOpenEditDialog = (toEdit: PersonalFilm) => {
     setOpenEdit({open: true, film: toEdit});
   };
 
-  const handleDialogClose = (editedFilm?: PersonalFilm) => {
+  const handleDialogClose = (editedFilm?: Partial<PersonalFilm>) => {
     setOpenEdit((current) => {
       return {
         ...current,
         open: false
       };
     });
+    
+    if (editedFilm && editedFilm.fireKey) {
+      updatePersonalFilm({
+        fireKey: editedFilm.fireKey,
+        data: editedFilm
+      });
+    }
   };
 
   const handleCellMenuAction = (film: PersonalFilm) => (actionId: PersonalFilmActions) => {
@@ -240,7 +249,7 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
     }
     case 'title': {
       return (
-        <TableTitleCell title={ film.title } onMenuActionClick={ handleTitleCellMenuAction } />
+        <TableTitleCell title={ film.title } isWorking={ film.isWorking } onMenuActionClick={ handleTitleCellMenuAction } />
       );
     }
     case 'vehicles': {
@@ -253,7 +262,7 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
   }
 }
 
-export function TableTitleCell({ title, onMenuActionClick }: { title: string; onMenuActionClick: (actionId: PersonalFilmActions) => void }) {
+export function TableTitleCell({ title, isWorking, onMenuActionClick }: { title: string; isWorking?: boolean; onMenuActionClick: (actionId: PersonalFilmActions) => void }) {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -272,10 +281,18 @@ export function TableTitleCell({ title, onMenuActionClick }: { title: string; on
   };
 
   return (
-    <Stack direction="row" justifyContent="space-between" alignItems="center"> 
-      <Typography style={ {...ellipsis} }>
-        { title }
-      </Typography>
+    <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack direction="row" justifyContent="start" alignItems="center" style={ {...ellipsis} }>
+        <Typography style={ {...ellipsis, marginRight: '10px'} }>
+          { title }
+        </Typography>
+        {
+          isWorking && <div>
+            <CircularProgress color="inherit" size={ 13 } />
+          </div>
+        }
+      </Stack>
+      
       <IconButton aria-label="delete" size="small" onClick={ handleTitleMenuClick } >
         <MoreVertIcon fontSize="small" />
       </IconButton>

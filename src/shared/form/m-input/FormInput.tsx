@@ -24,7 +24,7 @@ const FormInput = ({ label, name, validate,
         placeholder={ upperFirst(placeholder ?? label) }
         { ...props.props } />
 
-      <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] }>
+      <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] } sx={ {ml: 0} } >
         {
           (formik.touched[name] && formik.errors[name]) ? 
             (<ErrorMessage name={ name } render={ (err) => upperFirst(err) } />) : (<>{props.helperText}</>)
