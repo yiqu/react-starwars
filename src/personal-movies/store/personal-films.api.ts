@@ -132,10 +132,22 @@ export const personalFilmsApi = createApi({
           apiActions.dispatch(personalFilmsApi.util.invalidateTags([{type: personaFilmsTag}]));
         }
       },
+    }),
+
+    deletePersonalFilm: builder.mutation<Partial<PersonalFilm>, string>({
+      query: (fireKey: string) => {
+        return {
+          url: `${subPath}/${fireKey}.json`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: (result, error, arg: string, meta) => {
+        return [{type: personaFilmsTag}];
+      },
     })
 
   })
 });
 
 
-export const { useFetchPersonalFilmsQuery, useFetchPersonalFilmQuery, useUpdatePersonalFilmMutation } = personalFilmsApi;
+export const { useFetchPersonalFilmsQuery, useFetchPersonalFilmQuery, useUpdatePersonalFilmMutation, useDeletePersonalFilmMutation } = personalFilmsApi;

@@ -69,7 +69,8 @@ function EditForm({ cancel, film }: EditFormProps) {
 
   return (
     <Form>
-      <DialogTitle minWidth={ '30rem' } sx={ {backgroundColor: 'primary.main', color: '#fff'} }>
+      <DialogTitle minWidth={ '30rem' } sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? 'primary.main' : null, 
+          color: (theme) => theme.palette.mode === 'light' ? '#fff' : null} }>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack>
             <Typography variant="body2">Edit { film?.title } { dirty && '*' }</Typography>

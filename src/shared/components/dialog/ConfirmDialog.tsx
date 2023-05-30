@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Divider } from "@mui/material";
 import { BaseSyntheticEvent } from "react";
 
 export interface ConfirmDialogProps {
@@ -23,17 +23,19 @@ export default function ConfirmDialog({ open, handleClose, title, message }: Con
       open={ !!open }
       onClose={ onCloseHandler }
     >
-      <DialogTitle id="confirm-dialog"  mb={ 2 } sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? 'primary.light' : null, 
+      <DialogTitle id="confirm-dialog" sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? 'primary.main' : null, 
         color: (theme) => theme.palette.mode === 'light' ? '#fff' : null} }>
         { title ?? 'Confirmation' }
       </DialogTitle>
+      <Divider flexItem variant="fullWidth" />
       <DialogContent>
         <DialogContentText id="confirm-dialog-description">
           {message ?? 'Are you sure?'}
         </DialogContentText>
       </DialogContent>
+      <Divider flexItem variant="fullWidth" />
       <DialogActions>
-        <Button onClick={ onActionClickHandler(false) } sx={ { color: 'gray'} }>Cancel</Button>
+        <Button onClick={ onActionClickHandler(false) } variant="outlined">Cancel</Button>
         <Button onClick={ onActionClickHandler(true) } autoFocus>
           Confirm
         </Button>

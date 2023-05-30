@@ -78,7 +78,7 @@ const Layout = () => {
             className: 'swdb-toast',
             duration: 5000,
             success: {
-              duration: 3000,
+              duration: 8000,
             },
             error: {
               duration: 10000

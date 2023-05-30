@@ -21,7 +21,9 @@ import TableFilter, { QueryFilter } from "./PersonalFilmsTableFilter";
 import { useAppDispatch, useAppSelector } from "src/store/appHook";
 import { updateFilters } from "../store/personal-films.reducer";
 import { selectPersonalFilmsFilters } from "../store/personal-films.selectors";
-import { useUpdatePersonalFilmMutation } from "../store/personal-films.api";
+import { useDeletePersonalFilmMutation, useUpdatePersonalFilmMutation } from "../store/personal-films.api";
+import ConfirmDialog from "src/shared/components/dialog/ConfirmDialog";
+import { toast } from "react-hot-toast";
 
 
 export interface PersonalFilmsTableProps {
@@ -37,8 +39,11 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
   const { isAboveXl } = useScreenSize();
   const dispatch = useAppDispatch();
   const [openEdit, setOpenEdit] = useState<{open: boolean, film?: PersonalFilm}>({open: false, film: undefined});
+  const [openConfirmDelete, setOpenConfirmDelete] = useState<{open: boolean, film?: PersonalFilm}>({open: false, film: undefined});
   const filters = useAppSelector(selectPersonalFilmsFilters);
   const [updatePersonalFilm, resultPersonalFilm] = useUpdatePersonalFilmMutation();
+  const [deletePersonalFilm, deleteResult] = useDeletePersonalFilmMutation();
+
 
   const handleOpenEditDialog = (toEdit: PersonalFilm) => {
     setOpenEdit({open: true, film: toEdit});
@@ -60,10 +65,27 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
     }
   };
 
+  const handleConfirmDelete = (choice: boolean) => {
+    setOpenConfirmDelete((current) => {
+      return {
+        ...current,
+        open: false
+      };
+    });
+    if (choice && openConfirmDelete.film?.fireKey) {
+      const delete$ = deletePersonalFilm(openConfirmDelete.film.fireKey);
+      delete$.then((res) => toast.success(`${openConfirmDelete.film?.title} deleted successfully!`));
+    }
+  };
+
   const handleCellMenuAction = (film: PersonalFilm) => (actionId: PersonalFilmActions) => {
     switch (actionId) {
       case 'edit': {
         handleOpenEditDialog(film);
+        break;
+      }
+      case 'delete': {
+        setOpenConfirmDelete({open: true, film});
         break;
       }
     }
@@ -87,7 +109,13 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
           </Stack>
         </Box>
         { isAboveXl && <DensityLargeIcon fontSize="small" titleAccess="Above large size screen" /> }
-        <Pagination count={ 10 } showFirstButton showLastButton size="small" />
+        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+          <Box mr={ 2 }>
+            1 - {films.length} / {films.length}
+          </Box>
+          <Pagination count={ 10 } showFirstButton showLastButton size="small" />
+        </Stack>
+        
       </Stack>
       <Stack direction="row" justifyContent="start" alignItems="center" mb={ 2 }>
         {
@@ -99,7 +127,7 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
         }
       </Stack>
       <Box height="5px">
-        { loading && <LinearProgress color="success" /> }
+        { (loading || deleteResult.isLoading) && <LinearProgress color="success" /> }
       </Box>
       <TableContainer component={ Paper } elevation={ 0 } sx={ { overflowX: 'hidden', '&:hover': {overflowX: 'auto'}} }>
         <Table size="medium" aria-label="table" stickyHeader  style={ { width: '100%', tableLayout: 'fixed' } }>
@@ -132,14 +160,12 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
               films.map((film: PersonalFilm) => (
                 <TableRow
                   key={ film.fireKey }
-                  sx={ { '&:hover': {backgroundColor: GREY[300]} } }
+                  sx={ { '&:hover': {backgroundColor: GREY[300]}, opacity: film.isWorking ? 0.6 : 1 } }
                 >
                   {
                     TABLE_COLUMNS.map((col, index) => {
                       return (
                         <StyledDataCell key={ `${film.fireKey}${index}` }
-                          data-tooltip-id="tooltip"
-                          data-tooltip-content={ `${film[col]}` }
                           style={ col === 'title' ? {...stickyDataCellClass as any} : {} }
                         >
                           { transformTableData(film, col, handleCellMenuAction(film)) }
@@ -157,6 +183,10 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
 
       {
         <EditDialog open={ openEdit.open } film={ openEdit.film } onDialogClose={ handleDialogClose } />
+      }
+
+      {
+        <ConfirmDialog open={ openConfirmDelete.open } handleClose={ handleConfirmDelete } title={ `Delete ${openConfirmDelete.film?.title} ?` } message="This action cannot be reversed." />
       }
       
     </Box>
@@ -229,23 +259,24 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
       return <span> { film.canon ? 'Yes' : 'No'} </span>;
     }
     case 'director': {
-      
-      return <span> { film.director } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.director}` }> { film.director } </span>;
     }
     case 'openingCrawl': {
-      
-      return <span> { film.openingCrawl } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.openingCrawl}` }> { film.openingCrawl } </span>;
     }
     case 'planets': {
-      return <span> { film.planets.name } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.planets.name}` }> { film.planets.name } </span>;
     }
     case 'species': {
-      
-      return <span> { film.species.length } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.species.map((s) => s.name).join(', ')}` }> { film.species.length } </span>;
     }
     case 'starships': {
-      
-      return <span> { film.starships.length } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.starships.map((s) => s.name).join(', ')}` }> { film.starships.length } </span>;
     }
     case 'title': {
       return (
@@ -253,8 +284,8 @@ function transformTableData(film: PersonalFilm, columnId: typeof TABLE_COLUMNS[n
       );
     }
     case 'vehicles': {
-      
-      return <span> { film.vehicles.length } </span>;
+      return <span data-tooltip-id="tooltip"
+      data-tooltip-content={ `${film.vehicles.map((s) => s.name).join(', ')}` }> { film.vehicles.length } </span>;
     }
     default: {
       return <span> TBD </span>;
@@ -281,7 +312,7 @@ export function TableTitleCell({ title, isWorking, onMenuActionClick }: { title:
   };
 
   return (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Stack direction="row" justifyContent="space-between" alignItems="center" title={ title }>
       <Stack direction="row" justifyContent="start" alignItems="center" style={ {...ellipsis} }>
         <Typography style={ {...ellipsis, marginRight: '10px'} }>
           { title }
