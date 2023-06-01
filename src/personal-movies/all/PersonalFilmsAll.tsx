@@ -22,6 +22,7 @@ import DateDisplay2 from "src/shared/components/date/DateDisplay2";
 import DurationDisplay from "src/shared/components/date/DurationDisplay";
 import { RefreshOutlined } from "@mui/icons-material";
 import { selectPersonalFilmsFilters } from '../store/personal-films.selectors';
+import NewPersonalFilm from "../new-film/NewPersonalFilm";
 
 
 const ENTITY_NAME = "My Films";
@@ -70,12 +71,12 @@ function PersonalMoviesAll() {
     <Stack direction="column" width="100%">
       <AppToolbar toolbarProps={ {
         position: "sticky",
-        sx: {top: isMobile ? '56px':'64px'}
+        sx: {top: isMobile ? '56px':'64px', borderBottom: '1px solid #ccc'}
       } }>
         <Grid container xs={ 12 }>
           <Grid xs={ 4 }>
             <Stack direction="row" justifyContent="start" alignItems="center" width="100%">
-              {/* <SearchAutoComplete entity={ ENTITY_NAME } onResultSelect={ onResultSelectHandler } /> */}
+              <NewPersonalFilm />
             </Stack>
           </Grid>
           <Grid xs={ 8 } xsOffset="auto" display="flex">

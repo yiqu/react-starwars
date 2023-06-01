@@ -8,6 +8,7 @@ export const MyPaletteOptions: PaletteOptions  = {
 
 export const GREY = {
   0: '#FFFFFF',
+  50: '#f2f2f2',
   100: '#f5f5f5',
   200: '#F4F6F8',
   300: '#DFE3E8',

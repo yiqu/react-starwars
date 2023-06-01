@@ -14,7 +14,7 @@ export default function AppToolbar({ toolbarProps, children }: ToolbarProps) {
     <AppBar elevation={ 0 } { ...toolbarProps }>
       <Toolbar 
         variant="regular" 
-        sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? GREY[100] : null, 
+        sx={ {bgcolor: (theme) => theme.palette.mode === 'light' ? GREY[50] : null, 
           color: (theme) => theme.palette.mode === 'light' ? '#000' : null,
           pr: 0
         } }>
