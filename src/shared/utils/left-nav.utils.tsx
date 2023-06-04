@@ -54,7 +54,8 @@ export const getFilledIcon = (pathName: string): JSX.Element => {
     case 'movies': {
       return <MovieIcon color='primary' />;
     }
-    case 'characters': {
+    case 'characters':
+    case 'people': {
       return <Person4Icon color='primary' />;
     }
     case 'planets': {

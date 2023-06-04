@@ -3,10 +3,9 @@ export interface HttpResponse<T> {
   total_records: number;
   total_pages: number;
   previous: string;
-  count?: number;
   next: string;
   results: T[];
-  //
+  count?: number;
   result?: ResultProperty<T>[];
 }
 

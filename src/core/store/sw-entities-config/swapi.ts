@@ -226,7 +226,7 @@ export const starwarsContentApi = createApi({
       transformResponse: (response: HttpResponse<StarwarsContent>, meta, args: string) => {
         return response;
       },
-       serializeQueryArgs: ({ endpointName }) => {
+       serializeQueryArgs: ({ endpointName,endpointDefinition,queryArgs }) => {
         return endpointName;
       },
        merge: (currentCache: HttpResponse<StarwarsContent>, newItems: HttpResponse<StarwarsContent>) => {
@@ -244,6 +244,8 @@ export const starwarsContentApi = createApi({
         return tags;
       }
     }),
+
+
 
     // General Search
     searchContent: builder.query<ResultProperty<any>[], SearchContentQuery>({

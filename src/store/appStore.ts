@@ -12,6 +12,8 @@ import {FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER} from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import { personalFilmsApi } from 'src/personal-movies/store/personal-films.api';
 import personalFilmsConfigSliceReducer, {personalFilmsConfigSlice} from 'src/personal-movies/store/personal-films.reducer';
+import entitiesReducer, { swEntitiesConfigSlice as entitiesConfigSlice } from 'src/core/store/entities/entities.reducer';
+import { starwarsEntitiesApi } from 'src/core/store/entities/entities.api';
 
 // Persisted reducer config
 const persistConfig = {
@@ -33,7 +35,11 @@ export const appStore = configureStore({
     [starwarsFavoritesApi.reducerPath]: starwarsFavoritesApi.reducer,
     [favoritesConfigSlice.name]: persistedFavoritesReducer,
     [personalFilmsApi.reducerPath]: personalFilmsApi.reducer,
-    [personalFilmsConfigSlice.name] : personalFilmsConfigSliceReducer
+    [personalFilmsConfigSlice.name] : personalFilmsConfigSliceReducer,
+    
+    // generic entities
+    [entitiesConfigSlice.name]: entitiesReducer,
+    [starwarsEntitiesApi.reducerPath]: starwarsEntitiesApi.reducer
   },
 
   // Adding the api middleware enables caching, invalidation, polling, and other useful features of `rtk-query`.
@@ -45,7 +51,7 @@ export const appStore = configureStore({
       },
       thunk: true,
     }).concat(starwarsContentApi.middleware).concat(starwarsFilmsApi.middleware).concat(starwarsFavoritesApi.middleware)
-      .concat(personalFilmsApi.middleware);
+      .concat(personalFilmsApi.middleware).concat(starwarsEntitiesApi.middleware);
   },
   
   devTools: {
