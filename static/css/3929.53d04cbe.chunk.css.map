@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/3929.53d04cbe.chunk.css","mappings":"AAAA,mCAIE,0BADA,cAFA,eACA,SAGA","sources":["core/movies/movies/movie/MovieDetailCard.module.scss"],"sourcesContent":[".detailcard {\n  position: fixed;\n  top: 81px;\n  overflow: auto;\n  height: calc(100% - 100px);\n  width: 21%;\n}"],"names":[],"sourceRoot":""}

@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/821.56d1f722.chunk.js","mappings":"2IASA,UAPA,WAEE,OACE,SAAC,KAAM,GAEX,C","sources":["core/vehicles/VehiclesLayout.tsx"],"sourcesContent":["import { Outlet } from \"react-router-dom\";\n\nfunction Vehicles() {\n  \n  return (\n    <Outlet />\n  );\n};\n\nexport default Vehicles;"],"names":[],"sourceRoot":""}
