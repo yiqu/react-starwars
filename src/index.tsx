@@ -19,6 +19,9 @@ import { ThemeContextProvider } from './theme/ThemeContext';
 import { Provider } from 'react-redux';
 import { appStore, persistor } from './store/appStore';
 import { PersistGate } from 'redux-persist/integration/react';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,7 +33,9 @@ root.render(
     <Provider store={ appStore }>
       <PersistGate loading={ null } persistor={ persistor }>
         <ThemeContextProvider>
-          <App />
+          <LocalizationProvider dateAdapter={ AdapterMoment }>
+            <App />
+          </LocalizationProvider>
         </ThemeContextProvider>
       </PersistGate>
     </Provider>

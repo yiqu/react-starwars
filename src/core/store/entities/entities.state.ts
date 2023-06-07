@@ -1,6 +1,6 @@
 import { Pagination } from "src/shared/models/http.model";
 
-export type EntityType = 'Species' | 'Starships' | 'Vehicles' | 'Planets' | 'People';
+export type EntityType = 'Species' | 'Starships' | 'Vehicles' | 'Planets' | 'People' | 'Characters';
 
 export interface EntityFetchArg {
   url: string;

@@ -13,7 +13,6 @@ const CreateNewFilm = () => {
     setShowDialog(true);
   };
   const handleClose = useCallback((payload: any) => {
-    console.log(payload);
     setShowDialog(false);
   }, []);
 

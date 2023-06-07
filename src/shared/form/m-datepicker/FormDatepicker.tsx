@@ -2,26 +2,29 @@
 import React, { useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { ErrorMessage, Field, Form, Formik, FormikProps, useFormikContext } from 'formik';
-import { FormikInputProps, FormInput2Props, FormInputProps } from 'src/shared/models/form.model';
+import { FormDatepickerProps, FormikInputProps, FormInput2Props, FormInputProps } from 'src/shared/models/form.model';
 import { FormControl, FormHelperText, InputLabel } from '@mui/material';
 import { upperFirst, startCase } from 'lodash';
+import { DatePicker, DatePickerProps } from '@mui/x-date-pickers';
 
 
-const FormInput = ({ label, name, validate, 
-    disabled, placeholder, variant, ...props}: FormInput2Props) => {
+const FormDatepicker = ({ label, name, validate, 
+    disabled, placeholder, variant, ...props}: FormDatepickerProps) => {
       
   const formik = useFormikContext<any>();
   return (
-    <FormControl fullWidth size={ props.props?.size ?? 'small' }>
-      <Field as={ TextField } 
+    <FormControl fullWidth>
+      <Field as={ DatePicker } 
         label={ startCase(label) } 
+        formatDensity="spacious"
         name={ name } 
         id={ name }
         error={ formik.touched[name] && !!formik.errors[name] }
         validate={ validate }
-        variant={ variant ?? 'standard' }
         disabled={ disabled }
-        placeholder={ upperFirst(placeholder ?? label) }
+        slotProps={ {
+          textField: {size: 'medium'}
+        } }
         { ...props.props } />
 
       <FormHelperText id={ `${name}-helper-text` } error={ formik.touched[name] && !!formik.errors[name] } sx={ {ml: 0} } >
@@ -35,4 +38,4 @@ const FormInput = ({ label, name, validate,
   );
 };
 
-export default FormInput;
+export default FormDatepicker;

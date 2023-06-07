@@ -9,13 +9,14 @@ export const starshipsTag = "Starships";
 export const vehiclesTag = "Vehicles";
 export const planetsTag = "Planets";
 export const peopleTag = "People";
+export const charactersTag = "Characters";
 
 export const starwarsEntitiesApi = createApi({
   reducerPath: 'swEntities',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_SW_API
   }),
-  tagTypes: [speciesTag, starshipsTag, vehiclesTag, planetsTag, peopleTag],
+  tagTypes: [speciesTag, starshipsTag, vehiclesTag, planetsTag, peopleTag, charactersTag],
   endpoints: (builder) => ({
 
     fetchEntitiesInfinite: builder.query<HttpResponse<StarwarsContent>, EntityFetchArg>({
@@ -38,7 +39,7 @@ export const starwarsEntitiesApi = createApi({
         return currentArg?.url !== previousArg?.url; // if provided url has changed
       },
       providesTags: (result, error, args: EntityFetchArg, meta) => {
-        const tags: TagDescription<"Species" | "Starships" | "Vehicles" | "Planets" | "People">[] = [];
+        const tags: TagDescription<"Species" | "Starships" | "Vehicles" | "Planets" | "People" | "Characters">[] = [];
         result?.results.forEach((res: StarwarsContent) => {
           tags.push({ type: args.entityId, id: res.uid });
         });

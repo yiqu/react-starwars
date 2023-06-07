@@ -92,7 +92,6 @@ function PersonalFilmsTable({ films, loading }: PersonalFilmsTableProps) {
   };
 
   const handleHeaderMenuClick = (colId: string) => (actionId: PersonalFilmTableHeaderActions) => {
-    console.log(colId, actionId); 
   };
 
   const handleFilterChange = useCallback((filters: QueryFilter[]) => {
