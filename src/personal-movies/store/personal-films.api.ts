@@ -5,6 +5,8 @@ import { PersonalFilm, PersonalFilmUpdate, XhrFirebaseResult } from './personal-
 import { QueryFilter } from '../all/PersonalFilmsTableFilter';
 import { PatchCollection } from '@reduxjs/toolkit/dist/query/core/buildThunks';
 import { assign } from 'lodash';
+import { IPersonalFilm } from '../new-film/NewPersonalFilmForm';
+import { FirebasePostPayload } from 'src/shared/models/firebase.model';
 
 export const subPath = "yqu/added-films";
 
@@ -144,10 +146,23 @@ export const personalFilmsApi = createApi({
       invalidatesTags: (result, error, arg: string, meta) => {
         return [{type: personaFilmsTag}];
       },
-    })
+    }),
 
+    createPersonalFilm: builder.mutation<FirebasePostPayload, IPersonalFilm>({
+      query: (args: IPersonalFilm) => {
+        return {
+          url: `${subPath}.json`,
+          method: 'POST',
+          body: args
+        };
+      },
+      invalidatesTags: (result: FirebasePostPayload | undefined, error, arg: IPersonalFilm, meta) => {
+        return [{ type: personaFilmsTag }];
+      },
+    })
   })
 });
 
 
-export const { useFetchPersonalFilmsQuery, useFetchPersonalFilmQuery, useUpdatePersonalFilmMutation, useDeletePersonalFilmMutation } = personalFilmsApi;
+export const { useFetchPersonalFilmsQuery, useFetchPersonalFilmQuery, useUpdatePersonalFilmMutation, useDeletePersonalFilmMutation,
+  useCreatePersonalFilmMutation } = personalFilmsApi;
